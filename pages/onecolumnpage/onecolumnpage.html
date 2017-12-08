@@ -1,0 +1,19 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="/build.css">
+        <script src="/build.js"></script>
+        <!-- Avoid favicon request -->
+        <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+    </head>
+    <body>
+        <div class="onecolumn-container">
+            {{render "header"}}
+            <div class="content">
+                {{render "content" "compList"}}
+            </div>
+            {{#home.footer}}
+              {{render false "footer"}}
+            {{/home.footer}}
+        </div>
+    </body>
+</html>
