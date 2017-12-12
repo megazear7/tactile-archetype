@@ -217,6 +217,13 @@
                     "size": "h2",
                     "heading": "Tactile Clerk",
                     "subText": "Serves up the tactile backend and is built on ExpressJS"
+                },
+                {
+                    "tacType": "component",
+                    "compType": "heading",
+                    "size": "h2",
+                    "heading": "Tactile Gulp",
+                    "subText": "Frontend build process using gulp that integrates with tactile."
                 }
             ]
         },
