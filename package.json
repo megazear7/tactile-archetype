@@ -22,12 +22,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/megazear7/tactile.git"
+    "url": "git+https://github.com/megazear7/tactile-archetype.git"
   },
-  "author": "Alex Lockhart",
+  "author": "Alex Lockhart <alexlockhart7@gmail.com>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/megazear7/tactile/issues"
+    "url": "https://github.com/megazear7/tactile-archtype/issues"
   },
-  "homepage": "https://github.com/megazear7/tactile#readme"
+  "homepage": "https://github.com/megazear7/tactile-archetype#readme"
 }
