@@ -3,3 +3,9 @@ package-lock.json
 
 # Atom
 .atom-build.*
+
+# Bower
+bower_components
+
+# Mac
+.DS_Store
