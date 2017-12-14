@@ -25,7 +25,6 @@
     "merge-stream": "^1.0.1",
     "tactile-broker": "^1.0.4",
     "tactile-clerk": "^1.0.1",
-    "tactile-gulp": "^1.0.3",
     "webpack": "^3.10.0"
   },
   "flat": true,
