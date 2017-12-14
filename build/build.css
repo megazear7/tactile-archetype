@@ -135,15 +135,15 @@ ul.breadcrumbs li + li:before {
     padding: 2px 20px;
     border-bottom: 1px solid rgba(50, 50, 50, 0.2); } }
 
+.basic-image {
+  width: 100%; }
+
 a[disabled], a[disabled]:hover {
   pointer-events: none; }
 
 h1 small {
   font-size: .5em;
   color: gray; }
-
-.basic-image {
-  width: 100%; }
 
 .homepage-container {
   display: grid;

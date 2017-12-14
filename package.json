@@ -7,14 +7,28 @@
     "test": "test"
   },
   "dependencies": {
-    "bower": "^1.8.2",
+    "@babel/core": "^7.0.0-beta.34",
+    "@babel/preset-env": "^7.0.0-beta.34",
+    "@babel/preset-es2015": "^7.0.0-beta.34",
+    "@polymer/polymer": "^2.3.1",
+    "@webcomponents/webcomponentsjs": "^1.0.20",
+    "babel-loader": "^8.0.0-beta.0",
     "express": "^4.16.2",
     "gulp": "^3.9.1",
+    "gulp-add-src": "^0.2.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-filter": "^5.0.1",
+    "gulp-sass": "^3.1.0",
+    "gulp-webpack": "^1.5.0",
     "handlebars": "^4.0.11",
+    "jquery": "^3.2.1",
+    "merge-stream": "^1.0.1",
     "tactile-broker": "^1.0.4",
     "tactile-clerk": "^1.0.1",
-    "tactile-gulp": "^1.0.3"
+    "tactile-gulp": "^1.0.3",
+    "webpack": "^3.10.0"
   },
+  "flat": true,
   "scripts": {
     "start": "node app.js",
     "watch": "gulp",
@@ -30,5 +44,6 @@
   "bugs": {
     "url": "https://github.com/megazear7/tactile-archtype/issues"
   },
-  "homepage": "https://github.com/megazear7/tactile-archetype#readme"
+  "homepage": "https://github.com/megazear7/tactile-archetype#readme",
+  "devDependencies": {}
 }
