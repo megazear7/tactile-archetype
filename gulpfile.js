@@ -19,11 +19,11 @@ var webpack = require('webpack');
 
   var jsFiles = [
     './global/client.js',
-    './components/**/client.js',
-    './pages/**/client.js',
     './global/client/*.js',
-    './components/**/client/*.js',
-    './pages/**/client/*.js'];
+    './pages/**/client.js',
+    './pages/**/client/*.js',
+    './components/**/client.js',
+    './components/**/client/*.js'];
 
   gulp.task('sass', function () {
     var sassStream = gulp.src(sassFiles)
@@ -42,7 +42,7 @@ var webpack = require('webpack');
   });
 
   gulp.task('js', function () {
-    return gulp.src("./client.js")
+    return gulp.src(jsFiles)
       .pipe(gulpWebpack(require('./webpack.config.js'), webpack))
       .pipe(concat('build.js'))
       .pipe(gulp.dest('./build'));

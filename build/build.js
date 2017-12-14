@@ -67,18 +67,61 @@
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
+__webpack_require__(1);
+module.exports = __webpack_require__(2);
 
-
-var _jquery = _interopRequireDefault(__webpack_require__(1));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-//var jquery = require("jquery");
-console.log("hello, world");
 
 /***/ }),
 /* 1 */
+/***/ (function(module, exports) {
+
+var getBreakpoint = function getBreakpoint() {
+  return window.getComputedStyle(window.document.querySelector('body'), ':before').getPropertyValue('content').replace(/"/g, '');
+};
+
+function breakpoint(breakpoint, callback) {
+  if (typeof callback === "function") {
+    if (getBreakpoint() === breakpoint) {
+      callback();
+    }
+
+    $(window).resize(function () {
+      if (getBreakpoint() === breakpoint) {
+        callback();
+      }
+    });
+  } else {
+    return getBreakpoint() === breakpoint;
+  }
+}
+
+function desktop(callback) {
+  return breakpoint("desktop", callback);
+}
+
+function tablet(callback) {
+  return breakpoint("tablet", callback);
+}
+
+function phone(callback) {
+  return breakpoint("phone", callback);
+}
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _jquery = _interopRequireDefault(__webpack_require__(3));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+console.log("Hello, World!");
+
+/***/ }),
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -9098,10 +9141,10 @@ console.log("hello, world");
 
   return jQuery;
 });
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
 
 /***/ }),
-/* 2 */
+/* 4 */
 /***/ (function(module, exports) {
 
 module.exports = function (module) {
