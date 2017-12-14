@@ -7,49 +7,49 @@ var merge = require('merge-stream');
 var gulpWebpack = require('gulp-webpack');
 var webpack = require('webpack');
 
-  var sassFiles = [
-    './global/*.scss',
-    './components/**/*.scss',
-    './pages/**/*.scss'];
+var sassFiles = [
+  './global/*.scss',
+  './components/**/*.scss',
+  './pages/**/*.scss'];
 
-  var cssFiles = [
-    './global/*.css',
-    './components/**/*.css',
-    './pages/**/*.css'];
+var cssFiles = [
+  './global/*.css',
+  './components/**/*.css',
+  './pages/**/*.css'];
 
-  var jsFiles = [
-    './global/client.js',
-    './global/client/*.js',
-    './pages/**/client.js',
-    './pages/**/client/*.js',
-    './components/**/client.js',
-    './components/**/client/*.js'];
+var jsFiles = [
+  './global/client.js',
+  './global/client/*.js',
+  './pages/**/client.js',
+  './pages/**/client/*.js',
+  './components/**/client.js',
+  './components/**/client/*.js'];
 
-  gulp.task('sass', function () {
-    var sassStream = gulp.src(sassFiles)
-      .pipe(sass().on('error', sass.logError));
+gulp.task('sass', function () {
+  var sassStream = gulp.src(sassFiles)
+    .pipe(sass().on('error', sass.logError));
 
-    var cssStream = gulp.src(cssFiles)
-      .pipe(filter("*.css"));
+  var cssStream = gulp.src(cssFiles)
+    .pipe(filter("*.css"));
 
-    return merge(sassStream, cssStream)
-      .pipe(concat('build.css'))
-      .pipe(gulp.dest('./build'));
-  });
+  return merge(sassStream, cssStream)
+    .pipe(concat('build.css'))
+    .pipe(gulp.dest('./build'));
+});
 
-  gulp.task('sass:watch', function () {
-    gulp.watch(sassFiles, ['sass']);
-  });
+gulp.task('sass:watch', function () {
+  gulp.watch(sassFiles, ['sass']);
+});
 
-  gulp.task('js', function () {
-    return gulp.src(jsFiles)
-      .pipe(gulpWebpack(require('./webpack.config.js'), webpack))
-      .pipe(concat('build.js'))
-      .pipe(gulp.dest('./build'));
-  });
+gulp.task('js', function () {
+  return gulp.src(jsFiles)
+    .pipe(gulpWebpack(require('./webpack.config.js'), webpack))
+    .pipe(concat('build.js'))
+    .pipe(gulp.dest('./build'));
+});
 
-  gulp.task('js:watch', function () {
-    gulp.watch(jsFiles, ['js']);
-  });
+gulp.task('js:watch', function () {
+  gulp.watch(jsFiles, ['js']);
+});
 
-  gulp.task('default', ['sass', 'sass:watch', 'js', 'js:watch']);
+gulp.task('default', ['sass', 'sass:watch', 'js', 'js:watch']);
