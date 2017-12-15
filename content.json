@@ -30,8 +30,15 @@
                 "tacType": "component",
                 "compType": "reactHeading",
                 "size": "h3",
-                "heading": "I am Reactable!",
+                "heading": "React Example",
                 "subText": "This heading functions in the same as the one above, except is implemented with react."
+            },
+            {
+                "tacType": "component",
+                "compType": "polymerHeading",
+                "size": "h3",
+                "heading": "Polymer Example",
+                "subText": "This heading functions in the same as the one above, except is implemented with polymer."
             }
         ]
     },

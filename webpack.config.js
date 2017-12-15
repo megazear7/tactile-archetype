@@ -1,5 +1,3 @@
-const path = require('path');
-
 module.exports = {
   module: {
     rules: [
@@ -8,8 +6,17 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['@babel/preset-env', '@babel/preset-react']
+            presets: [
+              '@babel/preset-es2016',
+              '@babel/preset-react'
+            ]
           }
+        }
+      },
+      {
+        test: /\.html$/,
+        use: {
+          loader: 'raw-loader',
         }
       }
     ]
