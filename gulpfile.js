@@ -19,11 +19,18 @@ var cssFiles = [
 
 var jsFiles = [
   './global/client.js',
+  './global/client.jsx',
   './global/client/*.js',
   './pages/**/client.js',
   './pages/**/client/*.js',
   './components/**/client.js',
-  './components/**/client/*.js'];
+  './components/**/client/*.js',
+  './global/client.jsx',
+  './global/client/*.jsx',
+  './pages/**/client.jsx',
+  './pages/**/client/*.jsx',
+  './components/**/client.jsx',
+  './components/**/client/*.jsx'];
 
 gulp.task('sass', function () {
   var sassStream = gulp.src(sassFiles)

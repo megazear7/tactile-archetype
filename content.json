@@ -25,6 +25,13 @@
                 "size": "h2",
                 "heading": "Hello, this is the tactile archetype!",
                 "subText": "<- And that, is a macaw!"
+            },
+            {
+                "tacType": "component",
+                "compType": "reactHeading",
+                "size": "h3",
+                "heading": "I am Reactable!",
+                "subText": "This heading functions in the same as the one above, except is implemented with react."
             }
         ]
     },
