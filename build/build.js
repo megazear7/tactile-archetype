@@ -26384,7 +26384,7 @@ const TemplateStamp = Object(__WEBPACK_IMPORTED_MODULE_1__utils_mixin_js__["a" /
 /* 46 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"polymer-heading\">\n  <p>[[text]]</p>\n\n  <hr>\n</div>\n"
+module.exports = "<div>[[text]]</div>\n\n<hr>\n"
 
 /***/ })
 /******/ ]);

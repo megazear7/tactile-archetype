@@ -14,7 +14,6 @@ class TTAUnderlinedText extends PolymerElement {
   constructor() {
     super();
   }
-
   
   static get properties() {
     return {
