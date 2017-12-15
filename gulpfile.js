@@ -7,6 +7,9 @@ var merge = require('merge-stream');
 var gulpWebpack = require('gulp-webpack');
 var webpack = require('webpack');
 
+var htmlFiles = [
+  './elements/**/*.html'];
+
 var sassFiles = [
   './global/*.scss',
   './components/**/*.scss',
@@ -57,6 +60,7 @@ gulp.task('js', function () {
 
 gulp.task('js:watch', function () {
   gulp.watch(jsFiles, ['js']);
+  gulp.watch(htmlFiles, ['js']);
 });
 
 gulp.task('default', ['sass', 'sass:watch', 'js', 'js:watch']);
