@@ -1,6 +1,5 @@
-import ReactDOM from 'react-dom';
 import React from 'react';
-import $ from 'jquery';
+import reactInit from '../reactInit';
 
 class Heading extends React.Component {
 	render() {
@@ -20,15 +19,4 @@ class Heading extends React.Component {
 	}
 }
 
-$(document).ready(function() {
-	$(".react-heading").each(function() {
-		var data = $(this).data();
-		ReactDOM.render(
-	    <Heading heading={data.heading}
-							 subtext={data.subtext}
-							 size={data.size}
-							 hashr={data.hashr} />,
-	    this
-	  );
-	});
-});
+reactInit(".react-heading", Heading);

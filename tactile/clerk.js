@@ -4,7 +4,7 @@ const tactileBroker = require('./broker')
 var run = function(port, componentModels) {
   const app = express();
 
-  app.use(express.static('build'));
+  app.use(express.static('dist'));
 
   app.get('/*', function (req, res) {
       console.log("Request: " + req.path);

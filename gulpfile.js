@@ -7,7 +7,7 @@ var merge = require('merge-stream');
 var gulpWebpack = require('gulp-webpack');
 var webpack = require('webpack');
 
-var htmlFiles = [
+var reactHtmlFiles = [
   './elements/**/*.html'];
 
 var sassFiles = [
@@ -21,6 +21,7 @@ var cssFiles = [
   './pages/**/*.css'];
 
 var jsFiles = [
+  './components/reactInit.js',
   './global/client.js',
   './global/client/*.js',
   './global/client.jsx',
@@ -44,7 +45,7 @@ gulp.task('sass', function () {
 
   return merge(sassStream, cssStream)
     .pipe(concat('build.css'))
-    .pipe(gulp.dest('./build'));
+    .pipe(gulp.dest('./dist'));
 });
 
 gulp.task('sass:watch', function () {
@@ -55,12 +56,12 @@ gulp.task('js', function () {
   return gulp.src(jsFiles)
     .pipe(gulpWebpack(require('./webpack.config.js'), webpack))
     .pipe(concat('build.js'))
-    .pipe(gulp.dest('./build'));
+    .pipe(gulp.dest('./dist'));
 });
 
 gulp.task('js:watch', function () {
   gulp.watch(jsFiles, ['js']);
-  gulp.watch(htmlFiles, ['js']);
+  gulp.watch(reactHtmlFiles, ['js']);
 });
 
 gulp.task('default', ['sass', 'sass:watch', 'js', 'js:watch']);
