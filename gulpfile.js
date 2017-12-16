@@ -7,7 +7,7 @@ var merge = require('merge-stream');
 var gulpWebpack = require('gulp-webpack');
 var webpack = require('webpack');
 
-var reactHtmlFiles = [
+var polymerHtmlFiles = [
   './elements/**/*.html'];
 
 var sassFiles = [
@@ -20,7 +20,7 @@ var cssFiles = [
   './components/**/*.css',
   './pages/**/*.css'];
 
-var jsFiles = [
+var clientJsEntryPoints = [
   './components/reactInit.js',
   './global/client.js',
   './global/client/*.js',
@@ -35,6 +35,11 @@ var jsFiles = [
   './components/**/client.jsx',
   './components/**/client/*.jsx',
   './elements/**/*.js'];
+
+var clientJsWatchPoints = [
+  './components/reactInit.js']
+  .concat(clientJsEntryPoints)
+  .concat(polymerHtmlFiles);
 
 gulp.task('sass', function () {
   var sassStream = gulp.src(sassFiles)
@@ -53,15 +58,14 @@ gulp.task('sass:watch', function () {
 });
 
 gulp.task('js', function () {
-  return gulp.src(jsFiles)
+  return gulp.src(clientJsEntryPoints)
     .pipe(gulpWebpack(require('./webpack.config.js'), webpack))
     .pipe(concat('build.js'))
     .pipe(gulp.dest('./dist'));
 });
 
 gulp.task('js:watch', function () {
-  gulp.watch(jsFiles, ['js']);
-  gulp.watch(reactHtmlFiles, ['js']);
+  gulp.watch(clientJsWatchPoints, ['js']);
 });
 
 gulp.task('default', ['sass', 'sass:watch', 'js', 'js:watch']);
