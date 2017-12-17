@@ -17382,7 +17382,7 @@ const TemplateStamp = Object(__WEBPACK_IMPORTED_MODULE_1__utils_mixin_js__["a" /
 /* 46 */
 /***/ (function(module, exports) {
 
-module.exports = "<style>\nhr {\n    border: 0.5px solid;\n}\n</style>\n\n<div>[[text]]</div>\n\n<hr>\n"
+module.exports = "<style>\n  hr {\n      border: 0.5px solid;\n  }\n</style>\n\n<div>[[text]]</div>\n\n<hr>\n"
 
 /***/ })
 /******/ ]);
