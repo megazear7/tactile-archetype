@@ -60,9 +60,16 @@ gulp.task('sass:watch', function () {
 
 gulp.task('js', function () {
   return gulp.src(clientJsEntryPoints)
-    .pipe(gulpWebpack(require('./webpack.config.js'), webpack))
+    .pipe(gulpWebpack(require('./webpack.devconfig.js'), webpack))
     .pipe(concat('build.js'))
+    .pipe(gulp.dest('./dist'));
+});
+
+gulp.task('js:prod', function () {
+  return gulp.src(clientJsEntryPoints)
+    .pipe(gulpWebpack(require('./webpack.prodconfig.js'), webpack))
     .pipe(minify())
+    .pipe(concat('build.js'))
     .pipe(gulp.dest('./dist'));
 });
 

@@ -1,7 +1,6 @@
 import { Element as PolymerElement } from '@polymer/polymer/polymer-element';
 import view from './tta-underlined-text.html';
 
-// TODO we need to wait for the polyfills before using PolymerElement.
 export default class TTAUnderlinedText extends PolymerElement {
   static get is() {
     return "tta-underlined-text";

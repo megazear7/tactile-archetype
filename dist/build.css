@@ -87,6 +87,9 @@ ul.breadcrumbs li + li:before {
   color: black;
   content: "/\00a0"; }
 
+.examples hr {
+  border-color: orange; }
+
 .footer {
   min-height: 100px;
   background-color: #999; }
@@ -100,12 +103,6 @@ ul.breadcrumbs li + li:before {
 .footer ul li {
   display: inline;
   padding: 5px 15px; }
-
-.examples hr {
-  border-color: orange; }
-
-.basic-image {
-  width: 100%; }
 
 .header hr {
   border-style: solid;
@@ -137,6 +134,9 @@ ul.breadcrumbs li + li:before {
   .header ul li {
     padding: 2px 20px;
     border-bottom: 1px solid rgba(50, 50, 50, 0.2); } }
+
+.basic-image {
+  width: 100%; }
 
 a[disabled], a[disabled]:hover {
   pointer-events: none; }
