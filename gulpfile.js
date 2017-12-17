@@ -6,6 +6,7 @@ var addSrc = require('gulp-add-src');
 var merge = require('merge-stream');
 var gulpWebpack = require('gulp-webpack');
 var webpack = require('webpack');
+var minify = require('gulp-minify');
 
 var polymerHtmlFiles = [
   './elements/**/*.html'];
@@ -61,6 +62,7 @@ gulp.task('js', function () {
   return gulp.src(clientJsEntryPoints)
     .pipe(gulpWebpack(require('./webpack.config.js'), webpack))
     .pipe(concat('build.js'))
+    .pipe(minify())
     .pipe(gulp.dest('./dist'));
 });
 
