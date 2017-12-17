@@ -1,3 +1,5 @@
+import WebComponents from '@webcomponents/webcomponentsjs/webcomponents-lite.js';
+
 var getBreakpoint = function () {
   return window.getComputedStyle(window.document.querySelector('body'), ':before').getPropertyValue('content').replace(/"/g, '');
 };
