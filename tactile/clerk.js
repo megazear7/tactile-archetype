@@ -6,6 +6,13 @@ var run = function(port, componentModels, authorModels) {
 
   app.use(express.static('dist'));
 
+  app.get('/*.json', function (req, res) {
+      console.log("Request: " + req.path);
+      var pathParts = req.path.slice(1).split(".")[0];
+      var isAuthor = req.query.mode === "author";
+      res.send(tactileBroker.model(pathParts, componentModels, authorModels, isAuthor));
+  });
+
   app.get('/*', function (req, res) {
       console.log("Request: " + req.path);
       var pathParts = req.path.slice(1);

@@ -79,6 +79,21 @@ a:hover {
 .inverted a:hover {
   color: #8ac; }
 
+/* Style the list */
+ul.breadcrumbs {
+  padding: 10px 16px;
+  list-style: none; }
+
+/* Display list items side by side */
+ul.breadcrumbs li {
+  display: inline; }
+
+/* Add a slash symbol (/) before/behind each list item */
+ul.breadcrumbs li + li:before {
+  padding: 8px;
+  color: black;
+  content: "/\00a0"; }
+
 .examples hr {
   border-color: orange; }
 
@@ -127,26 +142,11 @@ a:hover {
     padding: 2px 20px;
     border-bottom: 1px solid rgba(50, 50, 50, 0.2); } }
 
-.basic-image {
-  width: 100%; }
-
 a[disabled], a[disabled]:hover {
   pointer-events: none; }
 
-/* Style the list */
-ul.breadcrumbs {
-  padding: 10px 16px;
-  list-style: none; }
-
-/* Display list items side by side */
-ul.breadcrumbs li {
-  display: inline; }
-
-/* Add a slash symbol (/) before/behind each list item */
-ul.breadcrumbs li + li:before {
-  padding: 8px;
-  color: black;
-  content: "/\00a0"; }
+.basic-image {
+  width: 100%; }
 
 h1 small {
   font-size: .5em;

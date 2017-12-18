@@ -2,6 +2,17 @@ var fs = require('fs');
 var Handlebars = require('handlebars');
 const { join } = require('path')
 
+var model = function(path, componentModels, authorModels, isAuthor) {
+    var page = JSON.parse(fs.readFileSync('content.json', 'utf8'));
+    var pathParts = path.split("/");
+    if (path.length > 0) {
+        pathParts.forEach(function (val) {
+            page = page[val];
+        });
+    }
+    return page;
+};
+
 var render = function(path, componentModels, authorModels, isAuthor) {
     var page = JSON.parse(fs.readFileSync('content.json', 'utf8'));
     var home = page;
@@ -156,4 +167,4 @@ var render = function(path, componentModels, authorModels, isAuthor) {
     return Handlebars.compile(pageTemplates[page.pageType])(page);;
 };
 
-module.exports = { render: render };
+module.exports = { render: render, model: model };
