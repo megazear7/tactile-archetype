@@ -1,3 +1,10 @@
+body.author .tactile {
+  outline: 2px solid transparent;
+  position: relative; }
+
+body.author .tactile:hover {
+  outline: 2px solid blue; }
+
 html {
   height: 100%;
   font-size: 20px;
@@ -72,21 +79,6 @@ a:hover {
 .inverted a:hover {
   color: #8ac; }
 
-/* Style the list */
-ul.breadcrumbs {
-  padding: 10px 16px;
-  list-style: none; }
-
-/* Display list items side by side */
-ul.breadcrumbs li {
-  display: inline; }
-
-/* Add a slash symbol (/) before/behind each list item */
-ul.breadcrumbs li + li:before {
-  padding: 8px;
-  color: black;
-  content: "/\00a0"; }
-
 .examples hr {
   border-color: orange; }
 
@@ -140,6 +132,21 @@ ul.breadcrumbs li + li:before {
 
 a[disabled], a[disabled]:hover {
   pointer-events: none; }
+
+/* Style the list */
+ul.breadcrumbs {
+  padding: 10px 16px;
+  list-style: none; }
+
+/* Display list items side by side */
+ul.breadcrumbs li {
+  display: inline; }
+
+/* Add a slash symbol (/) before/behind each list item */
+ul.breadcrumbs li + li:before {
+  padding: 8px;
+  color: black;
+  content: "/\00a0"; }
 
 h1 small {
   font-size: .5em;

@@ -2,11 +2,15 @@ var fs = require('fs');
 var Handlebars = require('handlebars');
 const { join } = require('path')
 
-var render = function(path, componentModels) {
+var render = function(path, componentModels, authorModels, isAuthor) {
     var page = JSON.parse(fs.readFileSync('content.json', 'utf8'));
     var home = page;
     home.isHome = true;
     home.nodeName = "";
+
+    if (isAuthor) {
+      home.isAuthor = true;
+    }
 
     var isSafe = function(key, json) {
       return ["children", "siblings", "home", "parent", "page"].indexOf(key) == -1 && typeof json[key] === "object";
@@ -91,6 +95,11 @@ var render = function(path, componentModels) {
     directories("components").forEach(function(directory) {
         var name = directory.split("/").slice(-1)[0];
         var template = directory + "/" + name + ".html";
+        var author = directory + "/author.html";
+
+        if (isAuthor && fs.existsSync(author)) {
+          Handlebars.registerPartial(name + "-author", fs.readFileSync(author, 'utf8'));
+        }
 
         Handlebars.registerPartial(name, fs.readFileSync(template, 'utf8'));
         componentTemplates[name] = Handlebars.compile(fs.readFileSync(template, 'utf8'));
@@ -130,7 +139,15 @@ var render = function(path, componentModels) {
       var componentModel = componentModels[subNode.compType];
 
       if (typeof componentModel !== "undefined") {
-        subNode.model = componentModels[subNode.compType].init(subNode);
+        subNode.model = componentModel.init(subNode);
+      }
+
+      if (isAuthor) {
+        var authorModel = authorModels[subNode.compType];
+
+        if (typeof authorModel !== "undefined") {
+          subNode.author = authorModel.init(subNode);
+        }
       }
 
       return new Handlebars.SafeString(componentTemplates[subNode.compType](subNode));

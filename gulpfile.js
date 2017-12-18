@@ -12,16 +12,19 @@ var polymerHtmlFiles = [
   './elements/**/*.html'];
 
 var sassFiles = [
+  './tactile/client/*.scss',
   './global/*.scss',
   './components/**/*.scss',
   './pages/**/*.scss'];
 
 var cssFiles = [
+  './tactile/client/*.css',
   './global/*.css',
   './components/**/*.css',
   './pages/**/*.css'];
 
 var clientJsEntryPoints = [
+  'tactile/client/*.js',
   './components/reactInit.js',
   './global/client.js',
   './global/client/*.js',

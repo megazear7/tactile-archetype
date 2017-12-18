@@ -5,7 +5,7 @@
         <!-- Avoid favicon request -->
         <link rel="icon" href="data:;base64,iVBORw0KGgo=">
     </head>
-    <body>
+    <body {{#if home.isAuthor}}class="author"{{/if}}>
         <div class="onecolumn-container">
             {{render "header"}}
             <div class="content">
