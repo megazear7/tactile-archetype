@@ -3,14 +3,22 @@ var Handlebars = require('handlebars');
 const { join } = require('path')
 
 var model = function(path, componentModels, authorModels, isAuthor) {
-    var page = JSON.parse(fs.readFileSync('content.json', 'utf8'));
+    var node = JSON.parse(fs.readFileSync('content.json', 'utf8'));
     var pathParts = path.split("/");
     if (path.length > 0) {
         pathParts.forEach(function (val) {
-            page = page[val];
+            node = node[val];
         });
     }
-    return page;
+
+    var authorModel = authorModels[node.compType];
+
+    if (typeof authorModel !== "undefined") {
+      // TODO don't do this if we're in publish production.
+      node.author = authorModel.init(node);
+    }
+
+    return node;
 };
 
 var render = function(path, componentModels, authorModels, isAuthor) {

@@ -1,4 +1,4 @@
-import { ajaxGet } from "./ajax.js"
+import { TactileAuthor } from "./tactile-author.js";
 
 document.addEventListener("DOMContentLoaded", (event) => {
   if (document.body.classList.contains('author')) {
@@ -8,14 +8,10 @@ document.addEventListener("DOMContentLoaded", (event) => {
       event.preventDefault();
 
       var component = event.target.closest(".tactile");
-      var authorDefinition = component.querySelector(".tactile-author").dataset;
-      var path = authorDefinition.tactilePath;
+      var authorElement = component.querySelector("tactile-author");
+      var path = authorElement.getAttribute("path");
 
-      ajaxGet(path+".json", (data) => {
-        // TODO do stuff with data and authorDefinition
-        console.log(data);
-        console.log(authorDefinition)
-      });
+      authorElement.openDialog();
     }, true);
   }
 });

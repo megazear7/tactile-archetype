@@ -81,3 +81,5 @@ gulp.task('js:watch', function () {
 });
 
 gulp.task('default', ['sass', 'sass:watch', 'js', 'js:watch']);
+
+gulp.task('deploypack', ['sass', 'js:prod']);
