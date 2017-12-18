@@ -94,9 +94,6 @@ ul.breadcrumbs li + li:before {
   color: black;
   content: "/\00a0"; }
 
-.examples hr {
-  border-color: orange; }
-
 .footer {
   min-height: 100px;
   background-color: #999; }
@@ -110,6 +107,9 @@ ul.breadcrumbs li + li:before {
 .footer ul li {
   display: inline;
   padding: 5px 15px; }
+
+.examples hr {
+  border-color: orange; }
 
 .header hr {
   border-style: solid;
