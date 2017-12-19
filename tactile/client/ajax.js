@@ -21,8 +21,10 @@ export function ajaxGet(url, successCallback, errorCallback) {
 }
 
 export function ajaxPost(url, data, successCallback, errorCallback) {
-  console.log(data);
-  fetch(url, {method: "POST", body: JSON.stringify(data)})
+  var myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+  
+  fetch(url, {method: "POST", headers: myHeaders, body: JSON.stringify(data)})
   .then(response => {
     if (response.ok) {
       return Promise.resolve(response);
