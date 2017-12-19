@@ -24,7 +24,8 @@
                 "compType": "heading",
                 "size": "h2",
                 "heading": "Hello, this is the tactile archetype!",
-                "subText": "<- And that, is a macaw!"
+                "subText": "<- And that, is a macaw!",
+                "hasHr": true
             },
             {
                 "tacType": "component",
