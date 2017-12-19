@@ -1,16 +1,10 @@
 var fs = require('fs');
 var Handlebars = require('handlebars');
 const { join } = require('path')
+var tactileActuary = require('./actuary.js')
 
 var model = function(path, componentModels, authorModels, isAuthor) {
-    var node = JSON.parse(fs.readFileSync('content.json', 'utf8'));
-    var pathParts = path.split("/");
-    if (path.length > 0) {
-        pathParts.forEach(function (val) {
-            node = node[val];
-        });
-    }
-
+    var node = tactileActuary.findNode(path);
     var authorModel = authorModels[node.compType];
 
     if (typeof authorModel !== "undefined") {
@@ -22,81 +16,7 @@ var model = function(path, componentModels, authorModels, isAuthor) {
 };
 
 var render = function(path, componentModels, authorModels, isAuthor) {
-    var page = JSON.parse(fs.readFileSync('content.json', 'utf8'));
-    var home = page;
-    home.isHome = true;
-    home.nodeName = "";
-
-    if (isAuthor) {
-      home.isAuthor = true;
-    }
-
-    var isSafe = function(key, json) {
-      return ["children", "siblings", "home", "parent", "page"].indexOf(key) == -1 && typeof json[key] === "object";
-    };
-
-    var children = [ ];
-    for (var childrenName in home) {
-      if (isSafe(childrenName, home) && home[childrenName].tacType === "page") {
-        children.push(home[childrenName]);
-      }
-    }
-    home.children = children;
-
-    var containingPage = function(json) {
-        while(json != undefined && json.tacType != "page") {
-            json = json.parent;
-        }
-
-        return json;
-    };
-
-    var addReferences = function(json) {
-        for(var key in json) {
-            if (isSafe(key, json)) {
-                json[key].parent = json;
-                json[key].path = json.path + "/" + key;
-                json[key].nodeName = key;
-
-                if (json[key].tacType != "page") {
-                    json[key].page = containingPage(json[key]);
-                } else {
-                    var siblings = [ ];
-                    for (var siblingName in json) {
-                      if (isSafe(siblingName, json) && json[siblingName].tacType === "page" && siblingName != key) {
-                        siblings.push(json[siblingName]);
-                      }
-                    }
-
-                    var children = [ ];
-                    for (var childrenName in json[key]) {
-                      if (isSafe(childrenName, json[key]) && json[key][childrenName].tacType === "page") {
-                        children.push(json[key][childrenName]);
-                      }
-                    }
-
-                    json[key].siblings = siblings;
-                    json[key].children = children;
-                    json[key].home = home;
-                }
-
-                addReferences(json[key])
-            }
-        }
-    };
-
-    page.path = "";
-    page.home = home;
-    addReferences(page);
-
-    var pathParts = path.split("/");
-    if (path.length > 0) {
-        pathParts.forEach(function (val) {
-            page = page[val];
-        });
-    }
-
-    home.path = "/";
+    var page = tactileActuary.findPage(path, isAuthor);
 
     if (typeof page === "undefined") {
       // TODO Return the correct 404 HTTP response.
