@@ -1,5 +1,5 @@
 import { Element as PolymerElement } from '@polymer/polymer/polymer-element';
-import { ajaxGet, ajaxPost } from "./ajax.js";
+import { ajaxGet, ajaxPost, ajaxPut } from "./ajax.js";
 import {html, render} from 'lit-html';
 import { camelCaseToTitle } from './stringUtils.js';
 import "@polymer/paper-dialog/paper-dialog";
@@ -49,9 +49,24 @@ export default class TactileAuthor extends PolymerElement {
       <p>${component.author.description}</p>`;
   }
 
-  _createButtons() {
+  _createButtons(component) {
+    var extraButtons = [ ];
+    component.author.attrs.forEach((input) => {
+      if (input.type === "Add") {
+        var button = html`<paper-button
+                            class="tactile-add"
+                            data-path=${input.path}
+                            data-comp-type=${input.compType}>
+                            ${input.title}
+                          </paper-button>`;
+
+        extraButtons.push(button);
+      }
+    });
+
     return html`
       <div class="buttons">
+        ${extraButtons}
         <paper-button dialog-dismiss>Decline</paper-button>
         <paper-button dialog-confirm autofocus>Accept</paper-button>
       </div>`;
@@ -66,7 +81,7 @@ export default class TactileAuthor extends PolymerElement {
 
       var inputs = this._createInputs(component);
       var message = this._createMessage(component);
-      var buttons = this._createButtons();
+      var buttons = this._createButtons(component);
 
       render(html`
         <paper-dialog modal style="min-width: 600px;">
@@ -77,6 +92,13 @@ export default class TactileAuthor extends PolymerElement {
 
       var paperDialog = shadow.querySelector("paper-dialog")
       paperDialog.open();
+
+      paperDialog.querySelector("paper-button").addEventListener("click", (e) => {
+        if (e.target.classList.contains("tactile-add")) {
+          ajaxPut(this.path+"/"+e.target.dataset.path, {
+            compType: e.target.dataset.compType});
+        }
+      });
 
       var ironOverlayClosedHandler = (e) => {
         // TODO Inspect the input elements for the values to send over a POST

@@ -32,6 +32,14 @@ var run = function(port, componentModels, authorModels) {
       });
   });
 
+  app.put('/*', function (req, res) {
+      console.log("Request [PUT]: " + req.path);
+      var path = req.path.slice(1);
+      tactileTeller.add(path, req.body, function() {
+        res.send(tactileBroker.model(path, componentModels, authorModels, isAuthor));
+      });
+  });
+
   app.listen(port, () => console.log('Tactile app listening on port ' + port));
 }
 
