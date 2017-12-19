@@ -78,21 +78,26 @@ export default class TactileAuthor extends PolymerElement {
 
       var paperDialog = shadow.querySelector("paper-dialog")
       paperDialog.open();
-      paperDialog.addEventListener("iron-overlay-closed", (e) => {
+
+      var ironOverlayClosedHandler = (e) => {
         // TODO Inspect the input elements for the values to send over a POST
         // API for updating content.json
-        var newValues = {};
-        shadow.querySelectorAll("paper-input").forEach((input) => {
-          newValues[input.name] = input.value;
-        });
-        shadow.querySelectorAll("paper-checkbox").forEach((input) => {
-          newValues[input.name] = input.value === "on";
-        });
-        ajaxPost(this.path, newValues, (data) => {
-          console.log(data);
-        });
+        if (e.detail.confirmed) {
+          var newValues = {};
+          shadow.querySelectorAll("paper-input").forEach((input) => {
+            newValues[input.name] = input.value;
+          });
+          shadow.querySelectorAll("paper-checkbox").forEach((input) => {
+            newValues[input.name] = input.value === "on";
+          });
+          ajaxPost(this.path, newValues);
+        }
+
+        paperDialog.removeEventListener("iron-overlay-closed", ironOverlayClosedHandler);
         callback();
-      });
+      }
+
+      paperDialog.addEventListener("iron-overlay-closed", ironOverlayClosedHandler);
     });
   }
 }
