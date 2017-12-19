@@ -18,6 +18,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
             authorElement.openDialog(function() {
               authorClickHandler()
+              window.location.reload();
             });
           }
         }

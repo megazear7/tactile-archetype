@@ -1,6 +1,7 @@
+var tactileActuary = require('./actuary.js')
+
 var update = function(path, data) {
-  console.log(path);
-  console.log(data);
+  tactileActuary.updateNode(path, data);
 }
 
 module.exports = { update: update };

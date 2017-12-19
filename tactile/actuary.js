@@ -104,4 +104,22 @@ function findNode(path, root) {
     return node;
 }
 
-module.exports = { findPage: findPage, findNode: findNode };
+function updateNode(path, updates) {
+    root = getRoot();
+    node = findNode(path, root);
+
+    for (var key in updates) {
+      node[key] = updates[key];
+    }
+
+    save(root);
+}
+
+function save(root) {
+    var json = JSON.stringify(root);
+    fs.writeFile('content.json', json, 'utf8', () => {
+      console.log("Updated content");
+    });
+}
+
+module.exports = { findPage: findPage, findNode: findNode, updateNode: updateNode };

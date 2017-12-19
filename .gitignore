@@ -9,3 +9,6 @@ bower_components
 
 # Mac
 .DS_Store
+
+# Tactile
+content.json
