@@ -16,6 +16,7 @@
     "@polymer/paper-checkbox": "^3.0.0-pre.1",
     "@polymer/paper-dialog": "^3.0.0-pre.1",
     "@polymer/paper-input": "^3.0.0-pre.1",
+    "@polymer/paper-toggle-button": "^3.0.0-pre.1",
     "@polymer/polymer": "^3.0.0-pre.1",
     "@webcomponents/webcomponentsjs": "^1.0.20",
     "babel-loader": "^8.0.0-beta.0",

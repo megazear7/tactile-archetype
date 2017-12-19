@@ -1,4 +1,5 @@
-import { TactileAuthor } from "./tactile-author.js";
+import "./tactile-author.js";
+import "./tactile-mode.js";
 
 document.addEventListener("DOMContentLoaded", (event) => {
   if (document.body.classList.contains('author')) {
