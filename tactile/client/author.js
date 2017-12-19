@@ -38,9 +38,9 @@ function setupPublishMode() {
 
 document.addEventListener("DOMContentLoaded", (event) => {
   if (document.body.classList.contains('edit')) {
-    document.querySelector("tactile-mode").switchToEdit(setupEditMode);
-    document.querySelector("tactile-mode").switchToPublish(setupPublishMode);
+    document.querySelector("tactile-mode").switchedToEdit(setupEditMode);
+    document.querySelector("tactile-mode").switchedToPublish(setupPublishMode);
 
-    setupEditMode();
+    setupPublishMode();
   }
 });

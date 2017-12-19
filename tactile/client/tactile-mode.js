@@ -8,22 +8,15 @@ export default class TactileMode extends PolymerElement {
   }
 
   static get template() {
-    return "<paper-toggle-button checked>Edit</paper-toggle-button>";
+    return "<paper-toggle-button>Edit</paper-toggle-button>";
   }
 
   connectedCallback() {
     super.connectedCallback();
     var toggle = this.shadowRoot.querySelector("paper-toggle-button");
-    toggle.addEventListener("iron-change", () => {
-      if (toggle.checked) {
-        // TODO turn on author functionality
-      } else {
-        // TODO turn off author functionality
-      }
-    });
   }
 
-  switchToEdit(callback) {
+  switchedToEdit(callback) {
     var toggle = this.shadowRoot.querySelector("paper-toggle-button");
     toggle.addEventListener("iron-change", () => {
       if (toggle.checked) {
@@ -32,7 +25,7 @@ export default class TactileMode extends PolymerElement {
     });
   }
 
-  switchToPublish(callback) {
+  switchedToPublish(callback) {
     var toggle = this.shadowRoot.querySelector("paper-toggle-button");
     toggle.addEventListener("iron-change", () => {
       if (! toggle.checked) {
