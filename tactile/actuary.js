@@ -1,6 +1,10 @@
 var fs = require('fs');
 const { join } = require('path')
 
+if (! fs.existsSync("content.json")) {
+    save(JSON.parse(fs.readFileSync('content.seed.json', 'utf8')));
+}
+
 function getRoot() {
     return JSON.parse(fs.readFileSync('content.json', 'utf8'));
 }
