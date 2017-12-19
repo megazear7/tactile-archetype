@@ -14,7 +14,32 @@ export function ajaxGet(url, successCallback, errorCallback) {
   })
   .catch(function(error) {
     console.log(`Error: ${error.message}`);
-    if (typeof error === "function") {
+    if (typeof errorCallback === "function") {
+      errorCallback(error);
+    }
+  });
+}
+
+export function ajaxPost(url, data, successCallback, errorCallback) {
+  console.log(data);
+  fetch(url, {method: "POST", body: JSON.stringify(data)})
+  .then(response => {
+    if (response.ok) {
+      return Promise.resolve(response);
+    }
+    else {
+      return Promise.reject(new Error('Failed to post data'));
+    }
+  })
+  .then(response => response.json()) // parse response as JSON
+  .then(data => {
+    if (typeof successCallback === "function") {
+      successCallback(data);
+    }
+  })
+  .catch(function(error) {
+    console.log(`Error: ${error.message}`);
+    if (typeof errorCallback === "function") {
       errorCallback(error);
     }
   });

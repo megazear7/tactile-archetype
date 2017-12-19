@@ -1,5 +1,5 @@
 import { Element as PolymerElement } from '@polymer/polymer/polymer-element';
-import { ajaxGet } from "./ajax.js";
+import { ajaxGet, ajaxPost } from "./ajax.js";
 import {html, render} from 'lit-html';
 import "@polymer/paper-dialog/paper-dialog";
 import "@polymer/paper-button/paper-button";
@@ -27,14 +27,12 @@ export default class TactileAuthor extends PolymerElement {
     var inputs = [ ];
     component.author.attrs.forEach((input) => {
       if (input.type === "String") {
-        console.log("STRING");
         inputs.push(
           html`<paper-input
                 name=${input.name}
                 label=${input.name}
                 value=${component[input.name]}></paper-input>`);
       } else if (input.type === "Boolean") {
-        console.log("BOOLEAN");
         inputs.push(
           html`<paper-checkbox
                 name=${input.name}
@@ -83,6 +81,16 @@ export default class TactileAuthor extends PolymerElement {
       paperDialog.addEventListener("iron-overlay-closed", (e) => {
         // TODO Inspect the input elements for the values to send over a POST
         // API for updating content.json
+        var newValues = {};
+        shadow.querySelectorAll("paper-input").forEach((input) => {
+          newValues[input.name] = input.value;
+        });
+        shadow.querySelectorAll("paper-checkbox").forEach((input) => {
+          newValues[input.name] = input.value === "on";
+        });
+        ajaxPost(this.path, newValues, (data) => {
+          console.log(data);
+        });
         callback();
       });
     });
