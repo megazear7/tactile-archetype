@@ -18,6 +18,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
             authorElement.openDialog(function() {
               authorClickHandler()
+
+              // TODO just reload the component, not the entire page.
               window.location.reload();
             });
           }
