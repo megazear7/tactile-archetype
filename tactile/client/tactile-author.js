@@ -1,6 +1,7 @@
 import { Element as PolymerElement } from '@polymer/polymer/polymer-element';
 import { ajaxGet, ajaxPost } from "./ajax.js";
 import {html, render} from 'lit-html';
+import { camelCaseToTitle } from './stringUtils.js';
 import "@polymer/paper-dialog/paper-dialog";
 import "@polymer/paper-button/paper-button";
 import "@polymer/paper-input/paper-input";
@@ -30,13 +31,13 @@ export default class TactileAuthor extends PolymerElement {
         inputs.push(
           html`<paper-input
                 name=${input.name}
-                label=${input.name}
+                label=${input.title}
                 value=${component[input.name]}></paper-input>`);
       } else if (input.type === "Boolean") {
         inputs.push(
           html`<paper-checkbox
                 name=${input.name}
-                checked=${component[input.name]}>${input.name}</paper-checkbox>`);
+                checked=${component[input.name]}>${input.title}</paper-checkbox>`);
       }
     });
     return inputs;
@@ -44,10 +45,8 @@ export default class TactileAuthor extends PolymerElement {
 
   _createMessage(component) {
     return html`
-      <h2>${component.compType}</h2>
-      <p>We need to loop over the values in component.author and create paper-input elements
-         based upon their name and type. Finally we need to submit the values to a POST API
-         which is also yet to be created.</p>`;
+      <h2>${component.author.title}</h2>
+      <p>${component.author.description}</p>`;
   }
 
   _createButtons() {
@@ -70,7 +69,7 @@ export default class TactileAuthor extends PolymerElement {
       var buttons = this._createButtons();
 
       render(html`
-        <paper-dialog modal>
+        <paper-dialog modal style="min-width: 600px;">
           ${message}
           ${inputs}
           ${buttons}
