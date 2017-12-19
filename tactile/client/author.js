@@ -29,18 +29,27 @@ function watchForComponentClicks(event) {
 function setupEditMode() {
   document.addEventListener("click", watchForComponentClicks);
   document.body.classList.add("edit");
+  window.sessionStorage.setItem("tactile-mode", "edit");
 }
 
 function setupPublishMode() {
   document.removeEventListener("click", watchForComponentClicks);
   document.body.classList.remove("edit");
+  window.sessionStorage.setItem("tactile-mode", "publish");
 }
 
 document.addEventListener("DOMContentLoaded", (event) => {
   if (document.body.classList.contains('edit')) {
-    document.querySelector("tactile-mode").switchedToEdit(setupEditMode);
-    document.querySelector("tactile-mode").switchedToPublish(setupPublishMode);
+    var tactileModeToggle = document.querySelector("tactile-mode");
+    tactileModeToggle.switchedToEdit(setupEditMode);
+    tactileModeToggle.switchedToPublish(setupPublishMode);
 
-    setupPublishMode();
+    var mode = window.sessionStorage.getItem("tactile-mode");
+
+    if (mode === "edit") {
+      tactileModeToggle.setToEdit();
+    } else {
+      setupPublishMode();
+    }
   }
 });
