@@ -34,10 +34,11 @@ export default class TactileAuthor extends PolymerElement {
                 label=${input.title}
                 value=${component[input.name]}></paper-input>`);
       } else if (input.type === "Boolean") {
-        inputs.push(
-          html`<paper-checkbox
-                name=${input.name}
-                checked=${component[input.name]}>${input.title}</paper-checkbox>`);
+        if (component[input.name]) {
+          inputs.push(html`<paper-checkbox name=${input.name} checked>${input.title}</paper-checkbox>`);
+        } else {
+          inputs.push(html`<paper-checkbox name=${input.name}>${input.title}</paper-checkbox>`);
+        }
       }
     });
     return inputs;
@@ -106,10 +107,19 @@ export default class TactileAuthor extends PolymerElement {
         if (e.detail.confirmed) {
           var newValues = {};
           shadow.querySelectorAll("paper-input").forEach((input) => {
-            newValues[input.name] = input.value;
+            if (typeof input.value !== "undefined") {
+              newValues[input.name] = input.value;
+            } else {
+              newValues[input.name] = "";
+            }
           });
           shadow.querySelectorAll("paper-checkbox").forEach((input) => {
-            newValues[input.name] = input.value === "on";
+            if (typeof input.value !== "undefined") {
+              console.log(input.active);
+              newValues[input.name] = input.active;
+            } else {
+              newValues[input.name] = false;
+            }
           });
           ajaxPost(this.path, newValues);
         }
