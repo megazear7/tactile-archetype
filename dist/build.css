@@ -1,9 +1,10 @@
 body.edit .tactile {
-  outline: 2px solid transparent;
+  outline: 1px solid transparent;
   position: relative; }
 
 body.edit .tactile:hover {
-  outline: 2px solid blue; }
+  outline: 1px solid rgba(60, 120, 255, 0.6);
+  box-shadow: inset 0 0 20px rgba(60, 120, 255, 0.6); }
 
 body tactile-mode {
   position: absolute;
@@ -98,9 +99,6 @@ ul.breadcrumbs li + li:before {
   color: black;
   content: "/\00a0"; }
 
-.examples hr {
-  border-color: orange; }
-
 .footer {
   min-height: 100px;
   background-color: #999; }
@@ -117,6 +115,9 @@ ul.breadcrumbs li + li:before {
 
 .footer ul tactile-author {
   text-align: left; }
+
+.examples hr {
+  border-color: orange; }
 
 .header hr {
   border-style: solid;
