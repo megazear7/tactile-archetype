@@ -1,9 +1,13 @@
-body.author .tactile {
+body.edit .tactile {
   outline: 2px solid transparent;
   position: relative; }
 
-body.author .tactile:hover {
+body.edit .tactile:hover {
   outline: 2px solid blue; }
+
+body tactile-mode {
+  position: absolute;
+  z-index: 100; }
 
 html {
   height: 100%;

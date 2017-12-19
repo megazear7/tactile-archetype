@@ -22,6 +22,24 @@ export default class TactileMode extends PolymerElement {
       }
     });
   }
+
+  switchToEdit(callback) {
+    var toggle = this.shadowRoot.querySelector("paper-toggle-button");
+    toggle.addEventListener("iron-change", () => {
+      if (toggle.checked) {
+        callback();
+      }
+    });
+  }
+
+  switchToPublish(callback) {
+    var toggle = this.shadowRoot.querySelector("paper-toggle-button");
+    toggle.addEventListener("iron-change", () => {
+      if (! toggle.checked) {
+        callback();
+      }
+    });
+  }
 }
 
 // Register custom element class with browser

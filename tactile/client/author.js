@@ -1,37 +1,46 @@
 import "./tactile-author.js";
 import "./tactile-mode.js";
 
-document.addEventListener("DOMContentLoaded", (event) => {
-  if (document.body.classList.contains('author')) {
-    function watchForComponentClicks(event) {
-      // This stops user from interacting with page in author mode
-      event.stopPropagation();
-      event.preventDefault();
+function watchForComponentClicks(event) {
+  // This stops user from interacting with page in author mode
+  event.stopPropagation();
+  event.preventDefault();
 
-      var component = event.target.closest(".tactile");
-      if (component) {
-        var authorElement = component.querySelector("tactile-author");
-        if (authorElement) {
-          var path = authorElement.getAttribute("path");
+  var component = event.target.closest(".tactile");
+  if (component) {
+    var authorElement = component.querySelector("tactile-author");
+    if (authorElement) {
+      var path = authorElement.getAttribute("path");
 
-          if (authorElement) {
-            document.removeEventListener("click", watchForComponentClicks);
+      if (authorElement) {
+        document.removeEventListener("click", watchForComponentClicks);
 
-            authorElement.openDialog(function() {
-              authorClickHandler()
+        authorElement.openDialog(function() {
+          document.addEventListener("click", watchForComponentClicks);
 
-              // TODO just reload the component, not the entire page.
-              window.location.reload();
-            });
-          }
-        }
+          // TODO just reload the component, not the entire page.
+          window.location.reload();
+        });
       }
-    };
-
-    function authorClickHandler() {
-      document.addEventListener("click", watchForComponentClicks);
     }
+  }
+};
 
-    authorClickHandler();
+function setupEditMode() {
+  document.addEventListener("click", watchForComponentClicks);
+  document.body.classList.add("edit");
+}
+
+function setupPublishMode() {
+  document.removeEventListener("click", watchForComponentClicks);
+  document.body.classList.remove("edit");
+}
+
+document.addEventListener("DOMContentLoaded", (event) => {
+  if (document.body.classList.contains('edit')) {
+    document.querySelector("tactile-mode").switchToEdit(setupEditMode);
+    document.querySelector("tactile-mode").switchToPublish(setupPublishMode);
+
+    setupEditMode();
   }
 });
