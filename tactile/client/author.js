@@ -8,15 +8,19 @@ document.addEventListener("DOMContentLoaded", (event) => {
       event.preventDefault();
 
       var component = event.target.closest(".tactile");
-      var authorElement = component.querySelector("tactile-author");
-      var path = authorElement.getAttribute("path");
+      if (component) {
+        var authorElement = component.querySelector("tactile-author");
+        if (authorElement) {
+          var path = authorElement.getAttribute("path");
 
-      if (authorElement) {
-        document.removeEventListener("click", watchForComponentClicks);
+          if (authorElement) {
+            document.removeEventListener("click", watchForComponentClicks);
 
-        authorElement.openDialog(function() {
-          authorClickHandler()
-        });
+            authorElement.openDialog(function() {
+              authorClickHandler()
+            });
+          }
+        }
       }
     };
 

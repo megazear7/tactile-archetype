@@ -1,6 +1,8 @@
-<a href="{{model.href}}"
-   class="tactile"
-   {{#if model.isCurrentPage}}disabled{{/if}}
-   {{#if model.isExternal}}target="_blank"{{/if}}>
-  {{title}}
-</a>
+<span class="tactile">
+  <a href="{{href}}"
+     {{#if model.isCurrentPage}}disabled{{/if}}
+     {{#if model.isExternal}}target="_blank"{{/if}}>
+    {{title}}
+  </a>
+  {{> author}}
+</span>
