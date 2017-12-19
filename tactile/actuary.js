@@ -104,7 +104,7 @@ function findNode(path, root) {
     return node;
 }
 
-function updateNode(path, updates) {
+function updateNode(path, updates, callback) {
     root = getRoot();
     node = findNode(path, root);
 
@@ -112,13 +112,15 @@ function updateNode(path, updates) {
       node[key] = updates[key];
     }
 
-    save(root);
+    save(root, callback);
 }
 
-function save(root) {
+function save(root, callback) {
     var json = JSON.stringify(root);
     fs.writeFile('content.json', json, 'utf8', () => {
-      console.log("Updated content");
+      if (typeof callback === "function") {
+        callback();
+      }
     });
 }
 

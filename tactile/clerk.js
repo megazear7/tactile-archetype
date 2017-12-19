@@ -27,8 +27,9 @@ var run = function(port, componentModels, authorModels) {
       console.log("Request [POST]: " + req.path);
       var path = req.path.slice(1);
       var isAuthor = req.query.mode === "author";
-      tactileTeller.update(path, req.body);
-      res.send(tactileBroker.model(path, componentModels, authorModels, isAuthor));
+      tactileTeller.update(path, req.body, function() {
+        res.send(tactileBroker.model(path, componentModels, authorModels, isAuthor));
+      });
   });
 
   app.listen(port, () => console.log('Tactile app listening on port ' + port));
