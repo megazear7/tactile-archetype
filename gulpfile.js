@@ -25,7 +25,6 @@ var cssFiles = [
 
 var clientJsEntryPoints = [
   'tactile/client/*.js',
-  './components/reactInit.js',
   './global/client.js',
   './global/client/*.js',
   './global/client.jsx',
@@ -65,14 +64,7 @@ gulp.task('js', function () {
   return gulp.src(clientJsEntryPoints)
     .pipe(gulpWebpack(require('./webpack.devconfig.js'), webpack))
     .pipe(concat('build.js'))
-    .pipe(gulp.dest('./dist'));
-});
-
-gulp.task('js:prod', function () {
-  return gulp.src(clientJsEntryPoints)
-    .pipe(gulpWebpack(require('./webpack.prodconfig.js'), webpack))
     .pipe(minify())
-    .pipe(concat('build.js'))
     .pipe(gulp.dest('./dist'));
 });
 
@@ -81,5 +73,3 @@ gulp.task('js:watch', function () {
 });
 
 gulp.task('default', ['sass', 'sass:watch', 'js', 'js:watch']);
-
-gulp.task('deploypack', ['sass', 'js:prod']);

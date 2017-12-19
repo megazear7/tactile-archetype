@@ -1,9 +1,6 @@
 <html>
     <head>
         <link rel="stylesheet" type="text/css" href="/build.css">
-        <script src="/build.js"></script>
-        <!-- Avoid favicon request -->
-        <link rel="icon" href="data:;base64,iVBORw0KGgo=">
     </head>
     <body {{#if home.isAuthor}}class="edit"{{/if}}>
         <tactile-mode></tactile-mode>
@@ -16,5 +13,7 @@
               {{render false "footer"}}
             {{/home.footer}}
         </div>
+
+        <script src="/build-min.js"></script>
     </body>
 </html>
