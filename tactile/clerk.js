@@ -2,6 +2,8 @@ const express = require('express')
 var bodyParser = require('body-parser');
 const tactileBroker = require('./broker')
 const tactileTeller = require('./teller')
+const http2 = require('spdy');
+var fs = require('fs');
 
 var run = function(port, componentModels, authorModels) {
   const app = express();
@@ -48,7 +50,19 @@ var run = function(port, componentModels, authorModels) {
       });
   });
 
-  app.listen(port, () => console.log('Tactile app listening on port ' + port));
+
+  var options = {
+    key: fs.readFileSync('./server.key'),
+    cert: fs.readFileSync('./server.crt'),
+    spdy: {
+      protocols: [ 'h2' ]
+    }
+  };
+
+  // Remember to access through https, not http
+  http2.createServer(options, app).listen(port, () => {
+    console.log('Tactile app listening on port ' + port)
+  });
 }
 
 module.exports = { run: run };
