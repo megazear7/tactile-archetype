@@ -99,23 +99,6 @@ ul.breadcrumbs li + li:before {
   color: black;
   content: "/\00a0"; }
 
-.footer {
-  min-height: 100px;
-  background-color: #999; }
-
-.footer ul {
-  margin: 0;
-  padding: 40px;
-  list-style: none;
-  text-align: center; }
-
-.footer ul li {
-  display: inline;
-  padding: 5px 15px; }
-
-.footer ul tactile-author {
-  text-align: left; }
-
 .examples hr {
   border-color: orange; }
 
@@ -149,6 +132,23 @@ ul.breadcrumbs li + li:before {
   .header ul li {
     padding: 2px 20px;
     border-bottom: 1px solid rgba(50, 50, 50, 0.2); } }
+
+.footer {
+  min-height: 100px;
+  background-color: #999; }
+
+.footer ul {
+  margin: 0;
+  padding: 40px;
+  list-style: none;
+  text-align: center; }
+
+.footer ul li {
+  display: inline;
+  padding: 5px 15px; }
+
+.footer ul tactile-author {
+  text-align: left; }
 
 .basic-image {
   width: 100%; }
