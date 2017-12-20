@@ -7,7 +7,12 @@ const init = function(node) {
         type: "Add",
         compType: "link",
         path: "links",
-        title: "Add Link"
+        title: "Add Link",
+        template: {
+          compType: "link",
+          href: "/",
+          title: "New Link"
+        }
       }
     ]
   }

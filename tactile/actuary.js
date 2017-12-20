@@ -119,6 +119,15 @@ function updateNode(path, updates, callback) {
     save(root, callback);
 }
 
+function addNode(path, newNode, callback) {
+    root = getRoot();
+    node = findNode(path, root);
+
+    node.push(newNode);
+
+    save(root, callback);
+}
+
 function save(root, callback) {
     var json = JSON.stringify(root);
     fs.writeFile('content.json', json, 'utf8', () => {
@@ -128,4 +137,9 @@ function save(root, callback) {
     });
 }
 
-module.exports = { findPage: findPage, findNode: findNode, updateNode: updateNode };
+module.exports = {
+  findPage: findPage,
+  findNode: findNode,
+  updateNode: updateNode,
+  addNode: addNode
+};

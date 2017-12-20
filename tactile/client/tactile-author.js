@@ -57,6 +57,7 @@ export default class TactileAuthor extends PolymerElement {
         var button = html`<paper-button
                             class="tactile-add"
                             data-path=${input.path}
+                            data-template=${JSON.stringify(input.template)}
                             data-comp-type=${input.compType}>
                             ${input.title}
                           </paper-button>`;
@@ -96,8 +97,9 @@ export default class TactileAuthor extends PolymerElement {
 
       paperDialog.querySelector("paper-button").addEventListener("click", (e) => {
         if (e.target.classList.contains("tactile-add")) {
-          ajaxPut(this.path+"/"+e.target.dataset.path, {
-            compType: e.target.dataset.compType});
+          var path = this.path+"/"+e.target.dataset.path;
+          var template = JSON.parse(e.target.dataset.template);
+          ajaxPut(path, template, callback);
         }
       });
 
