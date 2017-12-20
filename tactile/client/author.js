@@ -15,11 +15,13 @@ function watchForComponentClicks(event) {
       if (authorElement) {
         document.removeEventListener("click", watchForComponentClicks);
 
-        authorElement.openDialog(function() {
+        authorElement.openDialog(function(requiresRefresh = true) {
           document.addEventListener("click", watchForComponentClicks);
 
           // TODO just reload the component, not the entire page.
-          window.location.reload();
+          if (requiresRefresh) {
+            window.location.reload();
+          }
         });
       }
     }

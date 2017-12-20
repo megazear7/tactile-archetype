@@ -13,6 +13,21 @@ function isSafe(key, node) {
   return ["children", "siblings", "home", "parent", "page"].indexOf(key) == -1 && typeof node[key] === "object";
 }
 
+function getNodeName(path) {
+    var pathParts = path.split("/");
+    return pathParts.pop();
+}
+
+function getParentPath(path) {
+    var pathParts = path.split("/");
+    pathParts.pop();
+    return  pathParts.join("/");
+}
+
+function findParentNode(path, root) {
+    return findNode(getParentPath(path), root);
+}
+
 function containingPage(node) {
     while(node != undefined && node.tacType != "page") {
         node = node.parent;
@@ -119,6 +134,8 @@ function updateNode(path, updates, callback) {
     save(root, callback);
 }
 
+// TODO
+// Currently this only can add new nodes to arrays
 function addNode(path, newNode, callback) {
     root = getRoot();
     node = findNode(path, root);
@@ -126,6 +143,23 @@ function addNode(path, newNode, callback) {
     node.push(newNode);
 
     save(root, callback);
+}
+
+// TODO
+// Currently this only can only delete nodes from arrays
+function deleteNode(path, callback) {
+    var root = getRoot();
+    var name = getNodeName(path);
+    var parentNode = findParentNode(path, root);
+
+    // TODO this only works for arrays
+    parentNode.splice(name, 1);
+
+    save(root, () => {
+      if (typeof callback === "function") {
+        callback(parentNode);
+      }
+    });
 }
 
 function save(root, callback) {
@@ -141,5 +175,6 @@ module.exports = {
   findPage: findPage,
   findNode: findNode,
   updateNode: updateNode,
-  addNode: addNode
+  addNode: addNode,
+  deleteNode: deleteNode
 };

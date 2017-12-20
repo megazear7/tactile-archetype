@@ -40,6 +40,14 @@ var run = function(port, componentModels, authorModels) {
       });
   });
 
+  app.delete('/*', function (req, res) {
+      console.log("Request [DELETE]: " + req.path);
+      var path = req.path.slice(1);
+      tactileTeller.remove(path, function(parent) {
+        res.send(parent);
+      });
+  });
+
   app.listen(port, () => console.log('Tactile app listening on port ' + port));
 }
 

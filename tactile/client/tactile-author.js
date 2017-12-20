@@ -1,5 +1,5 @@
 import { Element as PolymerElement } from '@polymer/polymer/polymer-element';
-import { ajaxGet, ajaxPost, ajaxPut } from "./ajax.js";
+import { ajaxGet, ajaxPost, ajaxPut, ajaxDelete } from "./ajax.js";
 import {html, render} from 'lit-html';
 import { camelCaseToTitle } from './stringUtils.js';
 import "@polymer/paper-dialog/paper-dialog";
@@ -66,9 +66,16 @@ export default class TactileAuthor extends PolymerElement {
       }
     });
 
+    if (! component.author.preventDelete && ! component.preventDelete) {
+      var deleteButton = html`
+        <paper-button class="tactile-delete" data-path=${this.path}>Delete</paper-button>
+      `;
+    }
+
     return html`
       <div class="buttons">
         ${extraButtons}
+        ${deleteButton}
         <paper-button dialog-dismiss>Decline</paper-button>
         <paper-button dialog-confirm autofocus>Accept</paper-button>
       </div>`;
@@ -95,12 +102,18 @@ export default class TactileAuthor extends PolymerElement {
       var paperDialog = shadow.querySelector("paper-dialog")
       paperDialog.open();
 
-      paperDialog.querySelector("paper-button").addEventListener("click", (e) => {
-        if (e.target.classList.contains("tactile-add")) {
+      Array.from(paperDialog.querySelectorAll("paper-button.tactile-add")).forEach(button => {
+        button.addEventListener("click", (e) => {
           var path = this.path+"/"+e.target.dataset.path;
           var template = JSON.parse(e.target.dataset.template);
           ajaxPut(path, template, callback);
-        }
+        });
+      });
+
+      Array.from(paperDialog.querySelectorAll("paper-button.tactile-delete")).forEach(button => {
+        button.addEventListener("click", (e) => {
+          ajaxDelete(this.path, callback);
+        });
       });
 
       var ironOverlayClosedHandler = (e) => {
@@ -127,7 +140,7 @@ export default class TactileAuthor extends PolymerElement {
         }
 
         paperDialog.removeEventListener("iron-overlay-closed", ironOverlayClosedHandler);
-        callback();
+        callback(e.detail.confirmed);
       }
 
       paperDialog.addEventListener("iron-overlay-closed", ironOverlayClosedHandler);

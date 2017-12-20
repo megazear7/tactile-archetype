@@ -8,4 +8,12 @@ var add = function(path, data, callback) {
   tactileActuary.addNode(path, data, callback);
 }
 
-module.exports = { update: update, add: add };
+var remove = function(path, callback) {
+  tactileActuary.deleteNode(path, callback);
+}
+
+module.exports = {
+  update: update,
+  add: add,
+  remove: remove
+};

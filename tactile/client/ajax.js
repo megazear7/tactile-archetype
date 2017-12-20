@@ -42,3 +42,8 @@ export function ajaxPut(url, data, successCallback, errorCallback) {
   headers.append("Content-Type", "application/json");
   ajax(url, data, "PUT", headers, successCallback, errorCallback);
 }
+
+export function ajaxDelete(url, successCallback, errorCallback) {
+  var headers = new Headers();
+  ajax(url, undefined, "DELETE", headers, successCallback, errorCallback);
+}
