@@ -50,16 +50,15 @@ var run = function(port, componentModels, authorModels) {
       });
   });
 
-
   var options = {
-    key: fs.readFileSync('./server.key'),
-    cert: fs.readFileSync('./server.crt'),
+    key: fs.readFileSync('./tactile/tls/server.key'),
+    cert: fs.readFileSync('./tactile/tls/server.crt'),
     spdy: {
       protocols: [ 'h2' ]
     }
   };
 
-  // Remember to access through https, not http
+  // Remember to access through https, not http, or setup server to forward http to https.
   http2.createServer(options, app).listen(port, () => {
     console.log('Tactile app listening on port ' + port)
   });
