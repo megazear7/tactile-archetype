@@ -2,7 +2,6 @@ const express = require('express')
 var bodyParser = require('body-parser');
 const tactileBroker = require('./broker')
 const tactileTeller = require('./teller')
-const http2 = require('spdy');
 var fs = require('fs');
 
 var run = function(port, componentModels, authorModels) {
@@ -58,11 +57,14 @@ var run = function(port, componentModels, authorModels) {
     }
   };
 
+  app.listen(3000);
+
+  // I was using this for testing HTTP2
   // Remember to access through https, not http, or setup server to forward http to https.
   // Currently I have a ssl enabled reverse proxy using apache at https://tacile.localhost
-  http2.createServer(options, app).listen(port, () => {
-    console.log('Tactile app listening on port ' + port)
-  });
+  //require('spdy').createServer(options, app).listen(port, () => {
+  //  console.log('Tactile app listening on port ' + port)
+  //});
 }
 
 module.exports = { run: run };
