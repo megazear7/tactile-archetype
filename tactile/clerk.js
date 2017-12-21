@@ -59,6 +59,7 @@ var run = function(port, componentModels, authorModels) {
   };
 
   // Remember to access through https, not http, or setup server to forward http to https.
+  // Currently I have a ssl enabled reverse proxy using apache at https://tacile.localhost
   http2.createServer(options, app).listen(port, () => {
     console.log('Tactile app listening on port ' + port)
   });
