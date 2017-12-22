@@ -14,10 +14,14 @@ export default class TactileEditable extends PolymerElement {
   static get properties() {
     return {
       path: {
-          type: String,
+        type: String,
       },
       compType: {
-          type: String,
+        type: String,
+      },
+      inline: {
+        type: Boolean,
+        default: true
       }
     };
   }
@@ -35,11 +39,22 @@ export default class TactileEditable extends PolymerElement {
     var inputs = ``;
     var message = ``;
     var buttons = ``;
+    var content = ``;
 
     if (this.component) {
       inputs = this._createInputs(this.component);
       message = this._createMessage(this.component);
       buttons = this._createButtons(this.component);
+    }
+
+    if (this.inline) {
+      content = html`<slot></slot>`;
+    } else {
+      content = html`
+      <div style="position: relative;">
+        <paper-ripple></paper-ripple>
+        <slot></slot>
+      </div>`;
     }
 
     render(html`
@@ -48,8 +63,7 @@ export default class TactileEditable extends PolymerElement {
       ${inputs}
       ${buttons}
     </paper-dialog>
-    <paper-ripple></paper-ripple>
-    <slot></slot>
+    ${content}
     `, this.shadowRoot);
   }
 
