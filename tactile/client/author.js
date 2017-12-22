@@ -1,3 +1,4 @@
+import "@polymer/paper-ripple/paper-ripple";
 import "./tactile-author.js";
 import "./tactile-mode.js";
 

@@ -1,10 +1,11 @@
 body.edit .tactile {
-  outline: 1px solid transparent;
-  position: relative; }
+  border: 2px solid transparent;
+  margin: -2px;
+  position: relative;
+  border-radius: 5px; }
 
 body.edit .tactile:hover {
-  outline: 1px solid rgba(60, 120, 255, 0.6);
-  box-shadow: inset 0 0 20px rgba(60, 120, 255, 0.6); }
+  border: 2px solid rgba(80, 80, 80, 0.6); }
 
 body tactile-mode {
   position: absolute;
@@ -99,6 +100,23 @@ ul.breadcrumbs li + li:before {
   color: black;
   content: "/\00a0"; }
 
+.footer {
+  min-height: 100px;
+  background-color: #999; }
+
+.footer ul {
+  margin: 0;
+  padding: 40px;
+  list-style: none;
+  text-align: center; }
+
+.footer ul li {
+  display: inline;
+  padding: 5px 15px; }
+
+.footer ul tactile-author {
+  text-align: left; }
+
 .examples hr {
   border-color: orange; }
 
@@ -132,23 +150,6 @@ ul.breadcrumbs li + li:before {
   .header ul li {
     padding: 2px 20px;
     border-bottom: 1px solid rgba(50, 50, 50, 0.2); } }
-
-.footer {
-  min-height: 100px;
-  background-color: #999; }
-
-.footer ul {
-  margin: 0;
-  padding: 40px;
-  list-style: none;
-  text-align: center; }
-
-.footer ul li {
-  display: inline;
-  padding: 5px 15px; }
-
-.footer ul tactile-author {
-  text-align: left; }
 
 .basic-image {
   width: 100%; }

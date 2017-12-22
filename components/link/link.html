@@ -1,8 +1,8 @@
 <span class="tactile">
+  {{> author}}
   <a href="{{href}}"
      {{#if model.isCurrentPage}}disabled{{/if}}
      {{#if model.isExternal}}target="_blank"{{/if}}>
     {{title}}
   </a>
-  {{> author}}
 </span>
