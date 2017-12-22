@@ -59,26 +59,14 @@ export default class TactileEditable extends PolymerElement {
   }
 
   render() {
-    var inputs = ``;
-    var message = ``;
-    var buttons = ``;
     var content = ``;
-
-    if (this.component) {
-      inputs = this._createInputs(this.component);
-      message = this._createMessage(this.component);
-      buttons = this._createButtons(this.component);
-    }
-
-    var configurableButtons = this._createConfigureableButtons();
-
     if (this.inline) {
       content = html`<slot></slot>`;
     } else {
       content = html`
       <span class="inline-buttons">
         <h3>${this.component.author.title}</h3>
-        ${configurableButtons}
+        ${this._createConfigureableButtons()}
       </span>
       <div style="position: relative;">
         <paper-ripple></paper-ripple>
@@ -102,9 +90,9 @@ export default class TactileEditable extends PolymerElement {
       }
     </style>
     <paper-dialog modal style="min-width: 600px;">
-      ${message}
-      ${inputs}
-      ${buttons}
+      ${this._createMessage()}
+      ${this._createInputs()}
+      ${this._createButtons()}
     </paper-dialog>
     ${content}
     `, this.shadowRoot);
@@ -169,17 +157,17 @@ export default class TactileEditable extends PolymerElement {
     });
   }
 
-  _createInputs(component) {
+  _createInputs() {
     var inputs = [ ];
-    component.author.attrs.forEach((input) => {
+    this.component.author.attrs.forEach((input) => {
       if (input.type === "String") {
         inputs.push(
           html`<paper-input
                 name=${input.name}
                 label=${input.title}
-                value=${component[input.name]}></paper-input>`);
+                value=${this.component[input.name]}></paper-input>`);
       } else if (input.type === "Boolean") {
-        if (component[input.name]) {
+        if (this.component[input.name]) {
           inputs.push(html`<paper-checkbox name=${input.name} checked>${input.title}</paper-checkbox>`);
         } else {
           inputs.push(html`<paper-checkbox name=${input.name}>${input.title}</paper-checkbox>`);
@@ -189,10 +177,10 @@ export default class TactileEditable extends PolymerElement {
     return inputs;
   }
 
-  _createMessage(component) {
+  _createMessage() {
     return html`
-      <h2>${component.author.title}</h2>
-      <p>${component.author.description}</p>`;
+      <h2>${this.component.author.title}</h2>
+      <p>${this.component.author.description}</p>`;
   }
 
   _createConfigureableButtons() {
@@ -213,10 +201,10 @@ export default class TactileEditable extends PolymerElement {
     return buttons;
   }
 
-  _createButtons(component) {
+  _createButtons() {
     var extraButtons = [ ];
 
-    if (! component.author.preventDelete && ! component.preventDelete) {
+    if (! this.component.author.preventDelete && ! this.component.preventDelete) {
       var deleteButton = html`
         <paper-button class="tactile-delete" data-path=${this.path}>Delete</paper-button>
       `;
