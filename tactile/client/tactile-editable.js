@@ -3,8 +3,10 @@ import {html, render} from 'lit-html';
 import { ajaxGet, ajaxPost, ajaxPut, ajaxDelete } from "./ajax.js";
 import "@polymer/paper-dialog/paper-dialog";
 import "@polymer/paper-button/paper-button";
+import "@polymer/paper-icon-button/paper-icon-button";
 import "@polymer/paper-input/paper-input";
 import "@polymer/paper-checkbox/paper-checkbox";
+import "@polymer/iron-icons/iron-icons";
 
 export default class TactileEditable extends PolymerElement {
   static get is() {
@@ -33,6 +35,20 @@ export default class TactileEditable extends PolymerElement {
 
   connectedCallback() {
     this.render();
+
+    var inlineButtons = this.shadowRoot.querySelector(".inline-buttons");
+
+    if (inlineButtons) {
+      inlineButtons.style.display = "none";
+
+      this.addEventListener("mouseenter", () => {
+        inlineButtons.style.display = "block";
+      });
+
+      this.addEventListener("mouseleave", () => {
+        inlineButtons.style.display = "none";
+      });
+    }
   }
 
   render() {
@@ -51,6 +67,11 @@ export default class TactileEditable extends PolymerElement {
       content = html`<slot></slot>`;
     } else {
       content = html`
+      <div class="inline-buttons">
+        <paper-icon-button icon="add" title="Add Link">
+          Link
+        </paper-icon-button>
+      </div>
       <div style="position: relative;">
         <paper-ripple></paper-ripple>
         <slot></slot>
@@ -58,6 +79,18 @@ export default class TactileEditable extends PolymerElement {
     }
 
     render(html`
+    <style>
+      .inline-buttons {
+        position: absolute;
+      }
+      .inline-buttons paper-icon-button {
+        background-color: white;
+        border-radius: 100%;
+        color: #333;
+        z-index: 1;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+      }
+    </style>
     <paper-dialog modal style="min-width: 600px;">
       ${message}
       ${inputs}
