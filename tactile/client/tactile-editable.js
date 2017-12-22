@@ -96,13 +96,25 @@ export default class TactileEditable extends PolymerElement {
     </paper-dialog>
     ${content}
     `, this.shadowRoot);
+
+    var addButton = this.shadowRoot.querySelector(".tactile-add");
+    if (addButton) {
+      addButton.addEventListener("click", (e) => {
+        e.stopPropagation();
+        var path = this.path+"/"+e.target.dataset.path;
+        var template = JSON.parse(e.target.dataset.template);
+        ajaxPut(path, template);
+        // TODO just reinitialize the component using the handlebars template.
+        window.location.reload();
+      });
+    }
   }
 
   openDialog(callback) {
     var paperDialog = this.shadowRoot.querySelector("paper-dialog")
     paperDialog.open();
-    this._attachButtonHandlers();
     this._attachClosedHandlers(callback);
+    this._attachButtonHandlers(callback);
   }
 
   formValues() {
@@ -139,18 +151,8 @@ export default class TactileEditable extends PolymerElement {
     paperDialog.addEventListener("iron-overlay-closed", dialogClosed);
   }
 
-  _attachButtonHandlers() {
-    var paperDialog = this.shadowRoot.querySelector("paper-dialog")
-
-    Array.from(paperDialog.querySelectorAll("paper-button.tactile-add")).forEach(button => {
-      button.addEventListener("click", (e) => {
-        var path = this.path+"/"+e.target.dataset.path;
-        var template = JSON.parse(e.target.dataset.template);
-        ajaxPut(path, template, callback);
-      });
-    });
-
-    Array.from(paperDialog.querySelectorAll("paper-button.tactile-delete")).forEach(button => {
+  _attachButtonHandlers(callback) {
+    Array.from(this.shadowRoot.querySelectorAll("paper-button.tactile-delete")).forEach(button => {
       button.addEventListener("click", (e) => {
         ajaxDelete(this.path, callback);
       });
