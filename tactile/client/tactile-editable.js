@@ -70,16 +70,15 @@ export default class TactileEditable extends PolymerElement {
       buttons = this._createButtons(this.component);
     }
 
+    var configurableButtons = this._createConfigureableButtons();
+
     if (this.inline) {
       content = html`<slot></slot>`;
     } else {
       content = html`
       <span class="inline-buttons">
         <h3>${this.component.author.title}</h3>
-        <paper-button>
-          <iron-icon icon="add"></iron-icon>
-          Add Link
-        </paper-button>
+        ${configurableButtons}
       </span>
       <div style="position: relative;">
         <paper-ripple></paper-ripple>
@@ -196,9 +195,9 @@ export default class TactileEditable extends PolymerElement {
       <p>${component.author.description}</p>`;
   }
 
-  _createButtons(component) {
-    var extraButtons = [ ];
-    component.author.attrs.forEach((input) => {
+  _createConfigureableButtons() {
+    var buttons = [ ];
+    this.component.author.attrs.forEach((input) => {
       if (input.type === "Add") {
         var button = html`<paper-button
                             class="tactile-add"
@@ -208,9 +207,14 @@ export default class TactileEditable extends PolymerElement {
                             ${input.title}
                           </paper-button>`;
 
-        extraButtons.push(button);
+        buttons.push(button);
       }
     });
+    return buttons;
+  }
+
+  _createButtons(component) {
+    var extraButtons = [ ];
 
     if (! component.author.preventDelete && ! component.preventDelete) {
       var deleteButton = html`
