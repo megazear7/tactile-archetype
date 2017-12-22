@@ -3,6 +3,7 @@ import {html, render} from 'lit-html';
 import { ajaxGet, ajaxPost, ajaxPut, ajaxDelete } from "./ajax.js";
 import "@polymer/paper-dialog/paper-dialog";
 import "@polymer/paper-button/paper-button";
+import "@polymer/iron-icon/iron-icon";
 import "@polymer/paper-icon-button/paper-icon-button";
 import "@polymer/paper-input/paper-input";
 import "@polymer/paper-checkbox/paper-checkbox";
@@ -34,21 +35,27 @@ export default class TactileEditable extends PolymerElement {
   }
 
   connectedCallback() {
-    this.render();
+    ajaxGet(this.path+".json", (component) => {
+      this.component = component;
+      this.render();
 
-    var inlineButtons = this.shadowRoot.querySelector(".inline-buttons");
+      var inlineButtons = this.shadowRoot.querySelector(".inline-buttons");
 
-    if (inlineButtons) {
-      inlineButtons.style.display = "none";
+      if (inlineButtons) {
+        inlineButtons.style.visibility = "hidden";
+        inlineButtons.style.opacity = "0";
 
-      this.addEventListener("mouseenter", () => {
-        inlineButtons.style.display = "block";
-      });
+        this.addEventListener("mouseenter", () => {
+        inlineButtons.style.visibility = "visible";
+          inlineButtons.style.opacity = "1";
+        });
 
-      this.addEventListener("mouseleave", () => {
-        inlineButtons.style.display = "none";
-      });
-    }
+        this.addEventListener("mouseleave", () => {
+          inlineButtons.style.visibility = "hidden";
+          inlineButtons.style.opacity = "0";
+        });
+      }
+    });
   }
 
   render() {
@@ -67,11 +74,13 @@ export default class TactileEditable extends PolymerElement {
       content = html`<slot></slot>`;
     } else {
       content = html`
-      <div class="inline-buttons">
-        <paper-icon-button icon="add" title="Add Link">
-          Link
-        </paper-icon-button>
-      </div>
+      <span class="inline-buttons">
+        <h3>${this.component.author.title}</h3>
+        <paper-button>
+          <iron-icon icon="add"></iron-icon>
+          Add Link
+        </paper-button>
+      </span>
       <div style="position: relative;">
         <paper-ripple></paper-ripple>
         <slot></slot>
@@ -81,14 +90,16 @@ export default class TactileEditable extends PolymerElement {
     render(html`
     <style>
       .inline-buttons {
+        background-color: white;
         position: absolute;
+        z-index: 1;
+        transition: visibility 0s, opacity 0.2s linear;
+        color: #555;
+        padding: 7px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
       }
       .inline-buttons paper-icon-button {
-        background-color: white;
         border-radius: 100%;
-        color: #333;
-        z-index: 1;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
       }
     </style>
     <paper-dialog modal style="min-width: 600px;">
@@ -101,14 +112,10 @@ export default class TactileEditable extends PolymerElement {
   }
 
   openDialog(callback) {
-    ajaxGet(this.path+".json", (component) => {
-      this.component = component;
-      this.render();
-      var paperDialog = this.shadowRoot.querySelector("paper-dialog")
-      paperDialog.open();
-      this._attachButtonHandlers();
-      this._attachClosedHandlers(callback);
-    });
+    var paperDialog = this.shadowRoot.querySelector("paper-dialog")
+    paperDialog.open();
+    this._attachButtonHandlers();
+    this._attachClosedHandlers(callback);
   }
 
   formValues() {
