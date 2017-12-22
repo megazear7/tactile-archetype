@@ -15,6 +15,27 @@ function watchForComponentClicks(event) {
   }
 };
 
+
+function watchForComponentClicks(event) {
+  // This stops user from interacting with page in author mode
+  event.stopPropagation();
+  event.preventDefault();
+
+  var tactileEditable = event.target.closest("tactile-editable");
+  if (tactileEditable) {
+    document.removeEventListener("click", watchForComponentClicks);
+
+    tactileEditable.openDialog(function(requiresRefresh = true) {
+      document.addEventListener("click", watchForComponentClicks);
+
+      // TODO just reload the component, not the entire page.
+      if (requiresRefresh) {
+        window.location.reload();
+      }
+    });
+  }
+};
+
 function setupEditMode() {
   document.addEventListener("click", watchForComponentClicks);
   document.body.classList.add("edit");
