@@ -1,5 +1,6 @@
 import "@polymer/paper-ripple/paper-ripple";
 import "./tactile-author.js";
+import "./tactile-editable.js";
 import "./tactile-mode.js";
 
 function watchForComponentClicks(event) {
@@ -7,25 +8,10 @@ function watchForComponentClicks(event) {
   event.stopPropagation();
   event.preventDefault();
 
-  var component = event.target.closest(".tactile");
+  var component = event.target.closest("tactile-editable");
   if (component) {
-    var authorElement = component.querySelector("tactile-author");
-    if (authorElement) {
-      var path = authorElement.getAttribute("path");
-
-      if (authorElement) {
-        document.removeEventListener("click", watchForComponentClicks);
-
-        authorElement.openDialog(function(requiresRefresh = true) {
-          document.addEventListener("click", watchForComponentClicks);
-
-          // TODO just reload the component, not the entire page.
-          if (requiresRefresh) {
-            window.location.reload();
-          }
-        });
-      }
-    }
+    component.openDialog(watchForComponentClicks);
+    document.removeEventListener("click", watchForComponentClicks);
   }
 };
 
