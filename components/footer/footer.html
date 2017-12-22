@@ -1,9 +1,13 @@
-<div class="footer inverted tactile">
-  {{> author}}
-  
-  <ul>
-    {{#each links}}
-      <li>{{render false compType}}</li>
-    {{/each}}
-  </ul>
-</div>
+{{#if page.home.isAuthor}}
+<tactile-editable path="{{path}}" comp-type="{{compType}}">
+{{/if}}
+
+<ul>
+  {{#each links}}
+    <li>{{render false compType}}</li>
+  {{/each}}
+</ul>
+
+{{#if page.home.isAuthor}}
+</tactile-editable>
+{{/if}}

@@ -9,9 +9,11 @@
             <div class="content">
                 {{render "content" "compList"}}
             </div>
-            {{#home.footer}}
-              {{render false "footer"}}
-            {{/home.footer}}
+            <div class="footer inverted">
+              {{#home.footer}}
+                {{render false "footer"}}
+              {{/home.footer}}
+            </div>
         </div>
 
         <script src="/build-min.js"></script>

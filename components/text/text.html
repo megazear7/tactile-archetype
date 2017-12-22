@@ -1,5 +1,11 @@
-<p class="tactile">
-  {{> author}}
-  
+{{#if page.home.isAuthor}}
+<tactile-editable path="{{path}}" comp-type="{{compType}}">
+{{/if}}
+
+<p>
   {{text}}
 </p>
+
+{{#if page.home.isAuthor}}
+</tactile-editable>
+{{/if}}

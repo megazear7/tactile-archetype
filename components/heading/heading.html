@@ -1,14 +1,16 @@
+{{#if page.home.isAuthor}}
 <tactile-editable path="{{path}}" comp-type="{{compType}}">
+{{/if}}
 
-<div class="tactile">
-    <{{size}}>
-        {{heading}}
-    </{{size}}>
-    <p>{{subText}}</p>
+<{{size}}>
+    {{heading}}
+</{{size}}>
+<p>{{subText}}</p>
 
-    {{#if hasHr}}
-      <hr>
-    {{/if}}
-</div>
+{{#if hasHr}}
+  <hr>
+{{/if}}
 
+{{#if page.home.isAuthor}}
 </tactile-editable>
+{{/if}}

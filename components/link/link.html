@@ -1,8 +1,13 @@
-<span class="tactile">
-  {{> author}}
-  <a href="{{href}}"
-     {{#if model.isCurrentPage}}disabled{{/if}}
-     {{#if model.isExternal}}target="_blank"{{/if}}>
-    {{title}}
-  </a>
-</span>
+{{#if page.home.isAuthor}}
+<tactile-editable path="{{path}}" comp-type="{{compType}}">
+{{/if}}
+
+<a href="{{href}}"
+   {{#if model.isCurrentPage}}disabled{{/if}}
+   {{#if model.isExternal}}target="_blank"{{/if}}>
+  {{title}}
+</a>
+
+{{#if page.home.isAuthor}}
+</tactile-editable>
+{{/if}}

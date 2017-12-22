@@ -1,5 +1,9 @@
-<div class="tactile">
-  {{> author}}
+{{#if page.home.isAuthor}}
+<tactile-editable path="{{path}}" comp-type="{{compType}}">
+{{/if}}
 
-  <img src="{{href}}" class="basic-image" />
-</div>
+<img src="{{href}}" class="basic-image" />
+
+{{#if page.home.isAuthor}}
+</tactile-editable>
+{{/if}}

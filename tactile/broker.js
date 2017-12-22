@@ -30,11 +30,6 @@ var render = function(path, componentModels, authorModels, isAuthor) {
     const directories = source =>
       fs.readdirSync(source).map(name => join(source, name)).filter(isDirectory)
 
-    var authorPartial = "./tactile/author.html";
-    if (fs.existsSync(authorPartial)) {
-      Handlebars.registerPartial("author", fs.readFileSync(authorPartial, 'utf8'));
-    }
-
     // TODO in Prod we should not reload the components on every request
     directories("components").forEach(function(directory) {
         var name = directory.split("/").slice(-1)[0];

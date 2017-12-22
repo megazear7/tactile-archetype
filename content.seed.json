@@ -26,14 +26,6 @@
         "heading": "Hello, this is the Tactile Archetype",
         "subText": "And that bird? That be a macawww!",
         "hasHr": true
-      },
-      {
-        "tacType": "component",
-        "compType": "polymerHeading",
-        "size": "h3",
-        "heading": "My Polymer Example",
-        "subText": "This heading functions in the same as the one above, except is implemented with polymer.",
-        "hasHr": false
       }
     ]
   },
