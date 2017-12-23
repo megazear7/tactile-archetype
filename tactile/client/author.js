@@ -60,9 +60,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
     var mode = window.sessionStorage.getItem("tactile-mode");
     if (mode === "edit") {
-      setupEditMode();
+      tactileMode.switchToEdit();
     } else {
-      setupPublishMode();
+      tactileMode.switchToPublish();
     }
   }
 });

@@ -23,6 +23,14 @@ export default class TactileMode extends PolymerElement {
       }
     });
   }
+
+  switchToEdit() {
+    this.toggle.checked = true;
+  }
+
+  switchToPublish() {
+    this.toggle.checked = false;
+  }
 }
 
 // Register custom element class with browser
