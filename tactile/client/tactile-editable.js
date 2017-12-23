@@ -86,10 +86,16 @@ export default class TactileEditable extends PolymerElement {
     render(html`
     ${hostStyle}
     <style>
+      :host {
+        margin: -2px;
+        border: 2px solid rgba(0,0,0,0);
+        cursor: pointer;
+      }
       :host(:hover) {
-        outline: 2px solid #ddd;
+        border: 2px solid #ddd;
       }
       .inline-buttons {
+        cursor: auto;
         background-color: #ddd;
         position: absolute;
         z-index: 1;
