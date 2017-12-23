@@ -53,10 +53,9 @@ export default class TactileEditable extends PolymerElement {
   }
 
   render() {
-    var previewContent = ``;
     var editContent = ``;
     var blockContent = ``;
-    var inlineContent = ``;
+    var otherContent = ``;
 
     if (this.editMode) {
       editContent = html`
@@ -65,7 +64,69 @@ export default class TactileEditable extends PolymerElement {
         ${this._createInputs()}
         ${this._createButtons()}
       </paper-dialog>
+      ${this._editStyles()}
+      `;
+    }
+
+    if (! this.inline && this.editMode) {
+      blockContent = html`
+      <span class="inline-buttons">
+        ${this.component.author.title}
+        ${this._createConfigureableButtons()}
+      </span>
+      <div style="position: relative;">
+        <paper-ripple></paper-ripple>
+        <slot></slot>
+      </div>
       <style>
+        :host {
+          display: block;
+        }
+      </style>
+      `;
+    } else {
+      otherContent = html`<slot></slot>`;
+    }
+
+    render(html`
+    ${editContent}
+    ${blockContent}
+    ${otherContent}
+    `, this.shadowRoot);
+
+    this._attachInlineEventHandlers();
+  }
+
+  openDialog(callback) {
+    var paperDialog = this.shadowRoot.querySelector("paper-dialog")
+    paperDialog.open();
+    this._attachClosedHandlers(callback);
+    this._attachDialogButtonHandlers(callback);
+  }
+
+  formValues() {
+    var values = {};
+    this.shadowRoot.querySelectorAll("paper-input").forEach((input) => {
+      if (typeof input.value !== "undefined") {
+        values[input.name] = input.value;
+      } else {
+        values[input.name] = "";
+      }
+    });
+    this.shadowRoot.querySelectorAll("paper-checkbox").forEach((input) => {
+      if (typeof input.value !== "undefined") {
+        console.log(input.active);
+        values[input.name] = input.active;
+      } else {
+        values[input.name] = false;
+      }
+    });
+    return values;
+  }
+
+  _editStyles() {
+    return html`
+    <style>
         :host {
           margin: -2px;
           border: 2px solid rgba(0,0,0,0);
@@ -95,38 +156,32 @@ export default class TactileEditable extends PolymerElement {
           color: #111;
         }
       </style>
-      `;
-    } else {
-      previewContent = html`<slot></slot>`;
+    `;
+  }
+
+  _attachClosedHandlers(callback) {
+    var paperDialog = this.shadowRoot.querySelector("paper-dialog")
+
+    var dialogClosed = (event) => {
+      if (event.detail.confirmed) {
+        ajaxPost(this.path, this.formValues());
+      }
+      paperDialog.removeEventListener("iron-overlay-closed", dialogClosed);
+      callback(event.detail.confirmed);
     }
 
-    if (! this.inline && this.editMode) {
-      blockContent = html`
-      <span class="inline-buttons">
-        ${this.component.author.title}
-        ${this._createConfigureableButtons()}
-      </span>
-      <div style="position: relative;">
-        <paper-ripple></paper-ripple>
-        <slot></slot>
-      </div>
-      <style>
-        :host {
-          display: block;
-        }
-      </style>
-      `;
-    } else if (this.inline && this.editMode) {
-      inlineContent = html`<slot></slot>`;
-    }
+    paperDialog.addEventListener("iron-overlay-closed", dialogClosed);
+  }
 
-    render(html`
-    ${previewContent}
-    ${editContent}
-    ${blockContent}
-    ${inlineContent}
-    `, this.shadowRoot);
+  _attachDialogButtonHandlers(callback) {
+    Array.from(this.shadowRoot.querySelectorAll("paper-button.tactile-delete")).forEach(button => {
+      button.addEventListener("click", (e) => {
+        ajaxDelete(this.path, callback);
+      });
+    });
+  }
 
+  _attachInlineEventHandlers() {
     var addButton = this.shadowRoot.querySelector(".tactile-add");
     if (addButton) {
       addButton.addEventListener("click", (e) => {
@@ -155,55 +210,6 @@ export default class TactileEditable extends PolymerElement {
         inlineButtons.style.opacity = "0";
       });
     }
-  }
-
-  openDialog(callback) {
-    var paperDialog = this.shadowRoot.querySelector("paper-dialog")
-    paperDialog.open();
-    this._attachClosedHandlers(callback);
-    this._attachButtonHandlers(callback);
-  }
-
-  formValues() {
-    var values = {};
-    this.shadowRoot.querySelectorAll("paper-input").forEach((input) => {
-      if (typeof input.value !== "undefined") {
-        values[input.name] = input.value;
-      } else {
-        values[input.name] = "";
-      }
-    });
-    this.shadowRoot.querySelectorAll("paper-checkbox").forEach((input) => {
-      if (typeof input.value !== "undefined") {
-        console.log(input.active);
-        values[input.name] = input.active;
-      } else {
-        values[input.name] = false;
-      }
-    });
-    return values;
-  }
-
-  _attachClosedHandlers(callback) {
-    var paperDialog = this.shadowRoot.querySelector("paper-dialog")
-
-    var dialogClosed = (event) => {
-      if (event.detail.confirmed) {
-        ajaxPost(this.path, this.formValues());
-      }
-      paperDialog.removeEventListener("iron-overlay-closed", dialogClosed);
-      callback(event.detail.confirmed);
-    }
-
-    paperDialog.addEventListener("iron-overlay-closed", dialogClosed);
-  }
-
-  _attachButtonHandlers(callback) {
-    Array.from(this.shadowRoot.querySelectorAll("paper-button.tactile-delete")).forEach(button => {
-      button.addEventListener("click", (e) => {
-        ajaxDelete(this.path, callback);
-      });
-    });
   }
 
   _createInputs() {
