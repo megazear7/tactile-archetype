@@ -32,38 +32,23 @@ export default class TactileEditable extends PolymerElement {
   constructor() {
     super();
     this.attachShadow({mode: "open"});
-
-    // TODO grab this off of the tactile-mode element.
-    this.editMode = true;
-
-    var tactileMode = document.querySelector("tactile-mode");
-    tactileMode.addEventListener("switched-to-edit", () => {
-    });
-    tactileMode.addEventListener("switched-to-publish", () => {
-    });
   }
 
   connectedCallback() {
     ajaxGet(this.path+".json", (component) => {
       this.component = component;
+      this.editMode = true;
       this.render();
 
-      var inlineButtons = this.shadowRoot.querySelector(".inline-buttons");
-
-      if (inlineButtons) {
-        inlineButtons.style.visibility = "hidden";
-        inlineButtons.style.opacity = "0";
-
-        this.addEventListener("mouseenter", () => {
-        inlineButtons.style.visibility = "visible";
-          inlineButtons.style.opacity = "1";
-        });
-
-        this.addEventListener("mouseleave", () => {
-          inlineButtons.style.visibility = "hidden";
-          inlineButtons.style.opacity = "0";
-        });
-      }
+      var tactileMode = document.querySelector("tactile-mode");
+      tactileMode.addEventListener("switched-to-edit", () => {
+        this.editMode = true;
+        this.render();
+      });
+      tactileMode.addEventListener("switched-to-publish", () => {
+        this.editMode = false;
+        this.render();
+      });
     });
   }
 
@@ -73,9 +58,7 @@ export default class TactileEditable extends PolymerElement {
     var blockContent = ``;
     var inlineContent = ``;
 
-    if (! this.editMode) {
-      previewContent = html`<slot></slot>`;
-    } else {
+    if (this.editMode) {
       editContent = html`
       <paper-dialog modal style="min-width: 600px;">
         ${this._createMessage()}
@@ -113,6 +96,8 @@ export default class TactileEditable extends PolymerElement {
         }
       </style>
       `;
+    } else {
+      previewContent = html`<slot></slot>`;
     }
 
     if (! this.inline && this.editMode) {
@@ -151,6 +136,23 @@ export default class TactileEditable extends PolymerElement {
         ajaxPut(path, template);
         // TODO just reinitialize the component using the handlebars template.
         window.location.reload();
+      });
+    }
+
+    var inlineButtons = this.shadowRoot.querySelector(".inline-buttons");
+
+    if (inlineButtons) {
+      inlineButtons.style.visibility = "hidden";
+      inlineButtons.style.opacity = "0";
+
+      this.addEventListener("mouseenter", () => {
+      inlineButtons.style.visibility = "visible";
+        inlineButtons.style.opacity = "1";
+      });
+
+      this.addEventListener("mouseleave", () => {
+        inlineButtons.style.visibility = "hidden";
+        inlineButtons.style.opacity = "0";
       });
     }
   }
