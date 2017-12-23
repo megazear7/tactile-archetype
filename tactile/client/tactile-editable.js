@@ -32,6 +32,9 @@ export default class TactileEditable extends PolymerElement {
   constructor() {
     super();
     this.attachShadow({mode: "open"});
+
+    // TODO grab this off of the tactile-mode element.
+    this.editMode = true;
   }
 
   connectedCallback() {
@@ -59,11 +62,55 @@ export default class TactileEditable extends PolymerElement {
   }
 
   render() {
-    var content = ``;
-    if (this.inline) {
-      content = html`<slot></slot>`;
+    var previewContent = ``;
+    var editContent = ``;
+    var blockContent = ``;
+    var inlineContent = ``;
+
+    if (! this.editMode) {
+      previewContent = html`<slot></slot>`;
     } else {
-      content = html`
+      editContent = html`
+      <paper-dialog modal style="min-width: 600px;">
+        ${this._createMessage()}
+        ${this._createInputs()}
+        ${this._createButtons()}
+      </paper-dialog>
+      <style>
+        :host {
+          margin: -2px;
+          border: 2px solid rgba(0,0,0,0);
+          cursor: pointer;
+        }
+        :host(:hover) {
+          border: 2px solid #ddd;
+        }
+        .inline-buttons {
+          cursor: auto;
+          background-color: #ddd;
+          position: absolute;
+          z-index: 1;
+          transition: visibility 0s, opacity 0.2s linear;
+          color: #555;
+          padding: 7px;
+          box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+        }
+        .inline-buttons paper-icon-button {
+          border-radius: 100%;
+        }
+        .tactile-inline-button {
+          cursor: pointer;
+          padding-top: 5px;
+        }
+        .tactile-inline-button:hover {
+          color: #111;
+        }
+      </style>
+      `;
+    }
+
+    if (! this.inline && this.editMode) {
+      blockContent = html`
       <span class="inline-buttons">
         ${this.component.author.title}
         ${this._createConfigureableButtons()}
@@ -71,56 +118,22 @@ export default class TactileEditable extends PolymerElement {
       <div style="position: relative;">
         <paper-ripple></paper-ripple>
         <slot></slot>
-      </div>`;
-    }
-
-    var hostStyle = html``;
-    if (! this.inline) {
-      hostStyle = html`<style>
+      </div>
+      <style>
         :host {
           display: block;
         }
-      </style>`;
+      </style>
+      `;
+    } else if (this.inline && this.editMode) {
+      inlineContent = html`<slot></slot>`;
     }
 
     render(html`
-    ${hostStyle}
-    <style>
-      :host {
-        margin: -2px;
-        border: 2px solid rgba(0,0,0,0);
-        cursor: pointer;
-      }
-      :host(:hover) {
-        border: 2px solid #ddd;
-      }
-      .inline-buttons {
-        cursor: auto;
-        background-color: #ddd;
-        position: absolute;
-        z-index: 1;
-        transition: visibility 0s, opacity 0.2s linear;
-        color: #555;
-        padding: 7px;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-      }
-      .inline-buttons paper-icon-button {
-        border-radius: 100%;
-      }
-      .tactile-inline-button {
-        cursor: pointer;
-        padding-top: 5px;
-      }
-      .tactile-inline-button:hover {
-        color: #111;
-      }
-    </style>
-    <paper-dialog modal style="min-width: 600px;">
-      ${this._createMessage()}
-      ${this._createInputs()}
-      ${this._createButtons()}
-    </paper-dialog>
-    ${content}
+    ${previewContent}
+    ${editContent}
+    ${blockContent}
+    ${inlineContent}
     `, this.shadowRoot);
 
     var addButton = this.shadowRoot.querySelector(".tactile-add");
