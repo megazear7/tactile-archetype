@@ -65,7 +65,7 @@ export default class TactileEditable extends PolymerElement {
     } else {
       content = html`
       <span class="inline-buttons">
-        <h3>${this.component.author.title}</h3>
+        ${this.component.author.title}
         ${this._createConfigureableButtons()}
       </span>
       <div style="position: relative;">
@@ -77,7 +77,7 @@ export default class TactileEditable extends PolymerElement {
     render(html`
     <style>
       .inline-buttons {
-        background-color: white;
+        background-color: #ddd;
         position: absolute;
         z-index: 1;
         transition: visibility 0s, opacity 0.2s linear;
