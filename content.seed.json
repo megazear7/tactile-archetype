@@ -24,8 +24,20 @@
         "compType": "heading",
         "size": "h2",
         "heading": "Hello, this is the Tactile Archetype",
-        "subText": "And that bird? That be a macawww!",
-        "hasHr": true
+        "subText": "And that bird? That be a macawww!"
+      },
+      {
+        "tacType": "component",
+        "compType": "heading",
+        "size": "h2",
+        "heading": "Tactile is a content management system",
+        "subText": "It is built on NodeJS, ExpressJS and Polymer."
+      },
+      {
+        "tacType": "component",
+        "compType": "heading",
+        "size": "h3",
+        "heading": "These are components."
       }
     ]
   },
