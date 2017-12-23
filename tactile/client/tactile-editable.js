@@ -35,6 +35,12 @@ export default class TactileEditable extends PolymerElement {
 
     // TODO grab this off of the tactile-mode element.
     this.editMode = true;
+
+    var tactileMode = document.querySelector("tactile-mode");
+    tactileMode.addEventListener("switched-to-edit", () => {
+    });
+    tactileMode.addEventListener("switched-to-publish", () => {
+    });
   }
 
   connectedCallback() {

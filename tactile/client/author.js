@@ -49,14 +49,18 @@ function setupPublishMode() {
 
 document.addEventListener("DOMContentLoaded", (event) => {
   if (document.body.classList.contains('edit')) {
-    var tactileModeToggle = document.querySelector("tactile-mode");
-    tactileModeToggle.switchedToEdit(setupEditMode);
-    tactileModeToggle.switchedToPublish(setupPublishMode);
+    var tactileMode = document.querySelector("tactile-mode");
+
+    tactileMode.addEventListener("switched-to-edit", () => {
+      setupEditMode();
+    });
+    tactileMode.addEventListener("switched-to-publish", () => {
+      setupPublishMode();
+    });
 
     var mode = window.sessionStorage.getItem("tactile-mode");
-
     if (mode === "edit") {
-      tactileModeToggle.setToEdit();
+      setupEditMode();
     } else {
       setupPublishMode();
     }

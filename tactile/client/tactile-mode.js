@@ -13,33 +13,13 @@ export default class TactileMode extends PolymerElement {
 
   connectedCallback() {
     super.connectedCallback();
-    var toggle = this.shadowRoot.querySelector("paper-toggle-button");
-  }
+    this.toggle = this.shadowRoot.querySelector("paper-toggle-button");
 
-  setToEdit() {
-    var toggle = this.shadowRoot.querySelector("paper-toggle-button");
-    toggle.checked = true;
-  }
-
-  setToPublish() {
-    var toggle = this.shadowRoot.querySelector("paper-toggle-button");
-    toggle.checked = true;
-  }
-
-  switchedToEdit(callback) {
-    var toggle = this.shadowRoot.querySelector("paper-toggle-button");
-    toggle.addEventListener("iron-change", () => {
-      if (toggle.checked) {
-        callback();
-      }
-    });
-  }
-
-  switchedToPublish(callback) {
-    var toggle = this.shadowRoot.querySelector("paper-toggle-button");
-    toggle.addEventListener("iron-change", () => {
-      if (! toggle.checked) {
-        callback();
+    this.toggle.addEventListener("iron-change", () => {
+      if (this.toggle.checked) {
+        this.dispatchEvent(new CustomEvent('switched-to-edit'));
+      } else {
+        this.dispatchEvent(new CustomEvent('switched-to-publish'));
       }
     });
   }
