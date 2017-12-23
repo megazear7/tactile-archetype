@@ -7,19 +7,6 @@ function watchForComponentClicks(event) {
   event.stopPropagation();
   event.preventDefault();
 
-  var component = event.target.closest("tactile-editable");
-  if (component) {
-    component.openDialog(watchForComponentClicks);
-    document.removeEventListener("click", watchForComponentClicks);
-  }
-};
-
-
-function watchForComponentClicks(event) {
-  // This stops user from interacting with page in author mode
-  event.stopPropagation();
-  event.preventDefault();
-
   var tactileEditable = event.target.closest("tactile-editable");
   if (tactileEditable) {
     document.removeEventListener("click", watchForComponentClicks);
