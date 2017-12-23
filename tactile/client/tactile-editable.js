@@ -78,11 +78,7 @@ export default class TactileEditable extends PolymerElement {
         <paper-ripple></paper-ripple>
         <slot></slot>
       </div>
-      <style>
-        :host {
-          display: block;
-        }
-      </style>
+      ${this._blockStyles()}
       `;
     } else {
       otherContent = html`<slot></slot>`;
@@ -122,6 +118,16 @@ export default class TactileEditable extends PolymerElement {
       }
     });
     return values;
+  }
+
+  _blockStyles() {
+    return html`
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    `;
   }
 
   _editStyles() {

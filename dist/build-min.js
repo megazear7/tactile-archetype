@@ -14,16 +14,18 @@
         <paper-ripple></paper-ripple>
         <slot></slot>
       </div>
-      <style>
-        :host {
-          display: block;
-        }
-      </style>
+      ${this._blockStyles()}
       `:n=o["a"]`<slot></slot>`,Object(o.b)(o["a"]`
     ${t}
     ${e}
     ${n}
-    `,this.shadowRoot),this._attachInlineEventHandlers()}openDialog(t){this.shadowRoot.querySelector("paper-dialog").open(),this._attachClosedHandlers(t),this._attachDialogButtonHandlers(t)}formValues(){var t={};return this.shadowRoot.querySelectorAll("paper-input").forEach(e=>{void 0!==e.value?t[e.name]=e.value:t[e.name]=""}),this.shadowRoot.querySelectorAll("paper-checkbox").forEach(e=>{void 0!==e.value?(console.log(e.active),t[e.name]=e.active):t[e.name]=!1}),t}_editStyles(){return o["a"]`
+    `,this.shadowRoot),this._attachInlineEventHandlers()}openDialog(t){this.shadowRoot.querySelector("paper-dialog").open(),this._attachClosedHandlers(t),this._attachDialogButtonHandlers(t)}formValues(){var t={};return this.shadowRoot.querySelectorAll("paper-input").forEach(e=>{void 0!==e.value?t[e.name]=e.value:t[e.name]=""}),this.shadowRoot.querySelectorAll("paper-checkbox").forEach(e=>{void 0!==e.value?(console.log(e.active),t[e.name]=e.active):t[e.name]=!1}),t}_blockStyles(){return o["a"]`
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    `}_editStyles(){return o["a"]`
     <style>
         :host {
           margin: -2px;
