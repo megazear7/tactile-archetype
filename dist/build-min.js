@@ -6,8 +6,16 @@
       <div style="position: relative;">
         <paper-ripple></paper-ripple>
         <slot></slot>
-      </div>`,Object(o.b)(o["a"]`
+      </div>`;var e=o["a"]``;this.inline||(e=o["a"]`<style>
+        :host {
+          display: block;
+        }
+      </style>`),Object(o.b)(o["a"]`
+    ${e}
     <style>
+      :host(:hover) {
+        outline: 2px solid #ddd;
+      }
       .inline-buttons {
         background-color: #ddd;
         position: absolute;
@@ -20,6 +28,13 @@
       .inline-buttons paper-icon-button {
         border-radius: 100%;
       }
+      .tactile-inline-button {
+        cursor: pointer;
+        padding-top: 5px;
+      }
+      .tactile-inline-button:hover {
+        color: #111;
+      }
     </style>
     <paper-dialog modal style="min-width: 600px;">
       ${this._createMessage()}
@@ -27,18 +42,18 @@
       ${this._createButtons()}
     </paper-dialog>
     ${t}
-    `,this.shadowRoot);var e=this.shadowRoot.querySelector(".tactile-add");e&&e.addEventListener("click",t=>{t.stopPropagation();var e=this.path+"/"+t.target.dataset.path,n=JSON.parse(t.target.dataset.template);Object(r.ajaxPut)(e,n),window.location.reload()})}openDialog(t){this.shadowRoot.querySelector("paper-dialog").open(),this._attachClosedHandlers(t),this._attachButtonHandlers(t)}formValues(){var t={};return this.shadowRoot.querySelectorAll("paper-input").forEach(e=>{void 0!==e.value?t[e.name]=e.value:t[e.name]=""}),this.shadowRoot.querySelectorAll("paper-checkbox").forEach(e=>{void 0!==e.value?(console.log(e.active),t[e.name]=e.active):t[e.name]=!1}),t}_attachClosedHandlers(t){var e=this.shadowRoot.querySelector("paper-dialog"),n=i=>{i.detail.confirmed&&Object(r.ajaxPost)(this.path,this.formValues()),e.removeEventListener("iron-overlay-closed",n),t(i.detail.confirmed)};e.addEventListener("iron-overlay-closed",n)}_attachButtonHandlers(t){Array.from(this.shadowRoot.querySelectorAll("paper-button.tactile-delete")).forEach(e=>{e.addEventListener("click",e=>{Object(r.ajaxDelete)(this.path,t)})})}_createInputs(){var t=[];return this.component.author.attrs.forEach(e=>{"String"===e.type?t.push(o["a"]`<paper-input
+    `,this.shadowRoot);var n=this.shadowRoot.querySelector(".tactile-add");n&&n.addEventListener("click",t=>{t.stopPropagation();var e=this.path+"/"+t.target.dataset.path,n=JSON.parse(t.target.dataset.template);Object(r.ajaxPut)(e,n),window.location.reload()})}openDialog(t){this.shadowRoot.querySelector("paper-dialog").open(),this._attachClosedHandlers(t),this._attachButtonHandlers(t)}formValues(){var t={};return this.shadowRoot.querySelectorAll("paper-input").forEach(e=>{void 0!==e.value?t[e.name]=e.value:t[e.name]=""}),this.shadowRoot.querySelectorAll("paper-checkbox").forEach(e=>{void 0!==e.value?(console.log(e.active),t[e.name]=e.active):t[e.name]=!1}),t}_attachClosedHandlers(t){var e=this.shadowRoot.querySelector("paper-dialog"),n=i=>{i.detail.confirmed&&Object(r.ajaxPost)(this.path,this.formValues()),e.removeEventListener("iron-overlay-closed",n),t(i.detail.confirmed)};e.addEventListener("iron-overlay-closed",n)}_attachButtonHandlers(t){Array.from(this.shadowRoot.querySelectorAll("paper-button.tactile-delete")).forEach(e=>{e.addEventListener("click",e=>{Object(r.ajaxDelete)(this.path,t)})})}_createInputs(){var t=[];return this.component.author.attrs.forEach(e=>{"String"===e.type?t.push(o["a"]`<paper-input
                 name=${e.name}
                 label=${e.title}
                 value=${this.component[e.name]}></paper-input>`):"Boolean"===e.type&&(this.component[e.name]?t.push(o["a"]`<paper-checkbox name=${e.name} checked>${e.title}</paper-checkbox>`):t.push(o["a"]`<paper-checkbox name=${e.name}>${e.title}</paper-checkbox>`))}),t}_createMessage(){return o["a"]`
       <h2>${this.component.author.title}</h2>
-      <p>${this.component.author.description}</p>`}_createConfigureableButtons(){var t=[];return this.component.author.attrs.forEach(e=>{if("Add"===e.type){var n=o["a"]`<paper-button
-                            class="tactile-add"
+      <p>${this.component.author.description}</p>`}_createConfigureableButtons(){var t=[];return this.component.author.attrs.forEach(e=>{if("Add"===e.type){var n=o["a"]`<div
+                            class="tactile-inline-button tactile-add"
                             data-path=${e.path}
                             data-template=${JSON.stringify(e.template)}
                             data-comp-type=${e.compType}>
                             ${e.title}
-                          </paper-button>`;t.push(n)}}),t}_createButtons(){if(!this.component.author.preventDelete&&!this.component.preventDelete)var t=o["a"]`
+                          </div>`;t.push(n)}}),t}_createButtons(){if(!this.component.author.preventDelete&&!this.component.preventDelete)var t=o["a"]`
         <paper-button class="tactile-delete" data-path=${this.path}>Delete</paper-button>
       `;return o["a"]`
       <div class="buttons">

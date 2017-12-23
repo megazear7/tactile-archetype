@@ -74,8 +74,21 @@ export default class TactileEditable extends PolymerElement {
       </div>`;
     }
 
+    var hostStyle = html``;
+    if (! this.inline) {
+      hostStyle = html`<style>
+        :host {
+          display: block;
+        }
+      </style>`;
+    }
+
     render(html`
+    ${hostStyle}
     <style>
+      :host(:hover) {
+        outline: 2px solid #ddd;
+      }
       .inline-buttons {
         background-color: #ddd;
         position: absolute;
@@ -87,6 +100,13 @@ export default class TactileEditable extends PolymerElement {
       }
       .inline-buttons paper-icon-button {
         border-radius: 100%;
+      }
+      .tactile-inline-button {
+        cursor: pointer;
+        padding-top: 5px;
+      }
+      .tactile-inline-button:hover {
+        color: #111;
       }
     </style>
     <paper-dialog modal style="min-width: 600px;">
@@ -189,13 +209,13 @@ export default class TactileEditable extends PolymerElement {
     var buttons = [ ];
     this.component.author.attrs.forEach((input) => {
       if (input.type === "Add") {
-        var button = html`<paper-button
-                            class="tactile-add"
+        var button = html`<div
+                            class="tactile-inline-button tactile-add"
                             data-path=${input.path}
                             data-template=${JSON.stringify(input.template)}
                             data-comp-type=${input.compType}>
                             ${input.title}
-                          </paper-button>`;
+                          </div>`;
 
         buttons.push(button);
       }
