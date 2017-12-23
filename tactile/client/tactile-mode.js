@@ -31,6 +31,10 @@ export default class TactileMode extends PolymerElement {
   switchToPublish() {
     this.toggle.checked = false;
   }
+
+  get mode() {
+    return this.toggle.checked;
+  }
 }
 
 // Register custom element class with browser

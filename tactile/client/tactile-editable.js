@@ -37,10 +37,10 @@ export default class TactileEditable extends PolymerElement {
   connectedCallback() {
     ajaxGet(this.path+".json", (component) => {
       this.component = component;
-      this.editMode = true;
+      var tactileMode = document.querySelector("tactile-mode");
+      this.editMode = tactileMode.mode;
       this.render();
 
-      var tactileMode = document.querySelector("tactile-mode");
       tactileMode.addEventListener("switched-to-edit", () => {
         this.editMode = true;
         this.render();
