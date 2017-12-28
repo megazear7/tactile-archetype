@@ -7,7 +7,7 @@ tactile-mode, tactile-editable {
 
 html {
   height: 100%;
-  font-size: 28px;
+  font-size: 24px;
   -webkit-text-size-adjust: none; }
 
 body {
@@ -24,17 +24,17 @@ body:before {
 
 @media (min-width: 500px) {
   html {
-    font-size: 26px; } }
+    font-size: 23px; } }
 
 @media (min-width: 700px) {
   body:before {
     content: "tablet"; }
   html {
-    font-size: 24px; } }
+    font-size: 22px; } }
 
 @media (min-width: 900px) {
   html {
-    font-size: 22px; } }
+    font-size: 20px; } }
 
 @media (min-width: 1100px) {
   body:before {
@@ -43,33 +43,33 @@ body:before {
     font-size: 18px; } }
 
 h1 {
-  font-size: 1.8rem;
-  line-height: 2.2rem;
+  font-size: 1.6rem;
+  line-height: 2rem;
   color: #357; }
 
 h2 {
-  font-size: 1.5rem;
-  line-height: 1.8rem;
+  font-size: 1.4rem;
+  line-height: 1.7rem;
   color: #68a; }
 
 h3 {
   font-size: 1.3rem;
-  line-height: 1.6rem;
+  line-height: 1.5rem;
   color: #555; }
 
 h4 {
   font-size: 1.2rem;
-  line-height: 1.5rem;
+  line-height: 1.4rem;
   color: #444; }
 
 h5 {
   font-size: 1.1rem;
-  line-height: 1.4rem;
+  line-height: 1.35rem;
   color: #333; }
 
 h6 {
-  font-size: 1.05rem;
-  line-height: 1.35rem;
+  font-size: 1rem;
+  line-height: 1.3rem;
   color: black; }
 
 p {
@@ -134,6 +134,16 @@ ul.breadcrumbs li + li:before {
   .footer ul tactile-author {
     text-align: left; } }
 
+a[disabled], a[disabled]:hover {
+  pointer-events: none; }
+
+.basic-image {
+  width: 100%; }
+
+h1 small {
+  font-size: .5em;
+  color: gray; }
+
 .header hr {
   border-style: solid;
   border-width: 1px;
@@ -163,16 +173,6 @@ ul.breadcrumbs li + li:before {
     border-bottom: 1px solid rgba(50, 50, 50, 0.2); }
   .header ul li.active {
     border-bottom: 2px solid #8ac; } }
-
-a[disabled], a[disabled]:hover {
-  pointer-events: none; }
-
-.basic-image {
-  width: 100%; }
-
-h1 small {
-  font-size: .5em;
-  color: gray; }
 
 .homepage-container {
   display: grid;
