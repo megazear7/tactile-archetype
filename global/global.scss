@@ -1,7 +1,8 @@
 html {
   height: 100%;
-  font-size: 20px;
-  line-height: 28px;
+  font-size: 36px;
+  line-height: 42px;
+  -webkit-text-size-adjust: none;
 }
 
 body {
@@ -17,14 +18,28 @@ body:before {
   display: none; /* Prevent from displaying. */
 }
 
+@media (min-width: 500px) {
+  html {
+    font-size: 34px;
+    line-height: 40px;
+  }
+}
+
 @media (min-width: 700px) {
   body:before {
     content: "tablet";
   }
 
   html {
-    font-size: 19px;
-    line-height: 27px;
+    font-size: 30px;
+    line-height: 36px;
+  }
+}
+
+@media (min-width: 900px) {
+  html {
+    font-size: 24px;
+    line-height: 30px;
   }
 }
 

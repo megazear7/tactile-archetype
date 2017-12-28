@@ -11,10 +11,20 @@
 }
 
 .footer ul li {
-    display: inline;
+    display: block;
     padding: 5px 15px;
 }
 
 .footer ul tactile-author {
-    text-align: left;
+    text-align: middle;
+}
+
+@media (min-width: 600px) {
+  .footer ul li {
+      display: inline;
+  }
+
+  .footer ul tactile-author {
+      text-align: left;
+  }
 }

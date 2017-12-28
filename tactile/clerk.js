@@ -1,7 +1,8 @@
-const express = require('express')
+const express = require('express');
 var bodyParser = require('body-parser');
-const tactileBroker = require('./broker')
-const tactileTeller = require('./teller')
+const tactileBroker = require('./broker');
+const tactileOfficer = require('./officer');
+const tactileTeller = require('./teller');
 var fs = require('fs');
 
 var run = function(port, componentModels, authorModels) {
