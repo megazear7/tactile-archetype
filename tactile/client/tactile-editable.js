@@ -59,7 +59,7 @@ export default class TactileEditable extends PolymerElement {
 
     if (this.editMode) {
       editContent = html`
-      <paper-dialog modal style="min-width: 600px;">
+      <paper-dialog modal>
         ${this._createMessage()}
         ${this._createInputs()}
         ${this._createButtons()}
@@ -140,6 +140,9 @@ export default class TactileEditable extends PolymerElement {
         }
         :host(:hover) {
           border: 2px solid #ddd;
+        }
+        paper-dialog {
+          max-width: 80%;
         }
         .inline-buttons {
           cursor: auto;
