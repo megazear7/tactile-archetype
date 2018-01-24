@@ -26,6 +26,7 @@ function addSubPages(homePage) {
     tacType:  "page",
     pageType: "onecolumnpage"
   }, "about", function(aboutPage) {
+    addAboutPageSubPages(aboutPage)
     addOneColumnPageContent(aboutPage, addAboutPageContent)
   }, error)
 
@@ -134,4 +135,18 @@ function addResourcesPageContent(contentComponent) {
     compType: "text",
     text: "Node.js, Mustache, NEO4J"
   }, "2", success, error)
+}
+
+function addAboutPageSubPages(aboutPage) {
+  officer.addPage(aboutPage._id, {
+    title:    "Example Sub Page",
+    tacType:  "page",
+    pageType: "onecolumnpage"
+  }, "example_sub_page", function(exampleSubPage) {
+    officer.addPage(exampleSubPage._id, {
+      title:    "Even Lower Page",
+      tacType:  "page",
+      pageType: "onecolumnpage"
+    }, "even_lower_page", success, error)
+  }, error)
 }

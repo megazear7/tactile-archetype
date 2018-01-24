@@ -21,6 +21,23 @@ function sendQuery(query, success, error, resultIdentifier) {
   });
 }
 
+
+/* Turns a path string into a neo4j compatible relationship list
+ * path: The path string to convert.
+ */
+function generatePathList(path) {
+  var pathList = []
+
+  var segments = path.split("/")
+  segments.shift()
+
+  segments.forEach(function(segment) {
+    pathList.push('[:has_child {path: "' + segment + '"}]');
+  });
+
+  return pathList.join('->(:page)-')
+}
+
 /* Turns an object into a neo4j compatible property list of properties to set.
  * properties: Flat object with a list of properties to set.
  */
@@ -135,10 +152,30 @@ function removeProperties(nodeId, properties, success, error) {
   sendQuery(query, success, error);
 }
 
+/* node: nodeId
+ * properties: String array of properties to remove or a string with a single
+               property to remove.
+ * success: success callback, an array of results will be returned
+ * error: error callback, an error object is returned.
+ */
+function findPage(path, success, error) {
+  var query =
+  `
+  MATCH
+  (p1:rootpage)-
+  ${generatePathList(path)}
+  ->(p2:page)
+  RETURN p2
+  `
+
+  sendQuery(query, success, error, "p2");
+}
+
 module.exports = {
   sendQuery: sendQuery,
   addComponent: addComponent,
   addPage: addPage,
   setProperties: setProperties,
-  removeProperties: removeProperties
+  removeProperties: removeProperties,
+  findPage: findPage
 };
