@@ -4,17 +4,19 @@
         <title>Tactile Archetype</title>
         <meta name="viewport" content="width=device-width" />
     </head>
-    <body {{#if home.isAuthor}}class="edit"{{/if}}>
+    <body {! #if home.isAuthor !}class="edit"{! /if !}>
         <tactile-mode></tactile-mode>
         <div class="onecolumn-container">
-            {{render "header"}}
             <div class="content">
-                {{render "content" "compList"}}
+                <h2>{properties.pageType}</h2>
+                <h2>{test}</h2>
+                <h2>{@render /}<h2>
+                {! render "content" "compList" !}
             </div>
             <div class="footer inverted">
-              {{#home.footer}}
-                {{render false "footer"}}
-              {{/home.footer}}
+              {! #home.footer !}
+                {! render false "footer" !}
+              {! /home.footer !}
             </div>
         </div>
         <script src="/build-min.js"></script>

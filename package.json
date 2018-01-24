@@ -25,6 +25,7 @@
     "@webcomponents/webcomponentsjs": "^1.0.20",
     "babel-loader": "^8.0.0-beta.0",
     "body-parser": "^1.18.2",
+    "dustjs-linkedin": "^2.7.5",
     "express": "^4.16.2",
     "gulp": "^3.9.1",
     "gulp-add-src": "^0.2.0",

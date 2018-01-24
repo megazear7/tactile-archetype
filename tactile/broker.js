@@ -1,5 +1,6 @@
 var fs = require('fs');
-var Handlebars = require('handlebars')
+//var Handlebars = require('handlebars')
+const dust = require('dustjs-linkedin')
 const { join } = require('path')
 var officer = require('./officer.js')
 
@@ -17,46 +18,48 @@ var render = function(path, componentModels, authorModels, callback) {
 
   // TODO in Prod we should not reload the components on every request
   directories("components").forEach(function(directory) {
-      var name = directory.split("/").slice(-1)[0];
-      var template = directory + "/" + name + ".html";
-
-      Handlebars.registerPartial(name, fs.readFileSync(template, 'utf8'));
-      componentTemplates[name] = Handlebars.compile(fs.readFileSync(template, 'utf8'));
+    var name = directory.split("/").slice(-1)[0];
+    var template = directory + "/" + name + ".html";
+    var compiled = dust.compile(fs.readFileSync(template, 'utf8'), 'component-'+name);
+    dust.loadSource(compiled);
   });
 
   // TODO in Prod we should not reload the components on every request
   directories("pages").forEach(function(directory) {
-      var name = directory.split("/").slice(-1)[0];
-      var template = directory + "/" + name + ".html";
-      pageTemplates[name] = fs.readFileSync(template, 'utf8');
+    var name = directory.split("/").slice(-1)[0];
+    var template = directory + "/" + name + ".html";
+    var compiled = dust.compile(fs.readFileSync(template, 'utf8'), 'page-'+name);
+    dust.loadSource(compiled);
   });
 
   officer.findPage(path, function(page) {
-    /*Handlebars.registerHelper('render', function(path, compType) {
-      officer.findComponent(page._id, path, function(component) {
-        var componentModel = componentModels[component.properties.compType];
 
-        if (typeof componentModel !== "undefined") {
-          component.model = componentModel.init(component);
-        }
-
-        if (process.env['MODE'] === "author") {
-          var authorModel = authorModels[subNode.compType];
-          if (typeof authorModel !== "undefined") {
-            component.author = authorModel.init(component);
+    dust.helpers.render = function(chunk, context, bodies, params) {
+      test = new Promise(function(resolve, reject) {
+        dust.render('component-'+'header', {}, function(err, out) {
+          if (err) {
+            throw err
+          } else {
+            chunk.write(out)
           }
-        }
-
-        //resolve(Handlebars.SafeString(componentTemplates[component.properties.compType](component)))
-        resolve(Handlebars.SafeString("<p>From Promise</p>"))
+        });
       })
-    });*/
+    }
 
-    Handlebars.registerHelper('render', function(path) {
-      return new Handlebars.SafeString(`<p>Render ${path}</p>`);
+    page.test = new Promise(function(resolve, reject) {
+      setTimeout(function() {
+        resolve("Hello, World!")
+      }, 1000)
+    })
+
+    dust.render('page-'+page.properties.pageType, page, function(err, out) {
+      if (err) {
+        throw err
+      } else {
+        callback(out)
+      }
     });
 
-    callback(Handlebars.compile(pageTemplates[page.properties.pageType])(page))
   })
 }
 

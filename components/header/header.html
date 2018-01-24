@@ -1,9 +1,10 @@
 <div class="header">
+  <h3>Test Header</h3>
   <ul>
-    {{#each model.links}}
+    {! #each model.links}}
       <li class="{{#if isCurrentPage}}active{{/if}}">
         <a href="{{href}}" {{#if isCurrentPage}}disabled{{/if}}>{{title}}</a>
       </li>
-    {{/each}}
+    {{/each !}
   </ul>
 </div>
