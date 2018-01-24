@@ -25,17 +25,17 @@ function sendQuery(query, success, error, resultIdentifier) {
 /* Turns a path string into a neo4j compatible relationship list
  * path: The path string to convert.
  */
-function generatePathList(path) {
+function generatePathList(path, relationship, nodeType) {
   var pathList = []
 
   var segments = path.split("/")
   segments.shift()
 
   segments.forEach(function(segment) {
-    pathList.push('[:has_child {path: "' + segment + '"}]');
+    pathList.push('[:'+relationship+' {path: "'+segment+'"}]');
   });
 
-  return pathList.join('->(:page)-')
+  return pathList.join('->(:'+nodeType+')-')
 }
 
 /* Turns an object into a neo4j compatible property list of properties to set.
@@ -160,12 +160,10 @@ function removeProperties(nodeId, properties, success, error) {
 function findRelativePage(pageId, path, success, error) {
   var query =
   `
-  MATCH (p1)-${generatePathList(path)}->(p2:page)
+  MATCH (p1)-${generatePathList(path, "has_child", "page")}->(p2:page)
   WHERE ID(p1)=${pageId}
   RETURN p2
   `
-
-  console.log(query)
 
   sendQuery(query, success, error, "p2");
 }
@@ -177,7 +175,7 @@ function findRelativePage(pageId, path, success, error) {
 function findPage(path, success, error) {
   var query =
   `
-  MATCH (p1:rootpage)-${generatePathList(path)}->(p2:page)
+  MATCH (p1:rootpage)-${generatePathList(path, "has_child", "page")}->(p2:page)
   RETURN p2
   `
 
@@ -199,6 +197,22 @@ function getComponents(nodeId, success, error) {
   sendQuery(query, success, error);
 }
 
+/* nodeId: The id of the node to look under
+ * path: The path to the component
+ * success: success callback, the component list will be the first parameter
+ * error: error callback, an error object is returned.
+ */
+function getComponent(nodeId, path, success, error) {
+  var query =
+  `
+  MATCH (n)-${generatePathList(path, "has_component", "component")}->(c:component)
+  WHERE ID(n)=${nodeId}
+  RETURN c
+  `
+
+  sendQuery(query, success, error);
+}
+
 module.exports = {
   sendQuery: sendQuery,
   addComponent: addComponent,
@@ -207,5 +221,6 @@ module.exports = {
   removeProperties: removeProperties,
   findPage: findPage,
   findRelativePage: findRelativePage,
-  getComponents: getComponents
+  getComponents: getComponents,
+  getComponent: getComponent
 };
