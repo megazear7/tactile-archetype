@@ -47,6 +47,7 @@
   },
   "flat": true,
   "scripts": {
+    "dev" : "NEO4J_URL=http://localhost:7474 node app.js",
     "start": "node app.js",
     "watch": "gulp",
     "build": "node build.js",

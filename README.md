@@ -1,13 +1,21 @@
 # Tactile Archetype
 
-## Getting Started
+## Local Environment
 
-1. Copy this repo
+Run a local environment with "npm run dev"
+Install neo4j and have it run on the default port of 7474
+
+### Getting Started
+
+1. Clone this repo
 2. Run `npm install`
-3. Run `npm start`
-4. Visit http://localhost:3000
+3. Run `npm run dev`
+4. Install neo4j and have it run on the default port of 7474
+5. Visit http://localhost:3000
 
-## Included sub-modules
+## About Tactile
+
+### Included sub-modules
 
 * [Tactile Broker](https://github.com/megazear7/tactile-broker)
     * Connects json content with the pages and components.
@@ -16,7 +24,7 @@
 * [Tactile Gulp](https://github.com/megazear7/tactile-gulp)
     * Uses gulp to create a frontend build.
 
-## Sub Folders
+### Sub Folders
 
 * components
     * Corresponds to tactype="component" objects in the json content.
