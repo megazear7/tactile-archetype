@@ -23,7 +23,9 @@ var run = function(port, componentModels, authorModels) {
   app.get('/*', function (req, res) {
       console.log("Request [GET]: " + req.path);
       var path = req.path.slice(1);
-      res.send(tactileBroker.render(path, componentModels, authorModels, isAuthor));
+      tactileBroker.render(path, componentModels, authorModels, function(responseBody) {
+        res.send(responseBody);
+      });
   });
 
   app.post('/*', function (req, res) {

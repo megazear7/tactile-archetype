@@ -1,5 +1,5 @@
 const init = function(node) {
-  links = [{
+  /*links = [{
       href: node.page.home.path,
       title: node.page.home.title,
       isCurrentPage: node.page.home.path === node.page.path
@@ -11,10 +11,10 @@ const init = function(node) {
       title: child.title,
       isCurrentPage: child.path === node.page.path
     });
-  });
+  });*/
 
   return {
-    links: links
+    //links: links
   }
 };
 

@@ -27,9 +27,15 @@ function sendQuery(query, success, error, resultIdentifier) {
  */
 function generatePathList(path, relationship, nodeType) {
   var pathList = []
-
   var segments = path.split("/")
-  segments.shift()
+
+  if (segments[0].trim() === "") {
+    segments.shift()
+  }
+
+  if (segments.length >= 1 && segments[segments.length-1].trim() === "") {
+    segments.pop()
+  }
 
   segments.forEach(function(segment) {
     pathList.push('[:'+relationship+' {path: "'+segment+'"}]');
@@ -202,7 +208,7 @@ function getComponents(nodeId, success, error) {
  * success: success callback, the component list will be the first parameter
  * error: error callback, an error object is returned.
  */
-function getComponent(nodeId, path, success, error) {
+function findComponent(nodeId, path, success, error) {
   var query =
   `
   MATCH (n)-${generatePathList(path, "has_component", "component")}->(c:component)
@@ -210,7 +216,7 @@ function getComponent(nodeId, path, success, error) {
   RETURN c
   `
 
-  sendQuery(query, success, error);
+  sendQuery(query, success, error, "c");
 }
 
 module.exports = {
@@ -222,5 +228,5 @@ module.exports = {
   findPage: findPage,
   findRelativePage: findRelativePage,
   getComponents: getComponents,
-  getComponent: getComponent
+  findComponent: findComponent
 };

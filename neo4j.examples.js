@@ -27,7 +27,7 @@ officer.findPage("/about", function(aboutPage) {
 
 
 officer.findPage("/about", function(aboutPage) {
-  officer.getComponent(aboutPage._id, "/content/2",
+  officer.findComponent(aboutPage._id, "/content/2",
           success("Found '/about' page, then found '/content/2' component:"),
           error)
 }, error);
