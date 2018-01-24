@@ -1,7 +1,7 @@
 var neo4j = require('neo4j');
 var db = new neo4j.GraphDatabase(process.env['NEO4J_URL']);
 
-function sendQuery(query, success, error) {
+function sendQuery(query, success, error, resultIdentifier) {
   db.cypher({
       query: query
   }, function (err, results) {
@@ -11,7 +11,11 @@ function sendQuery(query, success, error) {
         }
       } else {
         if (typeof success != 'undefined') {
-          success(results)
+          if (typeof resultIdentifier != 'undefined') {
+            success(results[0][resultIdentifier])
+          } else {
+            success(results)
+          }
         }
       }
   });
@@ -70,11 +74,11 @@ function addComponent(nodeId, component, path, success, error) {
   `
   MATCH (n)
   WHERE ID(n)=${nodeId}
-  CREATE (n)-[r:has_component {path: ${path}}]->(c:component ${generatePropertyList(component)})
+  CREATE (n)-[r:has_component {path: "${path}"}]->(c:component ${generatePropertyList(component)})
   RETURN n,c
   `
 
-  sendQuery(query, success, error);
+  sendQuery(query, success, error, "c");
 }
 
 /* parentId: The id of the parent page that the new page will be added under.
@@ -93,7 +97,7 @@ function addPage(parentId, page, path, success, error) {
   RETURN p1,r,p2
   `
 
-  sendQuery(query, success, error);
+  sendQuery(query, success, error, "p2");
 }
 
 /* node: nodeId
@@ -132,6 +136,7 @@ function removeProperties(nodeId, properties, success, error) {
 }
 
 module.exports = {
+  sendQuery: sendQuery,
   addComponent: addComponent,
   addPage: addPage,
   setProperties: setProperties,
