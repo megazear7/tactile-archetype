@@ -83,7 +83,7 @@ function generateRemoveList(identifier, properties) {
  * component: Flat object with the component's properties.
  * path: The path attribute of the relationship. This attribute helps define the url
  *       that leads to this component.
- * success: success callback, an array of results will be returned
+ * success: success callback, the created component will the first parameter
  * error: error callback, an error object is returned.
  */
 function addComponent(nodeId, component, path, success, error) {
@@ -102,7 +102,7 @@ function addComponent(nodeId, component, path, success, error) {
  * page: Flat object with the page's properties.
  * path: The path attribute of the relationship. This attribute helps define the url
  *       that leads to this component.
- * success: success callback, an array of results will be returned
+ * success: success callback, the created page will the first parameter
  * error: error callback, an error object is returned.
  */
 function addPage(parentId, page, path, success, error) {
@@ -119,7 +119,7 @@ function addPage(parentId, page, path, success, error) {
 
 /* node: nodeId
  * properties: Flat object with a list of properties to set.
- * success: success callback, an array of results will be returned
+ * success: success callback, an array of results will the first parameter
  * error: error callback, an error object is returned.
  */
 function setProperties(nodeId, properties, success, error) {
@@ -137,7 +137,7 @@ function setProperties(nodeId, properties, success, error) {
 /* node: nodeId
  * properties: String array of properties to remove or a string with a single
                property to remove.
- * success: success callback, an array of results will be returned
+ * success: success callback, an array of results will the first parameter
  * error: error callback, an error object is returned.
  */
 function removeProperties(nodeId, properties, success, error) {
@@ -152,23 +152,51 @@ function removeProperties(nodeId, properties, success, error) {
   sendQuery(query, success, error);
 }
 
-/* node: nodeId
- * properties: String array of properties to remove or a string with a single
-               property to remove.
- * success: success callback, an array of results will be returned
+/* pageId: The page id to search under
+ * path: The relative path to a page
+ * success: success callback, the found page will the first parameter
+ * error: error callback, an error object is returned.
+ */
+function findRelativePage(pageId, path, success, error) {
+  var query =
+  `
+  MATCH (p1)-${generatePathList(path)}->(p2:page)
+  WHERE ID(p1)=${pageId}
+  RETURN p2
+  `
+
+  console.log(query)
+
+  sendQuery(query, success, error, "p2");
+}
+
+/* path: The absolute path to a page
+ * success: success callback, the found page will the first parameter
  * error: error callback, an error object is returned.
  */
 function findPage(path, success, error) {
   var query =
   `
-  MATCH
-  (p1:rootpage)-
-  ${generatePathList(path)}
-  ->(p2:page)
+  MATCH (p1:rootpage)-${generatePathList(path)}->(p2:page)
   RETURN p2
   `
 
   sendQuery(query, success, error, "p2");
+}
+
+/* nodeId: The id of the node to look under
+ * success: success callback, the component list will be the first parameter
+ * error: error callback, an error object is returned.
+ */
+function getComponents(nodeId, success, error) {
+  var query =
+  `
+  MATCH (n)-[:has_component]->(c:component)
+  WHERE ID(n)=${nodeId}
+  RETURN c
+  `
+
+  sendQuery(query, success, error);
 }
 
 module.exports = {
@@ -177,5 +205,7 @@ module.exports = {
   addPage: addPage,
   setProperties: setProperties,
   removeProperties: removeProperties,
-  findPage: findPage
+  findPage: findPage,
+  findRelativePage: findRelativePage,
+  getComponents: getComponents
 };
