@@ -1,10 +1,10 @@
 <div class="header">
   <h3>{model.title}</h3>
   <ul>
-    {! #each model.links}}
-      <li class="{{#if isCurrentPage}}active{{/if}}">
-        <a href="{{href}}" {{#if isCurrentPage}}disabled{{/if}}>{{title}}</a>
+    {#model.links}
+      <li class="{?isCurrentPage}active{/isCurrentPage}">
+        <a href="{href}" {?isCurrentPage}disabled{/isCurrentPage}>{title}</a>
       </li>
-    {{/each !}
+    {/model.links}
   </ul>
 </div>
