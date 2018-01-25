@@ -10,6 +10,9 @@ function sendQuery(query, resultIdentifier) {
           reject(err);
         } else {
           if (typeof resultIdentifier != 'undefined') {
+            console.log(query)
+            console.log(results)
+            console.log(resultIdentifier)
             resolve(results[0][resultIdentifier])
           } else {
             resolve(results)
