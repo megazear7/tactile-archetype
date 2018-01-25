@@ -1,7 +1,7 @@
 var neo4j = require('neo4j');
 var db = new neo4j.GraphDatabase(process.env['NEO4J_URL']);
 
-function sendQuery(query, success, error, resultIdentifier) {
+function sendQuery(query, resultIdentifier) {
   return new Promise(function(resolve, reject) {
     db.cypher({
         query: query
@@ -89,7 +89,7 @@ function generateRemoveList(identifier, properties) {
  * success: success callback, the created component will the first parameter
  * error: error callback, an error object is returned.
  */
-function addComponent(nodeId, component, path, success, error) {
+function addComponent(nodeId, component, path) {
   var query =
   `
   MATCH (n)
@@ -98,7 +98,7 @@ function addComponent(nodeId, component, path, success, error) {
   RETURN n,c
   `
 
-  return sendQuery(query, success, error, "c");
+  return sendQuery(query, "c");
 }
 
 /* parentId: The id of the parent page that the new page will be added under.
@@ -108,7 +108,7 @@ function addComponent(nodeId, component, path, success, error) {
  * success: success callback, the created page will the first parameter
  * error: error callback, an error object is returned.
  */
-function addPage(parentId, page, path, success, error) {
+function addPage(parentId, page, path) {
   var query =
   `
   MATCH (p1)
@@ -117,7 +117,7 @@ function addPage(parentId, page, path, success, error) {
   RETURN p1,r,p2
   `
 
-  return sendQuery(query, success, error, "p2");
+  return sendQuery(query, "p2");
 }
 
 /* node: nodeId
@@ -125,7 +125,7 @@ function addPage(parentId, page, path, success, error) {
  * success: success callback, an array of results will the first parameter
  * error: error callback, an error object is returned.
  */
-function setProperties(nodeId, properties, success, error) {
+function setProperties(nodeId, properties) {
   var query =
   `
   MATCH (n)
@@ -134,7 +134,7 @@ function setProperties(nodeId, properties, success, error) {
   RETURN n
   `
 
-  return sendQuery(query, success, error);
+  return sendQuery(query);
 }
 
 /* node: nodeId
@@ -143,7 +143,7 @@ function setProperties(nodeId, properties, success, error) {
  * success: success callback, an array of results will the first parameter
  * error: error callback, an error object is returned.
  */
-function removeProperties(nodeId, properties, success, error) {
+function removeProperties(nodeId, properties) {
   var query =
   `
   MATCH (n)
@@ -152,7 +152,7 @@ function removeProperties(nodeId, properties, success, error) {
   RETURN n
   `
 
-  return sendQuery(query, success, error);
+  return sendQuery(query);
 }
 
 /* pageId: The page id to search under
@@ -160,7 +160,7 @@ function removeProperties(nodeId, properties, success, error) {
  * success: success callback, the found page will the first parameter
  * error: error callback, an error object is returned.
  */
-function findRelativePage(pageId, path, success, error) {
+function findRelativePage(pageId, path) {
   var query =
   `
   MATCH (p1)-${generatePathList(path, "has_child", "page")}->(p2:page)
@@ -168,28 +168,42 @@ function findRelativePage(pageId, path, success, error) {
   RETURN p2
   `
 
-  return sendQuery(query, success, error, "p2");
+  return sendQuery(query, "p2");
+}
+
+function rootPage() {
+  query =
+  `
+  MATCH (p:rootpage)
+  RETURN p
+  `
+
+  return sendQuery(query, "p");
 }
 
 /* path: The absolute path to a page
  * success: success callback, the found page will the first parameter
  * error: error callback, an error object is returned.
  */
-function findPage(path, success, error) {
-  var query =
-  `
-  MATCH (p1:rootpage)-${generatePathList(path, "has_child", "page")}->(p2:page)
-  RETURN p2
-  `
+function findPage(path) {
+  if (path === "/" || path === "") {
+    return rootPage()
+  } else {
+    var query =
+    `
+    MATCH (p1:rootpage)-${generatePathList(path, "has_child", "page")}->(p2:page)
+    RETURN p2
+    `
 
-  return sendQuery(query, success, error, "p2");
+    return sendQuery(query, "p2");
+  }
 }
 
 /* nodeId: The id of the node to look under
  * success: success callback, the component list will be the first parameter
  * error: error callback, an error object is returned.
  */
-function getComponents(nodeId, success, error) {
+function getComponents(nodeId) {
   var query =
   `
   MATCH (n)-[:has_component]->(c:component)
@@ -197,7 +211,7 @@ function getComponents(nodeId, success, error) {
   RETURN c
   `
 
-  return sendQuery(query, success, error);
+  return sendQuery(query);
 }
 
 /* nodeId: The id of the node to look under
@@ -205,7 +219,7 @@ function getComponents(nodeId, success, error) {
  * success: success callback, the component list will be the first parameter
  * error: error callback, an error object is returned.
  */
-function findComponent(nodeId, path, success, error) {
+function findComponent(nodeId, path) {
   var query =
   `
   MATCH (n)-${generatePathList(path, "has_component", "component")}->(c:component)
@@ -213,7 +227,7 @@ function findComponent(nodeId, path, success, error) {
   RETURN c
   `
 
-  return sendQuery(query, success, error, "c");
+  return sendQuery(query, "c");
 }
 
 module.exports = {

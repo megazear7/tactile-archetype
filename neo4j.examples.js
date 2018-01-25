@@ -15,6 +15,18 @@ var success = function(message, result) {
   }
 }
 
+officer.findPage("/").then(
+  success("Found root page using the rootPage method:"),
+  error)
+
+officer.findPage("/").then(
+  success("Found root page using the '/' path:"),
+  error)
+
+officer.findPage("/").then(
+  success("Found root page using the '' path:"),
+  error)
+
 officer.findPage("/about/example_sub_page/even_lower_page").then(
   success("Found '/about/example_sub_page/even_lower_page' page:"),
   error)

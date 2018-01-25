@@ -1,15 +1,13 @@
-var tactileActuary = require('./actuary.js')
-
 var update = function(path, data, callback) {
-  tactileActuary.updateNode(path, data, callback);
+  // TODO Reimplement using the officer
 }
 
 var add = function(path, data, callback) {
-  tactileActuary.addNode(path, data, callback);
+  // TODO Reimplement using the officer
 }
 
 var remove = function(path, callback) {
-  tactileActuary.deleteNode(path, callback);
+  // TODO Reimplement using the officer
 }
 
 module.exports = {

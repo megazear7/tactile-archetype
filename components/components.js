@@ -1,4 +1,4 @@
-var fs = require('fs');
+const fs = require('fs');
 const { join } = require('path')
 
 function init(dust) {
