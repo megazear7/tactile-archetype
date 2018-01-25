@@ -8,26 +8,36 @@ var model = function(path, callback) {
 }
 
 var render = function(path, callback) {
-  officer.findPage(path, function(page) {
+  officer.findPage(path).then(function(page) {
+    var pageTemplate = 'page-'+page.properties.pageType
+
     dust.helpers.render = function(chunk, context, bodies, params) {
-      test = new Promise(function(resolve, reject) {
-        dust.render('component-'+'header', {}, function(err, out) {
-          if (err) {
-            throw err
-          } else {
-            chunk.write(out)
-          }
-        });
+      return chunk.map(function(chunk) {
+        var currentNodeId = context.get("_id")
+        var compPath = params.path
+
+        officer.findComponent(currentNodeId, compPath).then(function(component) {
+          var componentTemplate = params.compType ? 'component-'+params.compType : 'component-'+component.properties.compType
+
+          dust.render(componentTemplate, component, function(err, out) {
+            if (err) {
+              throw err
+            } else {
+              chunk.write(out)
+              chunk.end()
+            }
+          })
+        })
       })
     }
 
     page.test = new Promise(function(resolve, reject) {
       setTimeout(function() {
         resolve("Hello, World!")
-      }, 1000)
+      }, 500)
     })
 
-    dust.render('page-'+page.properties.pageType, page, function(err, out) {
+    dust.render(pageTemplate, page, function(err, out) {
       if (err) {
         throw err
       } else {

@@ -28,7 +28,6 @@ function init(dust) {
     var template = directory + "/" + name + ".html";
     var compiled = dust.compile(fs.readFileSync(template, 'utf8'), 'component-'+name);
     dust.loadSource(compiled);
-
   });
 
   return {

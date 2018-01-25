@@ -2,25 +2,22 @@ var neo4j = require('neo4j');
 var db = new neo4j.GraphDatabase(process.env['NEO4J_URL']);
 
 function sendQuery(query, success, error, resultIdentifier) {
-  db.cypher({
-      query: query
-  }, function (err, results) {
-      if (err) {
-        if (typeof error != 'undefined') {
-          error(err);
-        }
-      } else {
-        if (typeof success != 'undefined') {
+  return new Promise(function(resolve, reject) {
+    db.cypher({
+        query: query
+    }, function (err, results) {
+        if (err) {
+          reject(err);
+        } else {
           if (typeof resultIdentifier != 'undefined') {
-            success(results[0][resultIdentifier])
+            resolve(results[0][resultIdentifier])
           } else {
-            success(results)
+            resolve(results)
           }
         }
-      }
-  });
+    })
+  })
 }
-
 
 /* Turns a path string into a neo4j compatible relationship list
  * path: The path string to convert.
@@ -101,7 +98,7 @@ function addComponent(nodeId, component, path, success, error) {
   RETURN n,c
   `
 
-  sendQuery(query, success, error, "c");
+  return sendQuery(query, success, error, "c");
 }
 
 /* parentId: The id of the parent page that the new page will be added under.
@@ -120,7 +117,7 @@ function addPage(parentId, page, path, success, error) {
   RETURN p1,r,p2
   `
 
-  sendQuery(query, success, error, "p2");
+  return sendQuery(query, success, error, "p2");
 }
 
 /* node: nodeId
@@ -137,7 +134,7 @@ function setProperties(nodeId, properties, success, error) {
   RETURN n
   `
 
-  sendQuery(query, success, error);
+  return sendQuery(query, success, error);
 }
 
 /* node: nodeId
@@ -155,7 +152,7 @@ function removeProperties(nodeId, properties, success, error) {
   RETURN n
   `
 
-  sendQuery(query, success, error);
+  return sendQuery(query, success, error);
 }
 
 /* pageId: The page id to search under
@@ -171,7 +168,7 @@ function findRelativePage(pageId, path, success, error) {
   RETURN p2
   `
 
-  sendQuery(query, success, error, "p2");
+  return sendQuery(query, success, error, "p2");
 }
 
 /* path: The absolute path to a page
@@ -185,7 +182,7 @@ function findPage(path, success, error) {
   RETURN p2
   `
 
-  sendQuery(query, success, error, "p2");
+  return sendQuery(query, success, error, "p2");
 }
 
 /* nodeId: The id of the node to look under
@@ -200,7 +197,7 @@ function getComponents(nodeId, success, error) {
   RETURN c
   `
 
-  sendQuery(query, success, error);
+  return sendQuery(query, success, error);
 }
 
 /* nodeId: The id of the node to look under
@@ -216,7 +213,7 @@ function findComponent(nodeId, path, success, error) {
   RETURN c
   `
 
-  sendQuery(query, success, error, "c");
+  return sendQuery(query, success, error, "c");
 }
 
 module.exports = {

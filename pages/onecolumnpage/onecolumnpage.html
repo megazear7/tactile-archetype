@@ -7,10 +7,10 @@
     <body {! #if home.isAuthor !}class="edit"{! /if !}>
         <tactile-mode></tactile-mode>
         <div class="onecolumn-container">
+            {@render path="header" compType="header" /}
             <div class="content">
                 <h2>{properties.pageType}</h2>
                 <h2>{test}</h2>
-                <h2>{@render /}<h2>
                 {! render "content" "compList" !}
             </div>
             <div class="footer inverted">
