@@ -1,4 +1,4 @@
-const init = function(node) {
+module.exports = function(node) {
   return {
     title: "Footer",
     description: "A simple footer component that can have links added to it",
@@ -18,5 +18,3 @@ const init = function(node) {
     ]
   }
 };
-
-module.exports = { init: init };

@@ -14,7 +14,18 @@ dust.helpers.render = function(chunk, context, bodies, params) {
     var currentNodeId = context.get("_id")
     var compPath = params.path
 
-    var renderComponent = function(chunk, component, template) {
+    var renderComponent = function(chunk, component) {
+      var compType = component.properties.compType
+      var template = 'component-'+compType
+
+      if (typeof components.models[compType] !== "undefined") {
+        component.model = components.models[compType](component)
+      }
+
+      if (typeof components.authorModels[compType] !== "undefined") {
+        component.authorModel = components.authorModels[compType](component)
+      }
+
       dust.render(template, component, function(err, out) {
         if (err) {
           throw err
@@ -26,9 +37,9 @@ dust.helpers.render = function(chunk, context, bodies, params) {
     }
 
     officer.findComponent(currentNodeId, compPath).then(function(component) {
-      renderComponent(chunk, component, params.compType ? 'component-'+params.compType : 'component-'+component.properties.compType)
+      renderComponent(chunk, component)
     }, function() {
-      renderComponent(chunk, {properties: {compType: params.compType}}, 'component-'+params.compType)
+      renderComponent(chunk, {properties: {compType: params.compType}})
     })
   })
 }

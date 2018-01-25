@@ -1,7 +1,7 @@
 const fs = require('fs');
 const { join } = require('path')
 
-function init(dust) {
+module.exports = function(dust) {
   const isDirectory = source => fs.lstatSync(source).isDirectory()
   const directories = source =>
     fs.readdirSync(source).map(name => join(source, name)).filter(isDirectory)
@@ -35,5 +35,3 @@ function init(dust) {
     authorModels: authorModels
   }
 }
-
-module.exports = init

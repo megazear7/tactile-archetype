@@ -1,4 +1,4 @@
-const init = function(node) {
+module.exports = function(component) {
   /*links = [{
       href: node.page.home.path,
       title: node.page.home.title,
@@ -15,7 +15,6 @@ const init = function(node) {
 
   return {
     //links: links
+    title: "Header"
   }
 };
-
-module.exports = { init: init };
