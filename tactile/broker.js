@@ -28,7 +28,7 @@ dust.helpers.render = function(chunk, context, bodies, params) {
     officer.findComponent(currentNodeId, compPath).then(function(component) {
       renderComponent(chunk, component, params.compType ? 'component-'+params.compType : 'component-'+component.properties.compType)
     }, function() {
-      renderComponent(chunk, {}, 'component-'+params.compType)
+      renderComponent(chunk, {properties: {compType: params.compType}}, 'component-'+params.compType)
     })
   })
 }
