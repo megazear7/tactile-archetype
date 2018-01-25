@@ -1,6 +1,4 @@
-const fs = require('fs');
 const dust = require('dustjs-linkedin')
-const { join } = require('path')
 const officer = require('./officer.js')
 const components = require('../components/components.js')(dust)
 const pages = require('../pages/pages.js')(dust)
