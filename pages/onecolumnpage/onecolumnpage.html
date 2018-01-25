@@ -9,7 +9,8 @@
         <div class="onecolumn-container">
             {@render path="header" compType="header" /}
             <div class="content">
-                {@render path="content" compType="compList" /}
+              <h3>{model.title}</h3>
+              {@render path="content" compType="compList" /}
             </div>
             <div class="footer inverted">
               {@render path="footer" compType="footer" /}

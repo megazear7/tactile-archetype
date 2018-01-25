@@ -46,7 +46,16 @@ dust.helpers.render = function(chunk, context, bodies, params) {
 
 var render = function(path, callback) {
   officer.findPage(path).then(function(page) {
-    var pageTemplate = 'page-'+page.properties.pageType
+    var pageType = page.properties.pageType
+    var pageTemplate = 'page-'+pageType
+
+    if (typeof pages.models[pageType] !== "undefined") {
+      page.model = pages.models[pageType](page)
+    }
+
+    if (typeof pages.authorModels[pageType] !== "undefined") {
+      page.authorModel = pages.authorModels[pageType](page)
+    }
 
     dust.render(pageTemplate, page, function(err, out) {
       if (err) {

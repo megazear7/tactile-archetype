@@ -14,17 +14,19 @@ module.exports = function(dust) {
     var filePath = directory + "/" + name + ".js";
     var modulePath = "./" + name + "/" + name + ".js";
 
+    // Add model
     if (fs.existsSync(filePath)) {
       models[name] = require(modulePath);
     }
 
+    // Add author model
     var authorFilePath = directory + "/author.js";
     var authorModulePath = "./" + name + "/author.js";
-
     if (fs.existsSync(authorFilePath)) {
       authorModels[name] = require(authorModulePath);
     }
 
+    // Add template
     var template = directory + "/" + name + ".html";
     var compiled = dust.compile(fs.readFileSync(template, 'utf8'), 'component-'+name);
     dust.loadSource(compiled);
