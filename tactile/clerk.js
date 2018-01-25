@@ -17,7 +17,9 @@ var run = function(port) {
   app.get('/*.json', function (req, res) {
       console.log("Request [GET JSON]: " + req.path);
       var path = req.path.slice(1).split(".")[0];
-      res.send(tactileBroker.model(path, isAuthor));
+      tactileBroker.model(path, function(responseBody) {
+        res.send(responseBody);
+      });
   });
 
   app.get('/*', function (req, res) {
