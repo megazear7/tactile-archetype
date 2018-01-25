@@ -5,7 +5,7 @@ const tactileOfficer = require('./officer');
 const tactileTeller = require('./teller');
 var fs = require('fs');
 
-var run = function(port, componentModels, authorModels) {
+var run = function(port) {
   const app = express();
 
   app.use(bodyParser.json({type: "*/json"}));
@@ -17,13 +17,13 @@ var run = function(port, componentModels, authorModels) {
   app.get('/*.json', function (req, res) {
       console.log("Request [GET JSON]: " + req.path);
       var path = req.path.slice(1).split(".")[0];
-      res.send(tactileBroker.model(path, componentModels, authorModels, isAuthor));
+      res.send(tactileBroker.model(path, isAuthor));
   });
 
   app.get('/*', function (req, res) {
       console.log("Request [GET]: " + req.path);
       var path = req.path.slice(1);
-      tactileBroker.render(path, componentModels, authorModels, function(responseBody) {
+      tactileBroker.render(path, function(responseBody) {
         res.send(responseBody);
       });
   });
@@ -32,7 +32,7 @@ var run = function(port, componentModels, authorModels) {
       console.log("Request [POST]: " + req.path);
       var path = req.path.slice(1);
       tactileTeller.update(path, req.body, function() {
-        res.send(tactileBroker.model(path, componentModels, authorModels, isAuthor));
+        res.send(tactileBroker.model(path, isAuthor));
       });
   });
 
@@ -40,7 +40,7 @@ var run = function(port, componentModels, authorModels) {
       console.log("Request [PUT]: " + req.path);
       var path = req.path.slice(1);
       tactileTeller.add(path, req.body, function() {
-        res.send(tactileBroker.model(path, componentModels, authorModels, isAuthor));
+        res.send(tactileBroker.model(path, isAuthor));
       });
   });
 

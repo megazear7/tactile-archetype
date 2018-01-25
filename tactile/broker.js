@@ -1,39 +1,16 @@
-var fs = require('fs');
-//var Handlebars = require('handlebars')
+const fs = require('fs');
 const dust = require('dustjs-linkedin')
 const { join } = require('path')
-var officer = require('./officer.js')
+const officer = require('./officer.js')
+const components = require('../components/components.js')(dust)
+const pages = require('../pages/pages.js')(dust)
 
-var model = function(path, componentModels, authorModels, callback) {
+var model = function(path, callback) {
   callback({test: "Hello, World!"})
 }
 
-var render = function(path, componentModels, authorModels, callback) {
-  var componentTemplates = {};
-  var pageTemplates = {};
-  const isDirectory = source => fs.lstatSync(source).isDirectory()
-  const directories = source =>
-    fs.readdirSync(source).map(name => join(source, name)).filter(isDirectory)
-
-
-  // TODO in Prod we should not reload the components on every request
-  directories("components").forEach(function(directory) {
-    var name = directory.split("/").slice(-1)[0];
-    var template = directory + "/" + name + ".html";
-    var compiled = dust.compile(fs.readFileSync(template, 'utf8'), 'component-'+name);
-    dust.loadSource(compiled);
-  });
-
-  // TODO in Prod we should not reload the components on every request
-  directories("pages").forEach(function(directory) {
-    var name = directory.split("/").slice(-1)[0];
-    var template = directory + "/" + name + ".html";
-    var compiled = dust.compile(fs.readFileSync(template, 'utf8'), 'page-'+name);
-    dust.loadSource(compiled);
-  });
-
+var render = function(path, callback) {
   officer.findPage(path, function(page) {
-
     dust.helpers.render = function(chunk, context, bodies, params) {
       test = new Promise(function(resolve, reject) {
         dust.render('component-'+'header', {}, function(err, out) {
@@ -59,7 +36,6 @@ var render = function(path, componentModels, authorModels, callback) {
         callback(out)
       }
     });
-
   })
 }
 
