@@ -11,9 +11,6 @@ var run = function(port) {
   app.use(bodyParser.json({type: "*/json"}));
   app.use(express.static('dist'));
 
-  // This should be an ENV config
-  var isAuthor = true;
-
   app.get('/*.json', function (req, res) {
       console.log("Request [GET JSON]: " + req.path);
       var path = req.path.slice(1).split(".")[0];
@@ -34,7 +31,7 @@ var run = function(port) {
       console.log("Request [POST]: " + req.path);
       var path = req.path.slice(1);
       tactileTeller.update(path, req.body, function() {
-        res.send(tactileBroker.model(path, isAuthor));
+        res.send(tactileBroker.model(path));
       });
   });
 
@@ -42,7 +39,7 @@ var run = function(port) {
       console.log("Request [PUT]: " + req.path);
       var path = req.path.slice(1);
       tactileTeller.add(path, req.body, function() {
-        res.send(tactileBroker.model(path, isAuthor));
+        res.send(tactileBroker.model(path));
       });
   });
 
