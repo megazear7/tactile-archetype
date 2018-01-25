@@ -14,10 +14,8 @@ dust.helpers.render = function(chunk, context, bodies, params) {
     var currentNodeId = context.get("_id")
     var compPath = params.path
 
-    officer.findComponent(currentNodeId, compPath).then(function(component) {
-      var componentTemplate = params.compType ? 'component-'+params.compType : 'component-'+component.properties.compType
-
-      dust.render(componentTemplate, component, function(err, out) {
+    var renderComponent = function(chunk, component, template) {
+      dust.render(template, component, function(err, out) {
         if (err) {
           throw err
         } else {
@@ -25,6 +23,12 @@ dust.helpers.render = function(chunk, context, bodies, params) {
           chunk.end()
         }
       })
+    }
+
+    officer.findComponent(currentNodeId, compPath).then(function(component) {
+      renderComponent(chunk, component, params.compType ? 'component-'+params.compType : 'component-'+component.properties.compType)
+    }, function() {
+      renderComponent(chunk, {}, 'component-'+params.compType)
     })
   })
 }

@@ -9,7 +9,7 @@ function sendQuery(query, resultIdentifier) {
         if (err) {
           reject(err);
         } else {
-          if (typeof resultIdentifier != 'undefined') {
+          if (typeof resultIdentifier != 'undefined' && typeof results[0] != 'undefined' && typeof results[0][resultIdentifier] != 'undefined') {
             resolve(results[0][resultIdentifier])
           } else {
             resolve(results)
