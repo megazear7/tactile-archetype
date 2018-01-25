@@ -48,7 +48,8 @@
   },
   "flat": true,
   "scripts": {
-    "seed": "NEO4J_URL=http://localhost:7474 MODE=author node neo4j.seed.js",
+    "devseed": "NEO4J_URL=http://localhost:7474 node neo4j.seed.js",
+    "seed": "node neo4j.seed.js",
     "neo4jexamples": "NEO4J_URL=http://localhost:7474 node neo4j.examples.js",
     "dev": "NEO4J_URL=http://localhost:7474 node app.js",
     "start": "node app.js",
