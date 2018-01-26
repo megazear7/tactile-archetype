@@ -62,6 +62,30 @@ module.exports = function(dust) {
       })
     }
 
+    if (! page.labels.includes("rootpage")) {
+      page.path = function() {
+        return new Promise(function(resolve, reject) {
+          officer.sendQuery(`
+            MATCH path = (:rootpage)-[:has_child*]->(current:page)
+            WHERE ID(current)=${page._id}
+            RETURN RELATIONSHIPS(path)
+            `, 'RELATIONSHIPS(path)').then(function(results) {
+            var paths = []
+            results.forEach(function(result) {
+              paths.push(result.properties.path)
+            })
+            resolve("/" + paths.join("/"))
+          })
+        })
+      }
+    } else {
+      page.path = function() {
+        return new Promise(function(resolve, reject) {
+          resolve("/")
+        })
+      }
+    }
+
     return page
   }
 

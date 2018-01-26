@@ -10,9 +10,11 @@
             {@render path="header" compType="header" /}
             <div class="primary">
                 {@render path="primary" compType="compList" /}
-                {#children}
-                  <h4>{properties.title}</h4>
-                {/children}
+                </h3>Child Pages:</h3>
+                {#childLinks}
+                  <br>
+                  <a href="{href}">{title}</a>
+                {/childLinks}
             </div>
             <div class="secondary">
                 {@render path="secondary" compType="compList" /}

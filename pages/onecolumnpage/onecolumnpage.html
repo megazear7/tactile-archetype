@@ -9,10 +9,25 @@
         <div class="onecolumn-container">
             {@render path="header" compType="header" /}
             <div class="content">
-              <h3>Current page title: {title}</h3>
-              <h3>Parent page: {parent.properties.title}</h3>
-              <h3>Home page: {home.properties.title}</h3>
-              <h3>Root page: {root.properties.title}</h3>
+              Current page title: {title}
+              <br>
+              Home page: {home.properties.title}
+              <a href="{homeLink.href}">{homeLink.title}</a>
+              <br>
+              <br>
+              Root page: {root.properties.title}
+              <a href="{rootLink.href}">{rootLink.title}</a>
+              <br>
+              <br>
+              Parent Page:
+              <a href="{parentLink.href}">{parentLink.title}</a>
+              <br>
+              <br>
+              Child Pages:
+              {#childLinks}
+                <br>
+                <a href="{href}">{title}</a>
+              {/childLinks}
               {@render path="content" compType="compList" /}
             </div>
             <div class="footer inverted">
