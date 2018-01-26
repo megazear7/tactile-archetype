@@ -9,6 +9,8 @@
         <div class="onecolumn-container">
             {@render path="header" compType="header" /}
             <div class="content">
+              {@render path="content" compType="compList" /}
+              <hr>
               Current page title: {title}
               <br>
               Home page: {home.properties.title}
@@ -28,7 +30,6 @@
                 <br>
                 <a href="{href}">{title}</a>
               {/childLinks}
-              {@render path="content" compType="compList" /}
             </div>
             <div class="footer inverted">
               {@render path="footer" compType="footer" /}

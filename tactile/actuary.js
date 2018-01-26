@@ -108,22 +108,31 @@ module.exports = function(dust) {
       }
     }
 
-    component.children = function() {
-      return new Promise(function(resolve, reject) {
-        officer.sendQuery(`
-          MATCH (current:component)-[r:has_component]->(child:component)
-          WHERE ID(current)=${component._id}
-          RETURN child, r.path
-          `).then(function(results) {
-          children = []
-          results.forEach(function(result) {
-            var component = extendComponent(result["child"])
-            component.path = result["r.path"]
-            children.push(component)
-          })
-          resolve(children)
+
+    if (typeof component._id === "undefined") {
+      component.page = function() {
+        return new Promise(function(resolve, reject) {
+          resolve([])
         })
-      })
+      }
+    } else {
+      component.children = function() {
+        return new Promise(function(resolve, reject) {
+          officer.sendQuery(`
+            MATCH (current:component)-[r:has_component]->(child:component)
+            WHERE ID(current)=${component._id}
+            RETURN child, r.path
+            `).then(function(results) {
+            children = []
+            results.forEach(function(result) {
+              var component = extendComponent(result["child"])
+              component.path = result["r.path"]
+              children.push(component)
+            })
+            resolve(children)
+          })
+        })
+      }
     }
 
     return component
