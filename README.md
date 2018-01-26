@@ -2,10 +2,9 @@
 
 ## Current Status
 
-1. Replacing Mustache templates with Dust templates.
-2. Need to update the officer to return promises instead of using callbacks.
-3. Should I update the officer to be more of an ORM with Page and Component objects instead of just being a list of helper methods. Maybe wrap the officer in an ORM?
-4. Need to update components to take data out of neo4j using the associated utility methods.
+1. Should I update the officer to be more of an ORM with Page and Component objects instead of just being a list of helper methods. Maybe wrap the officer in an ORM?
+1. Need to update components to take data out of neo4j using the associated utility methods.
+1. Remove references to Mustache and the npm dependency.
 
 ## Local Environment
 
