@@ -108,6 +108,22 @@ module.exports = function(dust) {
       }
     }
 
+    component.children = function() {
+      return new Promise(function(resolve, reject) {
+        officer.sendQuery(`
+          MATCH (current:component)-[:has_component]->(child:component)
+          WHERE ID(current)=${component._id}
+          RETURN child
+          `).then(function(results) {
+          children = []
+          results.forEach(function(result) {
+            children.push(extendPage(result["child"]))
+          })
+          resolve(children)
+        })
+      })
+    }
+
     return component
   }
 

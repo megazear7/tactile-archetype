@@ -1,9 +1,5 @@
 <h3>{properties.compType}</h3>
 
-{!
-
-{{#components}}
-  {{render false compType}}
-{{/components}}
-
-!}
+{#childComponents}
+  <h5>{compType}</h5>
+{/childComponents}
