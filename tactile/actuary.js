@@ -9,7 +9,6 @@ module.exports = function(dust) {
   function extendPage(page) {
     var pageType = page.properties.pageType
     page.node = { }
-    page.node.test = "PAGE FROM ACTUARY"
 
     page.node.parent = function() {
       return new Promise(function(resolve, reject) {
@@ -37,7 +36,6 @@ module.exports = function(dust) {
   function extendComponent(component) {
     var compType = component.properties.compType
     component.node = { }
-    component.node.test = "COMPONENT FROM ACTUARY"
 
     if (typeof components.authorModels[compType] !== "undefined") {
       component.authorModel = components.authorModels[compType](component)
