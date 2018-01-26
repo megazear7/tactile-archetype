@@ -10,7 +10,7 @@
             {@render path="header" compType="header" /}
             <div class="content">
               <h3>{model.title}</h3>
-              <h3>{node.test}</h3>
+              <h3>From Actuary: {node.parent.properties.title}</h3>
               {@render path="content" compType="compList" /}
             </div>
             <div class="footer inverted">

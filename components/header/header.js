@@ -5,8 +5,6 @@ module.exports = function(component) {
     isCurrentPage: false
   }]
 
-  // TODO Add child links
-
   return {
     links: links,
     title: "Header"
