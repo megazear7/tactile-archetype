@@ -2,8 +2,6 @@ const officer = require('./officer.js')
 
 module.exports = function(dust) {
   function extendPage(page) {
-    var pageType = page.properties.pageType
-
     if (! page.labels.includes("rootpage")) {
       page.parent = function() {
         return new Promise(function(resolve, reject) {
@@ -89,7 +87,27 @@ module.exports = function(dust) {
     return page
   }
 
-  function extendComponent(component) {
+  function extendComponent(component, page) {
+    if (typeof component._id === "undefined") {
+      component.page = function() {
+        return new Promise(function(resolve, reject) {
+          resolve(page)
+        })
+      }
+    } else {
+      component.page = function() {
+        return new Promise(function(resolve, reject) {
+          officer.sendQuery(`
+            MATCH (p:page)-[:has_component*]->(c:component)
+            WHERE ID(c)=${component._id}
+            RETURN p
+            `, 'p').then(function(page) {
+            resolve(extendPage(page))
+          })
+        })
+      }
+    }
+
     return component
   }
 

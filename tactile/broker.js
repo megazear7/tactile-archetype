@@ -10,45 +10,48 @@ var model = function(path, callback) {
   })
 }
 
-dust.helpers.render = function(chunk, context, bodies, params) {
-  return chunk.map(function(chunk) {
-    var currentNodeId = context.get("_id")
-    var compPath = params.path
+function componentRenderer(page) {
+  return function(chunk, context, bodies, params) {
+    return chunk.map(function(chunk) {
+      var currentNodeId = context.get("_id")
+      var compPath = params.path
 
-    var renderComponent = function(chunk, component) {
-      var compType = component.properties.compType
-      var template = 'component-'+compType
+      var renderComponent = function(chunk, component) {
+        var compType = component.properties.compType
+        var template = 'component-'+compType
 
-      actuary.extendComponent(component)
+        actuary.extendComponent(component, page)
 
-      if (typeof components.authorModels[compType] !== "undefined") {
-        component.authorModel = components.authorModels[compType](component)
-      }
-
-      if (typeof components.models[compType] !== "undefined") {
-        components.models[compType](component)
-      }
-
-      dust.render(template, component, function(err, out) {
-        if (err) {
-          throw err
-        } else {
-          chunk.write(out)
-          chunk.end()
+        if (typeof components.authorModels[compType] !== "undefined") {
+          component.authorModel = components.authorModels[compType](component)
         }
-      })
-    }
 
-    officer.findComponent(currentNodeId, compPath).then(function(component) {
-      renderComponent(chunk, component)
-    }, function() {
-      renderComponent(chunk, {properties: {compType: params.compType}})
+        if (typeof components.models[compType] !== "undefined") {
+          components.models[compType](component)
+        }
+
+        dust.render(template, component, function(err, out) {
+          if (err) {
+            throw err
+          } else {
+            chunk.write(out)
+            chunk.end()
+          }
+        })
+      }
+
+      officer.findComponent(currentNodeId, compPath).then(function(component) {
+        renderComponent(chunk, component)
+      }, function() {
+        renderComponent(chunk, {properties: {compType: params.compType}})
+      })
     })
-  })
+  }
 }
 
 var render = function(path, callback) {
   officer.findPage(path).then(function(page) {
+    dust.helpers.render = componentRenderer(page)
     var pageType = page.properties.pageType
     var pageTemplate = 'page-'+pageType
 

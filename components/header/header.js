@@ -5,5 +5,7 @@ module.exports = function(component) {
     isCurrentPage: false
   }]
 
+  component.page = component.page()
+
   component.title = "Header"
 };
