@@ -1,4 +1,4 @@
-const init = function(node) {
+module.exports = function(node) {
   return {
     title: "Text",
     description: "A multi purpose text component",
@@ -7,5 +7,3 @@ const init = function(node) {
     ]
   }
 };
-
-module.exports = { init: init };

@@ -4,7 +4,8 @@ module.exports = function(component) {
       var components = []
       children.forEach(function(child) {
         components.push({
-          compType: child.properties.compType
+          compType: child.properties.compType,
+          path: child.path
         })
       })
       resolve(components)

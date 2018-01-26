@@ -111,13 +111,15 @@ module.exports = function(dust) {
     component.children = function() {
       return new Promise(function(resolve, reject) {
         officer.sendQuery(`
-          MATCH (current:component)-[:has_component]->(child:component)
+          MATCH (current:component)-[r:has_component]->(child:component)
           WHERE ID(current)=${component._id}
-          RETURN child
+          RETURN child, r.path
           `).then(function(results) {
           children = []
           results.forEach(function(result) {
-            children.push(extendPage(result["child"]))
+            var component = extendComponent(result["child"])
+            component.path = result["r.path"]
+            children.push(component)
           })
           resolve(children)
         })

@@ -1,4 +1,4 @@
-const init = function(node) {
+module.exports = function(node) {
   return {
     title: "Image",
     description: "A multi purpose image component.",
@@ -7,5 +7,3 @@ const init = function(node) {
     ]
   }
 };
-
-module.exports = { init: init };

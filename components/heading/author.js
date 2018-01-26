@@ -1,4 +1,4 @@
-const init = function(node) {
+module.exports = function(node) {
   return {
     title: "Heading",
     description: "A heading component for grouping sections of a page.",
@@ -9,5 +9,3 @@ const init = function(node) {
     ]
   }
 };
-
-module.exports = { init: init };
