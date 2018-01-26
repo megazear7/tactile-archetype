@@ -1,31 +1,57 @@
 const officer = require('./officer.js')
+const generateComponentList = require('../components/components.js')
+const generatePageList = require('../pages/pages.js')
 
-function extendPage(page) {
-  var node  = { }
+module.exports = function(dust) {
+  var pages = generatePageList(dust)
+  var components = generateComponentList(dust)
 
-  node.test = "PAGE FROM ACTUARY"
+  function extendPage(page) {
+    var pageType = page.properties.pageType
+    page.node = { }
+    page.node.test = "PAGE FROM ACTUARY"
 
-  node.parent = new Promise(function(resolve, reject) {
-    officer.sendQuery(`
-      MATCH (currentPage:page)<-[:has_child]-(parentPage:page)
-      WHERE ID(currentPage)=${page._id}
-      RETURN parentPage
-      `, 'parentPage').then(function(parent) { resolve(parent) })
-  })
+    page.node.parent = function() {
+      return new Promise(function(resolve, reject) {
+        officer.sendQuery(`
+          MATCH (currentPage:page)<-[:has_child]-(parentPage:page)
+          WHERE ID(currentPage)=${page._id}
+          RETURN parentPage
+          `, 'parentPage').then(function(parent) {
+          resolve(extendPage(parent))
+        })
+      })
+    }
 
+    if (typeof pages.authorModels[pageType] !== "undefined") {
+      page.authorModel = pages.authorModels[pageType](page)
+    }
 
-  return node
-};
+    if (typeof pages.models[pageType] !== "undefined") {
+      page.model = pages.models[pageType](page)
+    }
 
-function extendComponent(component) {
-  var node = { }
+    return page
+  }
 
-  node.test = "COMPONENT FROM ACTUARY"
+  function extendComponent(component) {
+    var compType = component.properties.compType
+    component.node = { }
+    component.node.test = "COMPONENT FROM ACTUARY"
 
-  return node
-};
+    if (typeof components.authorModels[compType] !== "undefined") {
+      component.authorModel = components.authorModels[compType](component)
+    }
+    
+    if (typeof components.models[compType] !== "undefined") {
+      component.model = components.models[compType](component)
+    }
 
-module.exports = {
-  extendPage: extendPage,
-  extendComponent: extendComponent
+    return component
+  }
+
+  return {
+    extendPage: extendPage,
+    extendComponent: extendComponent
+  }
 }
