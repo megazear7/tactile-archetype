@@ -8,10 +8,9 @@ module.exports = function(dust) {
 
   function extendPage(page) {
     var pageType = page.properties.pageType
-    page.node = { }
 
-    page.node.parent = function() {
-      return new Promise(function(resolve, reject) {
+    if (! page.labels.includes("rootpage")) {
+      page.parent = new Promise(function(resolve, reject) {
         officer.sendQuery(`
           MATCH (currentPage:page)<-[:has_child]-(parentPage:page)
           WHERE ID(currentPage)=${page._id}
@@ -35,7 +34,6 @@ module.exports = function(dust) {
 
   function extendComponent(component) {
     var compType = component.properties.compType
-    component.node = { }
 
     if (typeof components.authorModels[compType] !== "undefined") {
       component.authorModel = components.authorModels[compType](component)
