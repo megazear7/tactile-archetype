@@ -1,6 +1,4 @@
 module.exports = function(page) {
-  return {
-    title: "One Column Page",
-    parent: page.node.parent()
-  }
+  page.title = "One Column Page"
+  page.parent = page.node.parent()
 };

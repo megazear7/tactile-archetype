@@ -1,12 +1,9 @@
 module.exports = function(component) {
-  links = [{
+  component.links = [{
     href: "/",
     title: "Home",
     isCurrentPage: false
   }]
 
-  return {
-    links: links,
-    title: "Header"
-  }
+  component.title = "Header"
 };

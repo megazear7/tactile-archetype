@@ -9,9 +9,8 @@
         <div class="onecolumn-container">
             {@render path="header" compType="header" /}
             <div class="content">
-              <h3>{model.title}</h3>
-              <h3>Home page properties title from actuary: {model.parent.properties.title}</h3>
-              <h3>Home page model title from actuary: {model.parent.model.title}</h3>
+              <h3>{title}</h3>
+              <h3>Home page title from actuary: {parent.title}</h3>
               {@render path="content" compType="compList" /}
             </div>
             <div class="footer inverted">

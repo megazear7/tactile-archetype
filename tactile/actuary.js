@@ -28,7 +28,7 @@ module.exports = function(dust) {
     }
 
     if (typeof pages.models[pageType] !== "undefined") {
-      page.model = pages.models[pageType](page)
+      pages.models[pageType](page)
     }
 
     return page
@@ -42,9 +42,9 @@ module.exports = function(dust) {
     if (typeof components.authorModels[compType] !== "undefined") {
       component.authorModel = components.authorModels[compType](component)
     }
-    
+
     if (typeof components.models[compType] !== "undefined") {
-      component.model = components.models[compType](component)
+      components.models[compType](component)
     }
 
     return component

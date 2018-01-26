@@ -1,11 +1,11 @@
 <div class="header">
-  <h3>{model.title}</h3>
+  <h3>{title}</h3>
   <h3>{node.test}</h3>
   <ul>
-    {#model.links}
+    {#links}
       <li class="{?isCurrentPage}active{/isCurrentPage}">
         <a href="{href}" {?isCurrentPage}disabled{/isCurrentPage}>{title}</a>
       </li>
-    {/model.links}
+    {/links}
   </ul>
 </div>

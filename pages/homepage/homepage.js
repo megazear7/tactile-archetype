@@ -1,5 +1,3 @@
 module.exports = function(page) {
-  return {
-    title: "Home Page"
-  }
+  page.title = "Home Page"
 };
