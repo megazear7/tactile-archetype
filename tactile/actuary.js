@@ -33,6 +33,18 @@ module.exports = function(dust) {
       })
     }
 
+    if (! page.labels.includes("rootpage")) {
+      page.root = new Promise(function(resolve, reject) {
+        officer.sendQuery(`
+          MATCH (root:rootpage)-[:has_child*]->(current:page)
+          WHERE ID(current)=${page._id}
+          RETURN root
+          `, 'root').then(function(root) {
+          resolve(extendPage(root))
+        })
+      })
+    }
+
     if (typeof pages.authorModels[pageType] !== "undefined") {
       page.authorModel = pages.authorModels[pageType](page)
     }
