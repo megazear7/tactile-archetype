@@ -10,6 +10,9 @@
             {@render path="header" compType="header" /}
             <div class="primary">
                 {@render path="primary" compType="compList" /}
+                {#children}
+                  <h4>{properties.title}</h4>
+                {/children}
             </div>
             <div class="secondary">
                 {@render path="secondary" compType="compList" /}
