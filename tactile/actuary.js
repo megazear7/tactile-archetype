@@ -122,6 +122,7 @@ module.exports = function(dust) {
             MATCH (current:component)-[r:has_component]->(child:component)
             WHERE ID(current)=${component._id}
             RETURN child, r.path
+            ORDER BY r.path
             `).then(function(results) {
             children = []
             results.forEach(function(result) {
