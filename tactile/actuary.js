@@ -12,11 +12,23 @@ module.exports = function(dust) {
     if (! page.labels.includes("rootpage")) {
       page.parent = new Promise(function(resolve, reject) {
         officer.sendQuery(`
-          MATCH (currentPage:page)<-[:has_child]-(parentPage:page)
-          WHERE ID(currentPage)=${page._id}
-          RETURN parentPage
-          `, 'parentPage').then(function(parent) {
+          MATCH (parent:page)-[:has_child]->(current:page)
+          WHERE ID(current)=${page._id}
+          RETURN parent
+          `, 'parent').then(function(parent) {
           resolve(extendPage(parent))
+        })
+      })
+    }
+
+    if (! page.labels.includes("rootpage")) {
+      page.home = new Promise(function(resolve, reject) {
+        officer.sendQuery(`
+          MATCH (home:homepage)-[:has_child*]->(current:page)
+          WHERE ID(current)=${page._id}
+          RETURN home
+          `, 'home').then(function(home) {
+          resolve(extendPage(home))
         })
       })
     }
