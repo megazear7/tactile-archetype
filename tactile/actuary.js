@@ -105,8 +105,6 @@ module.exports = function(dust) {
       }
     }
 
-    console.log(component)
-
     if (typeof component._id === "undefined") {
       component.children = function() {
         return new Promise(function(resolve, reject) {
@@ -120,10 +118,6 @@ module.exports = function(dust) {
           WHERE ID(current)=${component._id}
           RETURN child, r.path
           ORDER BY r.path`)
-        .then(results => {
-          console.log(results)
-          return results
-        })
         .then(results => results.map(result => {
           var component = extendComponent(result["child"])
           component.path = result["r.path"]
