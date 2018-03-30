@@ -20,8 +20,11 @@ module.exports = function(page) {
   }))
 
   page.childLinks = page.children()
-  .then(children => children.map(child => ({
-    title: child.properties.title,
-    href: child.path()
-  })))
+  .then(children => {
+    console.log(children)
+    return children.map(child => ({
+      title: child.properties.title,
+      href: child.path()
+    }))
+  })
 };

@@ -98,7 +98,7 @@ function addComponent(nodeId, component, path) {
   `
   MATCH (n)
   WHERE ID(n)=${nodeId}
-  CREATE (n)-[r:has_component {path: "${path}"}]->(c:component ${generatePropertyList(component)})
+  CREATE (n)-[r:has_child {path: "${path}"}]->(c:component ${generatePropertyList(component)})
   RETURN n,c
   `
 
@@ -210,7 +210,7 @@ function findPage(path) {
 function getComponents(nodeId) {
   var query =
   `
-  MATCH (n)-[:has_component]->(c:component)
+  MATCH (n)-[:has_child]->(c:component)
   WHERE ID(n)=${nodeId}
   RETURN c
   `
@@ -226,7 +226,7 @@ function getComponents(nodeId) {
 function findComponent(nodeId, path) {
   var query =
   `
-  MATCH (n)-${generatePathList(path, "has_component", "component")}->(c:component)
+  MATCH (n)-${generatePathList(path, "has_child", "component")}->(c:component)
   WHERE ID(n)=${nodeId}
   RETURN c
   `

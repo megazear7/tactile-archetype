@@ -70,8 +70,8 @@ module.exports = function(dust) {
         return officer.sendQuery(`
           MATCH path = (:rootpage)-[:has_child*]->(current:page)
           WHERE ID(current)=${page._id}
-          RETURN RELATIONSHIPS(path)
-          `, 'RELATIONSHIPS(path)')
+          RETURN RELATIONSHIPS(path)`,
+          'RELATIONSHIPS(path)')
         .then(results => "/" + results.map(result => result.properties.path).join("/"))
         .catch(e => console.error(e))
       }
@@ -96,7 +96,7 @@ module.exports = function(dust) {
     } else {
       component.page = function() {
         return officer.sendQuery(`
-          MATCH (p:page)-[:has_component*]->(c:component)
+          MATCH (p:page)-[:has_child*]->(c:component)
           WHERE ID(c)=${component._id}
           RETURN p`,
           'p')
@@ -105,6 +105,7 @@ module.exports = function(dust) {
       }
     }
 
+    console.log(component)
 
     if (typeof component._id === "undefined") {
       component.children = function() {
@@ -115,11 +116,14 @@ module.exports = function(dust) {
     } else {
       component.children = function() {
         return officer.sendQuery(`
-          MATCH (current:component)-[r:has_component]->(child:component)
+          MATCH (current:component)-[r:has_child]->(child:component)
           WHERE ID(current)=${component._id}
           RETURN child, r.path
-          ORDER BY r.path
-          `)
+          ORDER BY r.path`)
+        .then(results => {
+          console.log(results)
+          return results
+        })
         .then(results => results.map(result => {
           var component = extendComponent(result["child"])
           component.path = result["r.path"]
