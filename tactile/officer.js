@@ -90,8 +90,6 @@ function generateRemoveList(identifier, properties) {
  * component: Flat object with the component's properties.
  * path: The path attribute of the relationship. This attribute helps define the url
  *       that leads to this component.
- * success: success callback, the created component will the first parameter
- * error: error callback, an error object is returned.
  */
 function addComponent(nodeId, component, path) {
   var query =
@@ -109,8 +107,6 @@ function addComponent(nodeId, component, path) {
  * page: Flat object with the page's properties.
  * path: The path attribute of the relationship. This attribute helps define the url
  *       that leads to this component.
- * success: success callback, the created page will the first parameter
- * error: error callback, an error object is returned.
  */
 function addPage(parentId, page, path) {
   var query =
@@ -126,8 +122,6 @@ function addPage(parentId, page, path) {
 
 /* node: nodeId
  * properties: Flat object with a list of properties to set.
- * success: success callback, an array of results will the first parameter
- * error: error callback, an error object is returned.
  */
 function setProperties(nodeId, properties) {
   var query =
@@ -144,8 +138,6 @@ function setProperties(nodeId, properties) {
 /* node: nodeId
  * properties: String array of properties to remove or a string with a single
                property to remove.
- * success: success callback, an array of results will the first parameter
- * error: error callback, an error object is returned.
  */
 function removeProperties(nodeId, properties) {
   var query =
@@ -161,8 +153,6 @@ function removeProperties(nodeId, properties) {
 
 /* pageId: The page id to search under
  * path: The relative path to a page
- * success: success callback, the found page will the first parameter
- * error: error callback, an error object is returned.
  */
 function findRelativePage(pageId, path) {
   var query =
@@ -186,8 +176,6 @@ function rootPage() {
 }
 
 /* path: The absolute path to a page
- * success: success callback, the found page will the first parameter
- * error: error callback, an error object is returned.
  */
 function findPage(path) {
   if (path === "/" || path === "") {
@@ -204,8 +192,6 @@ function findPage(path) {
 }
 
 /* nodeId: The id of the node to look under
- * success: success callback, the component list will be the first parameter
- * error: error callback, an error object is returned.
  */
 function getComponents(nodeId) {
   var query =
@@ -220,8 +206,6 @@ function getComponents(nodeId) {
 
 /* nodeId: The id of the node to look under
  * path: The path to the component
- * success: success callback, the component list will be the first parameter
- * error: error callback, an error object is returned.
  */
 function findComponent(nodeId, path) {
   var query =
@@ -229,6 +213,53 @@ function findComponent(nodeId, path) {
   MATCH (n)-${generatePathList(path, "has_child", "component")}->(c:component)
   WHERE ID(n)=${nodeId}
   RETURN c
+  `
+
+  return sendQuery(query, "c");
+}
+
+/* nodeId: The id of the node to look under
+ * path: The path to the component
+ */
+function findRelativeNode(nodeId, path) {
+  var query =
+  `
+  MATCH (n1)-${generatePathList(path, "has_child", "component")}->(n2)
+  WHERE ID(n1)=${nodeId}
+  RETURN n2
+  `
+
+  return sendQuery(query, "n2");
+}
+
+/* path: The absolute path to a node
+ */
+function findNode(path) {
+  if (path === "/" || path === "") {
+    return rootPage()
+  } else {
+    var query =
+    `
+    MATCH (r:rootpage)-${generatePathList(path, "has_child", "page")}->(n)
+    RETURN n
+    `
+
+    return sendQuery(query, "n");
+  }
+}
+
+/* nodeId: The id of the node that the new component will be added under
+ * component: Flat object with the component's properties.
+ * path: The path attribute of the relationship. This attribute helps define the url
+ *       that leads to this component.
+ */
+function addComponent(nodeId, component, path) {
+  var query =
+  `
+  MATCH (n)
+  WHERE ID(n)=${nodeId}
+  CREATE (n)-[r:has_child {path: "${path}"}]->(c:component ${generatePropertyList(component)})
+  RETURN n,c
   `
 
   return sendQuery(query, "c");
@@ -243,5 +274,7 @@ module.exports = {
   findPage: findPage,
   findRelativePage: findRelativePage,
   getComponents: getComponents,
-  findComponent: findComponent
+  findComponent: findComponent,
+  findRelativeNode: findRelativeNode,
+  findNode: findNode
 };

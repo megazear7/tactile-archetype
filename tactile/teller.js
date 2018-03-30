@@ -1,17 +1,26 @@
-var update = function(path, data, callback) {
-  return officer.sendQuery(`
-    MATCH (parent:page)-[:has_child]->(current:page)
-    RETURN parent`)
-  .then(node => console.log(node))
-  .catch(e => console.error(e))
+const officer = require("./officer.js")
+
+var update = function(path, data) {
+  officer.findNode(path)
+  .then(node => setProperties(node._id, data))
 }
 
 var add = function(path, data, callback) {
-  // TODO Reimplement using the officer
+  // TODO parse the path and separate out the last segment
+  var existingPath = ""
+  var newPathSegment = ""
+  if (data.tacType == "page") {
+    officer.findNode(existingPath)
+    .then(node => addPage(node._id, data, newPathSegment))
+  } else if (data.tacType == "comp") {
+    officer.findNode(existingPath)
+    .then(node => addComponent(node._id, data, newPathSegment))
+  }
 }
 
 var remove = function(path, callback) {
-  // TODO Reimplement using the officer
+  officer.findNode(path)
+  .then(node => return {} /* TODO */)
 }
 
 module.exports = {
