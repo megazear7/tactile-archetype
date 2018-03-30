@@ -1,14 +1,7 @@
 module.exports = function(component) {
-  component.childComponents = new Promise(function(resolve, reject) {
-    component.children().then(function(children) {
-      var components = []
-      children.forEach(function(child) {
-        components.push({
-          compType: child.properties.compType,
-          path: child.path
-        })
-      })
-      resolve(components)
-    })
-  })
+  component.childComponents = component.children()
+  .then(children => children.map(child => ({
+    compType: child.properties.compType,
+    path: child.path
+  })))
 };
