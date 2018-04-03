@@ -26,22 +26,41 @@ var run = function(port) {
       });
   });
 
+
+  /* Example:
+  POST /some/path
+  {
+  	"text": "Hello, World Updated!"
+  }
+  */
   app.post('/*', function (req, res) {
       console.log("Request [POST]: " + req.path);
-      var path = req.path.slice(1);
-      tactileTeller.update(path, req.body, function() {
-        res.send(tactileBroker.model(path));
+      tactileTeller.update(req.path, req.body, function(responseData) {
+        res.send(responseData);
       });
   });
 
+  /* Example:
+  PUT /some/path
+  {
+  	"path": "text2",
+  	"node": {
+  		"tacType": "comp",
+  		"compType": "text",
+  		"text": "Hello, World!"
+  	}
+  }
+  */
   app.put('/*', function (req, res) {
       console.log("Request [PUT]: " + req.path);
-      var path = req.path.slice(1);
-      tactileTeller.add(path, req.body, function() {
-        res.send(tactileBroker.model(path));
+      tactileTeller.add(req.path, req.body, function(responseData) {
+        res.send(responseData);
       });
   });
 
+  /* Example:
+  DELETE /some/path
+  */
   app.delete('/*', function (req, res) {
       console.log("Request [DELETE]: " + req.path);
       var path = req.path.slice(1);

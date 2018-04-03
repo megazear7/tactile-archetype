@@ -26,7 +26,7 @@ function sendQuery(query, resultIdentifier) {
 /* Turns a path string into a neo4j compatible relationship list
  * path: The path string to convert.
  */
-function generatePathList(path, relationship, nodeType) {
+function generatePathList(path, relationship) {
   var pathList = []
   var segments = path.split("/")
 
@@ -42,7 +42,7 @@ function generatePathList(path, relationship, nodeType) {
     pathList.push('[:'+relationship+' {path: "'+segment+'"}]');
   });
 
-  return pathList.join('->(:'+nodeType+')-')
+  return pathList.join('->()-')
 }
 
 /* Turns an object into a neo4j compatible property list of properties to set.
@@ -66,7 +66,7 @@ function generateSetList(identifier, properties) {
   var setList = []
 
   Object.keys(properties).forEach(function(key) {
-    setList += identifier + '.' + key + '=\"' + properties[key] + '\"';
+    setList.push(identifier + '.' + key + '=\"' + properties[key] + '\"');
   });
 
   return setList.join(',')
@@ -128,11 +128,11 @@ function setProperties(nodeId, properties) {
   `
   MATCH (n)
   WHERE ID(n)=${nodeId}
-  SET ${generateSetList(properties)}
+  SET ${generateSetList("n", properties)}
   RETURN n
   `
 
-  return sendQuery(query);
+  return sendQuery(query, "n");
 }
 
 /* node: nodeId
@@ -148,7 +148,7 @@ function removeProperties(nodeId, properties) {
   RETURN n
   `
 
-  return sendQuery(query);
+  return sendQuery(query, "n");
 }
 
 /* pageId: The page id to search under
@@ -157,7 +157,7 @@ function removeProperties(nodeId, properties) {
 function findRelativePage(pageId, path) {
   var query =
   `
-  MATCH (p1)-${generatePathList(path, "has_child", "page")}->(p2:page)
+  MATCH (p1)-${generatePathList(path, "has_child")}->(p2:page)
   WHERE ID(p1)=${pageId}
   RETURN p2
   `
@@ -183,7 +183,7 @@ function findPage(path) {
   } else {
     var query =
     `
-    MATCH (p1:rootpage)-${generatePathList(path, "has_child", "page")}->(p2:page)
+    MATCH (p1:rootpage)-${generatePathList(path, "has_child")}->(p2:page)
     RETURN p2
     `
 
@@ -210,7 +210,7 @@ function getComponents(nodeId) {
 function findComponent(nodeId, path) {
   var query =
   `
-  MATCH (n)-${generatePathList(path, "has_child", "component")}->(c:component)
+  MATCH (n)-${generatePathList(path, "has_child")}->(c:component)
   WHERE ID(n)=${nodeId}
   RETURN c
   `
@@ -224,7 +224,7 @@ function findComponent(nodeId, path) {
 function findRelativeNode(nodeId, path) {
   var query =
   `
-  MATCH (n1)-${generatePathList(path, "has_child", "component")}->(n2)
+  MATCH (n1)-${generatePathList(path, "has_child")}->(n2)
   WHERE ID(n1)=${nodeId}
   RETURN n2
   `
@@ -240,7 +240,7 @@ function findNode(path) {
   } else {
     var query =
     `
-    MATCH (r:rootpage)-${generatePathList(path, "has_child", "page")}->(n)
+    MATCH (r:rootpage)-${generatePathList(path, "has_child")}->(n)
     RETURN n
     `
 
