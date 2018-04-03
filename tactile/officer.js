@@ -253,11 +253,14 @@ function findNode(path) {
 function removeNode(nodeId) {
   var query =
   `
-  MATCH (n)-[]->()
+  MATCH (n)
   WHERE ID(n)=${nodeId}
   DETACH DELETE n
   RETURN n
   `
+
+  console.log("A")
+  console.log(query)
 
   return sendQuery(query, "n");
 }

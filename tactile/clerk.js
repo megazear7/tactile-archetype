@@ -63,8 +63,8 @@ var run = function(port) {
   */
   app.delete('/*', function (req, res) {
       console.log("Request [DELETE]: " + req.path);
-      var path = req.path.slice(1);
-      tactileTeller.remove(path, function(parent) {
+      tactileTeller.remove(req.path, function(parent) {
+        console.log(parent);
         res.send(parent);
       });
   });
