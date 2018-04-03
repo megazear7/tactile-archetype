@@ -10,14 +10,9 @@ var run = function(port) {
   app.use(bodyParser.json({type: "*/json"}));
   app.use(express.static('dist'));
 
-  app.get('/*.json', function (req, res) {
-      console.log("Request [GET JSON]: " + req.path);
-      var path = req.path.slice(1).split(".")[0];
-      tactileBroker.model(path, function(responseBody) {
-        res.send(responseBody);
-      });
-  });
-
+  /* Example:
+  GET /some/path
+  */
   app.get('/*', function (req, res) {
       console.log("Request [GET]: " + req.path);
       var path = req.path.slice(1);
@@ -26,6 +21,16 @@ var run = function(port) {
       });
   });
 
+  /* Example:
+  GET /some/path.json
+  */
+  app.get('/*.json', function (req, res) {
+      console.log("Request [GET JSON]: " + req.path);
+      var path = req.path.slice(1).split(".")[0];
+      tactileBroker.model(path, function(responseBody) {
+        res.send(responseBody);
+      });
+  });
 
   /* Example:
   POST /some/path
