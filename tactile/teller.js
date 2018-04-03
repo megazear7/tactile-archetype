@@ -6,9 +6,9 @@ var update = function(path, data) {
 }
 
 var add = function(path, data, callback) {
-  // TODO parse the path and separate out the last segment
-  var existingPath = ""
-  var newPathSegment = ""
+  const lastOccurance = path.lastIndexOf("/")
+  var existingPath = path.substring(0, lastOccurance)
+  var newPathSegment = path.substring(lastOccurance + 1)
   if (data.tacType == "page") {
     officer.findNode(existingPath)
     .then(node => addPage(node._id, data, newPathSegment))
@@ -20,7 +20,9 @@ var add = function(path, data, callback) {
 
 var remove = function(path, callback) {
   officer.findNode(path)
-  .then(node => return {} /* TODO */)
+  .then(node => {
+    /* TODO */
+  })
 }
 
 module.exports = {
