@@ -248,6 +248,20 @@ function findNode(path) {
   }
 }
 
+/* nodeId: The id of the node to be removed.
+ */
+function removeNode(nodeId) {
+  var query =
+  `
+  MATCH (n)-[]->()
+  WHERE ID(n)=${nodeId}
+  DETACH DELETE n
+  RETURN n
+  `
+
+  return sendQuery(query, "n");
+}
+
 /* nodeId: The id of the node that the new component will be added under
  * component: Flat object with the component's properties.
  * path: The path attribute of the relationship. This attribute helps define the url
@@ -276,5 +290,6 @@ module.exports = {
   getComponents: getComponents,
   findComponent: findComponent,
   findRelativeNode: findRelativeNode,
-  findNode: findNode
+  findNode: findNode,
+  removeNode: removeNode
 };

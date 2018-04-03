@@ -21,7 +21,7 @@ var add = function(path, data, callback) {
 var remove = function(path, callback) {
   officer.findNode(path)
   .then(node => {
-    /* TODO */
+    officer.removeNode(node._id)
   })
 }
 
