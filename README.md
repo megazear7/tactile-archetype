@@ -16,7 +16,9 @@
 1. Make this server side renderable on heroku.
 1. Use gulp/webpack to build a static production bundle with fully rendered pages using "npm run static".
 1. Make the static version able to be hosted on firebase.
-1. Make the NEO4J interactive API accesssible on heroku accessed from firebase 
+1. Make the NEO4J interactive API accesssible on heroku accessed from firebase
+1. Integrate service worker caching for offline mode. This could be auto generated
+   during the build, or have manual pieces as well. Maybe some custom config file?
 
 ## Local Environment
 
@@ -34,20 +36,13 @@ Install neo4j and have it run on the default port of 7474
 
 ## About Tactile
 
-### Included sub-modules
-
-* [Tactile Broker](https://github.com/megazear7/tactile-broker)
-    * Connects json content with the pages and components.
-* [Tactile Clerk](https://github.com/megazear7/tactile-clerk)
-    * Integrates an express.js server with Tactile Broker.
-* [Tactile Gulp](https://github.com/megazear7/tactile-gulp)
-    * Uses gulp to create a frontend build.
-
 ### Sub Folders
 
+* elements
+    * Interactive web components.
 * components
-    * Corresponds to tactype="component" objects in the json content.
+    * Static server side rendered pieces of reusable dom where elements can be included. Corresponds to tactype="component" objects in the json content.
 * pages
-    * Corresponds to tactype="page" objects in the json content.
+    * Static server side rendered pages where components and elements can be included. Corresponds to tactype="page" objects in the json content.
 * global
     * Global css and js to apply on every page.
