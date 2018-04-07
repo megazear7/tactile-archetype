@@ -39,10 +39,14 @@ var run = function(port) {
   }
   */
   app.post('/*', function (req, res) {
-      console.log("Request [POST]: " + req.path);
-      tactileTeller.update(req.path, req.body, function(responseData) {
-        res.send(responseData);
-      });
+    console.log("Request [POST]: " + req.path);
+    tactileTeller.update(req.path, req.body)
+    .then(responseData => res.send(responseData))
+    .catch(e => {
+      console.error(e);
+      res.status(400);
+      res.send({message: e.message});
+    })
   });
 
   /* Example:
@@ -57,21 +61,28 @@ var run = function(port) {
   }
   */
   app.put('/*', function (req, res) {
-      console.log("Request [PUT]: " + req.path);
-      tactileTeller.add(req.path, req.body, function(responseData) {
-        res.send(responseData);
-      });
+    console.log("Request [PUT]: " + req.path);
+    tactileTeller.add(req.path, req.body)
+    .then(responseData => res.send(responseData))
+    .catch(e => {
+      console.error(e);
+      res.status(400);
+      res.send({message: e.message});
+    })
   });
 
   /* Example:
   DELETE /some/path
   */
   app.delete('/*', function (req, res) {
-      console.log("Request [DELETE]: " + req.path);
-      tactileTeller.remove(req.path, function(parent) {
-        console.log(parent);
-        res.send(parent);
-      });
+    console.log("Request [DELETE]: " + req.path);
+    tactileTeller.remove(req.path)
+    .then(parent => res.send(parent))
+    .catch(e => {
+      console.error(e);
+      res.status(400);
+      res.send({message: e.message});
+    })
   });
 
   app.listen(port);
