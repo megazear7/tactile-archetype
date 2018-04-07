@@ -2,9 +2,21 @@
 
 ## Current Status
 
-1. Should I update the officer to be more of an ORM with Page and Component objects instead of just being a list of helper methods. Maybe wrap the officer in an ORM?
-1. Need to update components to take data out of neo4j using the associated utility methods.
 1. Remove references to Mustache and the npm dependency.
+1. Update the broker to return promises.
+1. Update the HTTP PUT to append to a "node array". This would be a concept
+   built on top of Neo4J.
+1. Update the HTTP POST method to set values on a node path.
+1. Provide a way for elements to "hook" into neo4j in a reactive way.
+1. Use gulp/webpack to build a production bundle using "npm run deploy"
+1. Use gulp/webpack to build a deployment hot reload using "npm run serve"
+1. Create examples using the server side rendered components for SEO static content.
+1. Create examples of using elements for SPA interactive features.
+1. JS and CSS Linting.
+1. Make this server side renderable on heroku.
+1. Use gulp/webpack to build a static production bundle with fully rendered pages using "npm run static".
+1. Make the static version able to be hosted on firebase.
+1. Make the NEO4J interactive API accesssible on heroku accessed from firebase 
 
 ## Local Environment
 
