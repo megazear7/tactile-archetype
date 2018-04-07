@@ -91,16 +91,29 @@ function generateRemoveList(identifier, properties) {
  * path: The path attribute of the relationship. This attribute helps define the url
  *       that leads to this component.
  */
-function addComponent(nodeId, component, path) {
-  var query =
-  `
-  MATCH (n)
+async function addComponent(nodeId, component, path) {
+  const pathQuery = `
+  MATCH (n)-[r:has_child {path: "${path}"}]->(c:component)
   WHERE ID(n)=${nodeId}
-  CREATE (n)-[r:has_child {path: "${path}"}]->(c:component ${generatePropertyList(component)})
-  RETURN n,c
+  RETURN c
   `
 
-  return sendQuery(query, "c");
+  const paths = await sendQuery(pathQuery)
+  const pathExists = paths.length > 0
+
+  if (! pathExists) {
+    var query =
+    `
+    MATCH (n)
+    WHERE ID(n)=${nodeId}
+    CREATE (n)-[r:has_child {path: "${path}"}]->(c:component ${generatePropertyList(component)})
+    RETURN n,c
+    `
+
+    return sendQuery(query, "c");
+  } else {
+    return new Promise((resolve, reject) => reject(new Error("Path already exists")))
+  }
 }
 
 /* parentId: The id of the parent page that the new page will be added under.
@@ -108,16 +121,28 @@ function addComponent(nodeId, component, path) {
  * path: The path attribute of the relationship. This attribute helps define the url
  *       that leads to this component.
  */
-function addPage(parentId, page, path) {
-  var query =
-  `
-  MATCH (p1)
+async function addPage(parentId, page, path) {
+  const pathQuery = `
+  MATCH (p1)-[r:has_child {path: "${path}"}]->(p2:page)
   WHERE ID(p1)=${parentId}
-  CREATE (p1)-[r:has_child {path: "${path}"}]->(p2:page ${generatePropertyList(page)})
-  RETURN p1,r,p2
+  RETURN p2
   `
+  const paths = await sendQuery(pathQuery)
+  const pathExists = paths.length > 0
 
-  return sendQuery(query, "p2");
+  if (! pathExists) {
+    var addQuery =
+    `
+    MATCH (p1)
+    WHERE ID(p1)=${parentId}
+    CREATE (p1)-[r:has_child {path: "${path}"}]->(p2:page ${generatePropertyList(page)})
+    RETURN p1,r,p2
+    `
+
+    return sendQuery(addQuery, "p2");
+  } else {
+    return new Promise((resolve, reject) => reject(new Error("Path already exists")))
+  }
 }
 
 /* node: nodeId
@@ -263,23 +288,6 @@ function removeNode(nodeId) {
   console.log(query)
 
   return sendQuery(query, "n");
-}
-
-/* nodeId: The id of the node that the new component will be added under
- * component: Flat object with the component's properties.
- * path: The path attribute of the relationship. This attribute helps define the url
- *       that leads to this component.
- */
-function addComponent(nodeId, component, path) {
-  var query =
-  `
-  MATCH (n)
-  WHERE ID(n)=${nodeId}
-  CREATE (n)-[r:has_child {path: "${path}"}]->(c:component ${generatePropertyList(component)})
-  RETURN n,c
-  `
-
-  return sendQuery(query, "c");
 }
 
 module.exports = {

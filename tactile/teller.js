@@ -8,10 +8,10 @@ var update = function(path, data) {
 var add = function(path, data) {
   return officer.findNode(path)
   .then(node => {
-    if (data.node.tacType == "page") {
-      officer.addPage(node._id, data.node, data.path)
-    } else if (data.node.tacType == "comp") {
-      officer.addComponent(node._id, data.node, data.path)
+    if (data.node.tacType === "page") {
+      return officer.addPage(node._id, data.node, data.path)
+    } else if (data.node.tacType === "comp") {
+      return officer.addComponent(node._id, data.node, data.path)
     } else {
       throw new Error("tacType must be either 'page' or 'comp'")
     }

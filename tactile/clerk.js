@@ -64,11 +64,7 @@ var run = function(port) {
     console.log("Request [PUT]: " + req.path);
     tactileTeller.add(req.path, req.body)
     .then(responseData => res.send(responseData))
-    .catch(e => {
-      console.error(e);
-      res.status(400);
-      res.send({message: e.message});
-    })
+    .catch(e => res.status(400).send({message: e.message}))
   });
 
   /* Example:
