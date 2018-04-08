@@ -2,6 +2,8 @@ const officer = require('./officer.js')
 
 module.exports = function(dust) {
   function extendPage(page) {
+    page.isAuthor = process.env.isAuthor 
+
     if (! page.labels.includes("rootpage")) {
       page.parent = function() {
         return officer.sendQuery(`
@@ -87,6 +89,8 @@ module.exports = function(dust) {
   }
 
   function extendComponent(component, page) {
+    component.isAuthor = process.env.isAuthor
+
     if (typeof component._id === "undefined") {
       component.page = function() {
         return new Promise(function(resolve, reject) {

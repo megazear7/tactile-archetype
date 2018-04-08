@@ -53,6 +53,7 @@
     "neo4jexamples": "NEO4J_URL=http://localhost:7474 node neo4j.examples.js",
     "dev": "NEO4J_URL=http://localhost:7474 node app.js",
     "start": "node app.js",
+    "author": "isAuthor=true node app.js",
     "watch": "gulp",
     "build": "node build.js",
     "test": "echo \"Error: no test specified\" && exit 1"

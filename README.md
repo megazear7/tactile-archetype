@@ -32,7 +32,7 @@ Install neo4j and have it run on the default port of 7474
 2. Run `npm install`
 4. Install neo4j and have it run on the default port of 7474
 3. Install seed data: `npm run seed`
-3. Run `npm run dev`
+3. Run `npm run author` or `npm run start`
 5. Visit http://localhost:3000
 
 ## About Tactile
