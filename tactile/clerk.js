@@ -11,25 +11,33 @@ var run = function(port) {
   app.use(express.static('dist'));
 
   /* Example:
-  GET /some/path
-  */
-  app.get('/*', function (req, res) {
-      console.log("Request [GET]: " + req.path);
-      var path = req.path.slice(1);
-      tactileBroker.render(path, function(responseBody) {
-        res.send(responseBody);
-      });
-  });
-
-  /* Example:
   GET /some/path.json
   */
   app.get('/*.json', function (req, res) {
-      console.log("Request [GET JSON]: " + req.path);
-      var path = req.path.slice(1).split(".")[0];
-      tactileBroker.model(path, function(responseBody) {
-        res.send(responseBody);
-      });
+    console.log("Request [GET JSON]: " + req.path);
+    var path = req.path.slice(1).split(".")[0];
+    tactileBroker.model(path)
+    .then(responseBody => res.send(responseBody))
+    .catch(e => {
+      console.error(e);
+      res.status(400);
+      res.send({message: "The server could not handle the request."});
+    })
+  });
+
+  /* Example:
+  GET /some/path
+  */
+  app.get('/*', function (req, res) {
+    console.log("Request [GET]: " + req.path);
+    var path = req.path.slice(1)
+    tactileBroker.render(path)
+    .then(responseBody => res.send(responseBody))
+    .catch(e => {
+      console.error(e);
+      res.status(500);
+      res.send("<html><head></head><body><h1>The server could not handle the request.</h1></body></html>");
+    })
   });
 
   /* Example:

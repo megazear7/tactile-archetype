@@ -4,10 +4,8 @@ const actuary = require('./actuary.js')(dust)
 const components = require('../components/components.js')(dust)
 const pages = require('../pages/pages.js')(dust)
 
-var model = function(path, callback) {
-  officer.findPage(path).then(function(page) {
-    callback(page)
-  })
+var model = function(path) {
+  return officer.findNode(path)
 }
 
 function componentRenderer(page) {
@@ -50,7 +48,8 @@ function componentRenderer(page) {
 }
 
 var render = function(path, callback) {
-  officer.findPage(path).then(function(page) {
+  return officer.findPage(path)
+  .then(page => {
     dust.helpers.render = componentRenderer(page)
     var pageType = page.properties.pageType
     var pageTemplate = 'page-'+pageType
@@ -65,12 +64,14 @@ var render = function(path, callback) {
       pages.models[pageType](page)
     }
 
-    dust.render(pageTemplate, page, function(err, out) {
-      if (err) {
-        throw err
-      } else {
-        callback(out)
-      }
+    return new Promise((resolve, reject) => {
+      dust.render(pageTemplate, page, (err, out) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(out)
+        }
+      })
     })
   })
 }

@@ -19,6 +19,7 @@
 1. Make the NEO4J interactive API accesssible on heroku accessed from firebase
 1. Integrate service worker caching for offline mode. This could be auto generated
    during the build, or have manual pieces as well. Maybe some custom config file?
+1. Abstract out all non application code into a single npm dependency
 
 ## Local Environment
 
