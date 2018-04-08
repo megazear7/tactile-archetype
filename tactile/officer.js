@@ -66,7 +66,11 @@ function generateSetList(identifier, properties) {
   var setList = []
 
   Object.keys(properties).forEach(function(key) {
-    setList.push(identifier + '.' + key + '=\"' + properties[key] + '\"');
+    if (typeof properties[key] === "string") {
+      setList.push(identifier + '.' + key + '=\"' + properties[key] + '\"');
+    } else if (typeof properties[key] === "boolean") {
+      setList.push(identifier + '.' + key + '=' + properties[key]);
+    }
   });
 
   return setList.join(',')
@@ -156,6 +160,8 @@ function setProperties(nodeId, properties) {
   SET ${generateSetList("n", properties)}
   RETURN n
   `
+
+  console.log(query);
 
   return sendQuery(query, "n");
 }

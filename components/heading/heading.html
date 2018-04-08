@@ -1,1 +1,17 @@
-<h2 data-tacid="{_id}">{properties.heading}</h2>
+{?isAuthor}
+<tactile-editable path="{path}" comp-type="{properties.compType}" inline>
+{/isAuthor}
+
+<h2>
+  {properties.heading}
+  {?properties.hasHr}
+    <hr>
+  {:else}
+    <br>
+  {/properties.hasHr}
+  <small>{properties.subText}</small>
+</h2>
+
+{?isAuthor}
+</tactile-editable>
+{/isAuthor}

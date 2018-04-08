@@ -115,6 +115,7 @@ export default class TactileEditable extends PolymerElement {
     });
     this.shadowRoot.querySelectorAll("paper-checkbox").forEach((input) => {
       if (typeof input.value !== "undefined") {
+        console.log(input);
         console.log(input.active);
         values[input.name] = input.active;
       } else {
@@ -236,7 +237,7 @@ export default class TactileEditable extends PolymerElement {
                 label=${input.title}
                 value=${this.component.properties[input.name]}></paper-input>`);
       } else if (input.type === "Boolean") {
-        if (this.component[input.name]) {
+        if (this.component.properties[input.name]) {
           inputs.push(html`<paper-checkbox name=${input.name} checked>${input.title}</paper-checkbox>`);
         } else {
           inputs.push(html`<paper-checkbox name=${input.name}>${input.title}</paper-checkbox>`);
