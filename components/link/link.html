@@ -1,17 +1,13 @@
-{!
-  
-{{#if page.home.isAuthor}}
-<tactile-editable path="{{path}}" comp-type="{{compType}}" inline>
-{{/if}}
+{?isAuthor}
+<tactile-editable path="{path}" comp-type="{properties.compType}" inline>
+{/isAuthor}
 
-<a href="{{href}}"
-   {{#if model.isCurrentPage}}disabled{{/if}}
-   {{#if model.isExternal}}target="_blank"{{/if}}>
-  {{title}}
+<a href="{properties.href}"
+   {?isCurrentPage}disabled{/isCurrentPage}
+   {?isExternal}target="_blank"{/isExternal}>
+  {properties.title}
 </a>
 
-{{#if page.home.isAuthor}}
+{?isAuthor}
 </tactile-editable>
-{{/if}}
-
-!}
+{/isAuthor}

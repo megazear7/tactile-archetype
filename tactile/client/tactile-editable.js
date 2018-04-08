@@ -137,7 +137,6 @@ export default class TactileEditable extends PolymerElement {
     return html`
     <style>
         :host {
-          display: block;
           margin: -2px;
           border: 2px solid rgba(0,0,0,0);
           cursor: pointer;

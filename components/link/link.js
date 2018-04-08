@@ -1,8 +1,7 @@
-const init = function(node) {
-  return {
-    isExternal: node.href.indexOf("/") !== 0,
-    isCurrentPage: node.page.path === node.href
-  }
-};
+module.exports = function(component) {
+  component.isExternal = component.properties.href.indexOf("/") !== 0;
 
-module.exports = { init: init };
+  component.isCurrentPage = component.page()
+  .then(page => page.path())
+  .then(path => path === component.properties.href)
+};
