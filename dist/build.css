@@ -134,11 +134,11 @@ ul.breadcrumbs li + li:before {
   .footer ul tactile-author {
     text-align: left; } }
 
-a[disabled], a[disabled]:hover {
-  pointer-events: none; }
-
 .basic-image {
   width: 100%; }
+
+a[disabled], a[disabled]:hover {
+  pointer-events: none; }
 
 h1 small {
   font-size: .5em;

@@ -35,19 +35,23 @@ export default class TactileEditable extends PolymerElement {
   }
 
   connectedCallback() {
-    ajaxGet(this.path+".json", (component) => {
-      this.component = component;
-      var tactileMode = document.querySelector("tactile-mode");
-      this.editMode = tactileMode.mode;
-      this.render();
+    ajaxGet(this.path+".author.json", author => {
+      this.author = author
+      
+      ajaxGet(this.path+".json", component => {
+        this.component = component;
+        var tactileMode = document.querySelector("tactile-mode");
+        this.editMode = tactileMode.mode;
+        this.render();
 
-      tactileMode.addEventListener("switched-to-edit", () => {
-        this.editMode = true;
-        this.render();
-      });
-      tactileMode.addEventListener("switched-to-publish", () => {
-        this.editMode = false;
-        this.render();
+        tactileMode.addEventListener("switched-to-edit", () => {
+          this.editMode = true;
+          this.render();
+        });
+        tactileMode.addEventListener("switched-to-publish", () => {
+          this.editMode = false;
+          this.render();
+        });
       });
     });
   }
@@ -71,7 +75,7 @@ export default class TactileEditable extends PolymerElement {
     if (! this.inline && this.editMode) {
       blockContent = html`
       <span class="inline-buttons">
-        ${this.component.author.title}
+        ${this.author.title}
         ${this._createConfigureableButtons()}
       </span>
       <div style="position: relative;">
@@ -223,7 +227,7 @@ export default class TactileEditable extends PolymerElement {
 
   _createInputs() {
     var inputs = [ ];
-    this.component.author.attrs.forEach((input) => {
+    this.author.attrs.forEach((input) => {
       if (input.type === "String") {
         inputs.push(
           html`<paper-input
@@ -243,13 +247,13 @@ export default class TactileEditable extends PolymerElement {
 
   _createMessage() {
     return html`
-      <h2>${this.component.author.title}</h2>
-      <p>${this.component.author.description}</p>`;
+      <h2>${this.author.title}</h2>
+      <p>${this.author.description}</p>`;
   }
 
   _createConfigureableButtons() {
     var buttons = [ ];
-    this.component.author.attrs.forEach((input) => {
+    this.author.attrs.forEach((input) => {
       if (input.type === "Add") {
         var button = html`<div
                             class="tactile-inline-button tactile-add"
@@ -268,7 +272,7 @@ export default class TactileEditable extends PolymerElement {
   _createButtons() {
     var extraButtons = [ ];
 
-    if (! this.component.author.preventDelete && ! this.component.preventDelete) {
+    if (! this.author.preventDelete && ! this.component.preventDelete) {
       var deleteButton = html`
         <paper-button class="tactile-delete" data-path=${this.path}>Delete</paper-button>
       `;

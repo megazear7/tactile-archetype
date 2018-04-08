@@ -1,13 +1,48 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const dust = require('dustjs-linkedin')
 const broker = require('./broker');
 const teller = require('./teller');
+const components = require('../components/components.js')(dust)
 
 var run = function(port) {
   const app = express();
 
   app.use(bodyParser.json({type: "*/json"}));
   app.use(express.static('dist'));
+
+  /* Example:
+  GET /tac/author/components/text.json
+  */
+  app.get('/tac/author/components/:component.json', function (req, res) {
+    console.log("Request [GET JSON]: " + req.path);
+    if (process.env.isAuthor) {
+      res.send(components.authorModels[req.params.component]({}));
+    } else {
+      res.send({message: "The server could not handle the request."});
+    }
+  });
+
+  /* Example:
+  GET /some/path.json
+  */
+  app.get('/*.author.json', function (req, res) {
+    console.log("Request [GET JSON]: " + req.path);
+    var path = req.path.slice(1).split(".")[0];
+    broker.model(path)
+    .then(model => {
+      if (process.env.isAuthor) {
+        res.send(components.authorModels[model.properties.compType](model))
+      } else {
+        throw new Error("Prohibited")
+      }
+    })
+    .catch(e => {
+      console.error(e);
+      res.status(400);
+      res.send({message: "The server could not handle the request."});
+    })
+  });
 
   /* Example:
   GET /some/path.json
