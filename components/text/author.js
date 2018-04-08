@@ -3,7 +3,11 @@ module.exports = function(node) {
     title: "Text",
     description: "A multi purpose text component",
     attrs: [
-      {name: "text", type: "String", title: "The text to appear"}
+      {
+        name: "text",
+        type: "String",
+        title: "The text to appear"
+      }
     ]
   }
 };

@@ -37,7 +37,7 @@ export default class TactileEditable extends PolymerElement {
   connectedCallback() {
     ajaxGet(this.path+".author.json", author => {
       this.author = author
-      
+
       ajaxGet(this.path+".json", component => {
         this.component = component;
         var tactileMode = document.querySelector("tactile-mode");
@@ -233,7 +233,7 @@ export default class TactileEditable extends PolymerElement {
           html`<paper-input
                 name=${input.name}
                 label=${input.title}
-                value=${this.component[input.name]}></paper-input>`);
+                value=${this.component.properties[input.name]}></paper-input>`);
       } else if (input.type === "Boolean") {
         if (this.component[input.name]) {
           inputs.push(html`<paper-checkbox name=${input.name} checked>${input.title}</paper-checkbox>`);

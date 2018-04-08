@@ -111,6 +111,36 @@ ul.breadcrumbs li + li:before {
 .examples hr {
   border-color: orange; }
 
+.header hr {
+  border-style: solid;
+  border-width: 1px;
+  border-color: gray; }
+
+.header ul {
+  list-style: none;
+  text-align: center;
+  margin: 30px 0px;
+  padding: 0;
+  border-bottom: 1px solid rgba(50, 50, 50, 0.2); }
+
+.header ul li {
+  display: block;
+  padding: 2px 5px; }
+
+.header ul li.active a {
+  color: #8ac; }
+
+@media (min-width: 600px) {
+  .header ul {
+    padding: 2px 20px;
+    border-bottom: 0px; }
+  .header ul li {
+    display: inline;
+    padding: 2px 20px;
+    border-bottom: 1px solid rgba(50, 50, 50, 0.2); }
+  .header ul li.active {
+    border-bottom: 2px solid #8ac; } }
+
 .footer {
   min-height: 100px;
   background-color: #999; }
@@ -143,36 +173,6 @@ a[disabled], a[disabled]:hover {
 h1 small {
   font-size: .5em;
   color: gray; }
-
-.header hr {
-  border-style: solid;
-  border-width: 1px;
-  border-color: gray; }
-
-.header ul {
-  list-style: none;
-  text-align: center;
-  margin: 30px 0px;
-  padding: 0;
-  border-bottom: 1px solid rgba(50, 50, 50, 0.2); }
-
-.header ul li {
-  display: block;
-  padding: 2px 5px; }
-
-.header ul li.active a {
-  color: #8ac; }
-
-@media (min-width: 600px) {
-  .header ul {
-    padding: 2px 20px;
-    border-bottom: 0px; }
-  .header ul li {
-    display: inline;
-    padding: 2px 20px;
-    border-bottom: 1px solid rgba(50, 50, 50, 0.2); }
-  .header ul li.active {
-    border-bottom: 2px solid #8ac; } }
 
 .homepage-container {
   display: grid;
