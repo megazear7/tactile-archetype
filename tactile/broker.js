@@ -8,6 +8,11 @@ var model = function(path) {
   return officer.findNode(path)
 }
 
+const componentWrap = (markup, path, compType) => `
+  <tactile-editable path="${path}" comp-type="${compType}">
+    ${markup}
+  </tactile-editable>`
+
 function componentRenderer(page) {
   return function(chunk, context, bodies, params) {
     return chunk.map(function(chunk) {
@@ -20,7 +25,9 @@ function componentRenderer(page) {
 
         actuary.extendComponent(component, page)
 
-        if (typeof components.authorModels[compType] !== "undefined") {
+        const authorable = typeof components.authorModels[compType] !== "undefined"
+
+        if (authorable) {
           component.authorModel = components.authorModels[compType](component)
         }
 
@@ -32,8 +39,15 @@ function componentRenderer(page) {
           if (err) {
             throw err
           } else {
-            chunk.write(out)
-            chunk.end()
+            component.path()
+            .then(path => {
+              if (authorable && process.env.isAuthor) {
+                chunk.write(componentWrap(out, path, compType))
+              } else {
+                chunk.write(out)
+              }
+              chunk.end()
+            })
           }
         })
       }
