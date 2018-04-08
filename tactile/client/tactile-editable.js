@@ -115,8 +115,6 @@ export default class TactileEditable extends PolymerElement {
     });
     this.shadowRoot.querySelectorAll("paper-checkbox").forEach((input) => {
       if (typeof input.value !== "undefined") {
-        console.log(input);
-        console.log(input.active);
         values[input.name] = input.active;
       } else {
         values[input.name] = false;

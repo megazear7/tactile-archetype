@@ -161,8 +161,6 @@ function setProperties(nodeId, properties) {
   RETURN n
   `
 
-  console.log(query);
-
   return sendQuery(query, "n");
 }
 
