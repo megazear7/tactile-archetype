@@ -38,11 +38,9 @@ function componentRenderer(page) {
         })
       }
 
-      officer.findComponent(currentNodeId, compPath).then(function(component) {
-        renderComponent(chunk, component)
-      }, function() {
-        renderComponent(chunk, {properties: {compType: params.compType}})
-      })
+      officer.findComponent(currentNodeId, compPath)
+      .then(component => renderComponent(chunk, component))
+      .catch(e => renderComponent(chunk, {properties: {compType: params.compType}}))
     })
   }
 }
