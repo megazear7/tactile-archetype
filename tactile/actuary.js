@@ -2,7 +2,7 @@ const officer = require('./officer.js')
 
 module.exports = function(dust) {
   function extendPage(page) {
-    page.isAuthor = process.env.isAuthor 
+    page.isAuthor = process.env.isAuthor
 
     if (! page.labels.includes("rootpage")) {
       page.parent = function() {
@@ -129,6 +129,16 @@ module.exports = function(dust) {
         }))
         .catch(e => console.error(e))
       }
+    }
+
+    component.path = function() {
+      return officer.sendQuery(`
+        MATCH path = (:rootpage)-[:has_child*]->(current:component)
+        WHERE ID(current)=${component._id}
+        RETURN RELATIONSHIPS(path)`,
+        'RELATIONSHIPS(path)')
+      .then(results => "/" + results.map(result => result.properties.path).join("/"))
+      .catch(e => console.error(e))
     }
 
     return component
