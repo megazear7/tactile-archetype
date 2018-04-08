@@ -1,8 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const tactileBroker = require('./broker');
-const tactileOfficer = require('./officer');
-const tactileTeller = require('./teller');
+const broker = require('./broker');
+const teller = require('./teller');
 
 var run = function(port) {
   const app = express();
@@ -16,7 +15,7 @@ var run = function(port) {
   app.get('/*.json', function (req, res) {
     console.log("Request [GET JSON]: " + req.path);
     var path = req.path.slice(1).split(".")[0];
-    tactileBroker.model(path)
+    broker.model(path)
     .then(responseBody => res.send(responseBody))
     .catch(e => {
       console.error(e);
@@ -31,7 +30,7 @@ var run = function(port) {
   app.get('/*', function (req, res) {
     console.log("Request [GET]: " + req.path);
     var path = req.path.slice(1)
-    tactileBroker.render(path)
+    broker.render(path)
     .then(responseBody => res.send(responseBody))
     .catch(e => {
       console.error(e);
@@ -48,7 +47,7 @@ var run = function(port) {
   */
   app.post('/*', function (req, res) {
     console.log("Request [POST]: " + req.path);
-    tactileTeller.update(req.path, req.body)
+    teller.update(req.path, req.body)
     .then(responseData => res.send(responseData))
     .catch(e => {
       console.error(e);
@@ -70,7 +69,7 @@ var run = function(port) {
   */
   app.put('/*', function (req, res) {
     console.log("Request [PUT]: " + req.path);
-    tactileTeller.add(req.path, req.body)
+    teller.add(req.path, req.body)
     .then(responseData => res.send(responseData))
     .catch(e => res.status(400).send({message: e.message}))
   });
@@ -80,7 +79,7 @@ var run = function(port) {
   */
   app.delete('/*', function (req, res) {
     console.log("Request [DELETE]: " + req.path);
-    tactileTeller.remove(req.path)
+    teller.remove(req.path)
     .then(parent => res.send(parent))
     .catch(e => {
       console.error(e);
