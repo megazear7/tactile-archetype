@@ -153,15 +153,26 @@ async function addPage(parentId, page, path) {
  * properties: Flat object with a list of properties to set.
  */
 function setProperties(nodeId, properties) {
-  var query =
-  `
-  MATCH (n)
-  WHERE ID(n)=${nodeId}
-  SET ${generateSetList("n", properties)}
-  RETURN n
-  `
+  if (Object.keys(properties).length > 0) {
+    const query =
+    `
+    MATCH (n)
+    WHERE ID(n)=${nodeId}
+    SET ${generateSetList("n", properties)}
+    RETURN n
+    `
 
-  return sendQuery(query, "n");
+    return sendQuery(query, "n")
+  } else {
+    const query =
+    `
+    MATCH (n)
+    WHERE ID(n)=${nodeId}
+    RETURN n
+    `
+
+    return sendQuery(query, "n")
+  }
 }
 
 /* node: nodeId
