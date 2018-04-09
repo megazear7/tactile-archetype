@@ -25,6 +25,10 @@ export default class TactileEditable extends PolymerElement {
       inline: {
         type: Boolean,
         default: true
+      },
+      transient: {
+        type: Boolean,
+        default: true
       }
     };
   }
@@ -35,24 +39,39 @@ export default class TactileEditable extends PolymerElement {
   }
 
   connectedCallback() {
-    ajaxGet(this.path+".author.json", author => {
-      this.author = author
+    if (this.transient) {
+      ajaxGet("/tac/author/components/"+this.compType+".json", author => {
+        this.author = author;
+        this.component = {
+          properties: { }
+        };
+        this.authorMode();
+      });
+    } else {
+      ajaxGet(this.path+".author.json", author => {
+        this.author = author
 
-      ajaxGet(this.path+".json", component => {
-        this.component = component;
-        var tactileMode = document.querySelector("tactile-mode");
-        this.editMode = tactileMode.mode;
-        this.render();
-
-        tactileMode.addEventListener("switched-to-edit", () => {
-          this.editMode = true;
-          this.render();
-        });
-        tactileMode.addEventListener("switched-to-publish", () => {
-          this.editMode = false;
-          this.render();
+        ajaxGet(this.path+".json", component => {
+          this.component = component;
+          this.authorMode();
         });
       });
+    }
+  }
+
+  authorMode() {
+    var tactileMode = document.querySelector("tactile-mode");
+    this.editMode = tactileMode.mode;
+    this.render();
+
+    tactileMode.addEventListener("switched-to-edit", () => {
+      this.editMode = true;
+      this.render();
+    });
+
+    tactileMode.addEventListener("switched-to-publish", () => {
+      this.editMode = false;
+      this.render();
     });
   }
 
@@ -176,7 +195,22 @@ export default class TactileEditable extends PolymerElement {
 
     var dialogClosed = (event) => {
       if (event.detail.confirmed) {
-        ajaxPost(this.path, this.formValues());
+        if (this.transient) {
+          var basePath = this.path.substring(0, this.path.lastIndexOf("/") + 1);
+          var newPath = this.path.substring(this.path.lastIndexOf("/") + 1, this.path.length);
+
+          var putData = {
+            path: newPath,
+            node: this.formValues()
+          }
+
+          putData.node.tacType = "comp";
+          putData.node.compType = this.compType;
+
+          ajaxPut(basePath, putData);
+        } else {
+          ajaxPost(this.path, this.formValues());
+        }
       }
       paperDialog.removeEventListener("iron-overlay-closed", dialogClosed);
       callback(event.detail.confirmed);
@@ -227,12 +261,14 @@ export default class TactileEditable extends PolymerElement {
   _createInputs() {
     var inputs = [ ];
     this.author.attrs.forEach((input) => {
+      const props = this.component.properties;
+      const inputVal = props[input.name] ? props[input.name] : "";
       if (input.type === "String") {
         inputs.push(
           html`<paper-input
                 name=${input.name}
                 label=${input.title}
-                value=${this.component.properties[input.name]}></paper-input>`);
+                value=${inputVal}></paper-input>`);
       } else if (input.type === "Boolean") {
         if (this.component.properties[input.name]) {
           inputs.push(html`<paper-checkbox name=${input.name} checked>${input.title}</paper-checkbox>`);

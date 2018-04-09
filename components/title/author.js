@@ -1,4 +1,4 @@
-const init = function(node) {
+module.exports = function(node) {
   return {
     title: "Title",
     description: "For displaying the page title of a given page. Should only be used once on each page.",
@@ -7,5 +7,3 @@ const init = function(node) {
     ]
   }
 };
-
-module.exports = { init: init };

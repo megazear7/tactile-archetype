@@ -8,8 +8,8 @@ var model = function(path) {
   return officer.findNode(path)
 }
 
-const componentWrap = (markup, path, compType) => `
-  <tactile-editable path="${path}" comp-type="${compType}">
+const componentWrap = (markup, path, compType, transient) => `
+  <tactile-editable path="${path}" comp-type="${compType}" ${transient ? 'transient' : ''}>
     ${markup}
   </tactile-editable>`
 
@@ -22,8 +22,9 @@ function componentRenderer(page) {
       var renderComponent = function(chunk, component) {
         var compType = component.properties.compType
         var template = 'component-'+compType
+        const transient = component.transient ? true : false
 
-        actuary.extendComponent(component, page)
+        actuary.extendComponent(component, page, compPath)
 
         const authorable = typeof components.authorModels[compType] !== "undefined"
 
@@ -42,7 +43,7 @@ function componentRenderer(page) {
             component.path()
             .then(path => {
               if (authorable && process.env.isAuthor) {
-                chunk.write(componentWrap(out, path, compType))
+                chunk.write(componentWrap(out, path, compType, transient))
               } else {
                 chunk.write(out)
               }
@@ -54,7 +55,15 @@ function componentRenderer(page) {
 
       officer.findComponent(currentNodeId, compPath)
       .then(component => renderComponent(chunk, component))
-      .catch(e => renderComponent(chunk, {properties: {compType: params.compType}}))
+      .catch(e => {
+        renderComponent(chunk, {
+          transient: true,
+          parentPath: context.get("path"),
+          properties: {
+            compType: params.compType
+          }
+        })
+      })
     })
   }
 }

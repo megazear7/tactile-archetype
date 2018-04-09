@@ -88,7 +88,7 @@ module.exports = function(dust) {
     return page
   }
 
-  function extendComponent(component, page) {
+  function extendComponent(component, page, compPath) {
     component.isAuthor = process.env.isAuthor
 
     if (typeof component._id === "undefined") {
@@ -131,14 +131,25 @@ module.exports = function(dust) {
       }
     }
 
-    component.path = function() {
-      return officer.sendQuery(`
-        MATCH path = (:rootpage)-[:has_child*]->(current:component)
-        WHERE ID(current)=${component._id}
-        RETURN RELATIONSHIPS(path)`,
-        'RELATIONSHIPS(path)')
-      .then(results => "/" + results.map(result => result.properties.path).join("/"))
-      .catch(e => console.error(e))
+    if (typeof component._id === "undefined") {
+      // If this is a transient component, the parents path needs to have been provided.
+      component.path = () => component.parentPath().then(path => {
+        if (path === "/") {
+          return path + compPath
+        } else {
+          return path + "/" + compPath
+        }
+      })
+    } else {
+      component.path = function() {
+        return officer.sendQuery(`
+          MATCH path = (:rootpage)-[:has_child*]->(current:component)
+          WHERE ID(current)=${component._id}
+          RETURN RELATIONSHIPS(path)`,
+          'RELATIONSHIPS(path)')
+        .then(results => "/" + results.map(result => result.properties.path).join("/"))
+        .catch(e => console.error(e))
+      }
     }
 
     return component

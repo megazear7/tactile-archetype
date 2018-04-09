@@ -3,6 +3,8 @@
 ## Current Status
 
 1. Remove references to Mustache and the npm dependency.
+1. Refactor the ajax
+1. Fix each component
 1. Update the broker to return promises.
 1. Update the HTTP PUT to append to a "node array". This would be a concept
    built on top of Neo4J.
@@ -12,6 +14,8 @@
 1. Use gulp/webpack to build a deployment hot reload using "npm run serve"
 1. Create examples using the server side rendered components for SEO static content.
 1. Create examples of using elements for SPA interactive features.
+1. Add inheritence between components.
+1. Add inheritence between pages.
 1. JS and CSS Linting.
 1. Make this server side renderable on heroku.
 1. Use gulp/webpack to build a static production bundle with fully rendered pages using "npm run static".

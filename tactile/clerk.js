@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const dust = require('dustjs-linkedin')
 const broker = require('./broker');
+const officer = require('./officer.js')
 const teller = require('./teller');
 const components = require('../components/components.js')(dust)
 

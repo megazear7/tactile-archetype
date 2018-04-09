@@ -288,6 +288,22 @@ function findNode(path) {
   }
 }
 
+/* path: The absolute path to check
+ */
+function nodeExists(path) {
+  if (path === "/" || path === "") {
+    return Promise.resolve(true)
+  } else {
+    var query =
+    `
+    MATCH (r:rootpage)-${generatePathList(path, "has_child")}->(n)
+    RETURN n
+    `
+
+    return sendQuery(query).then(result => result.length > 0);
+  }
+}
+
 /* nodeId: The id of the node to be removed.
  */
 function removeNode(nodeId) {
@@ -317,5 +333,6 @@ module.exports = {
   findComponent: findComponent,
   findRelativeNode: findRelativeNode,
   findNode: findNode,
-  removeNode: removeNode
+  removeNode: removeNode,
+  nodeExists: nodeExists
 };
