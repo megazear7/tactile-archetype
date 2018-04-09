@@ -7,6 +7,7 @@
    promise that provides all the needed information (path, id, and properties). Then update the header
    to actually determine if the link is the current page without the craziness of tons of promises.
 1. Move the tactile-edit element out of the page markup and into the broker.
+1. Dust, async await + mustache instead of dust, or SSR web components?
 1. Refactor the ajax
 1. Fix each component
 1. Update the broker to return promises.
