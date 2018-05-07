@@ -102,12 +102,33 @@ var run = function(port) {
   		"text": "Hello, World!"
   	}
   }
-  */
+  OR exclude the path and the "next index" will be used.
+  {
+  	"node": {
+  		"tacType": "comp",
+  		"compType": "text",
+  		"text": "Hello, World!"
+  	}
+  }  */
   app.put('/*', function (req, res) {
     console.log("Request [PUT]: " + req.path);
-    teller.add(req.path, req.body)
-    .then(responseData => res.send(responseData))
-    .catch(e => res.status(400).send({message: e.message}))
+    if (req.body.path) {
+      teller.add(req.path, req.body)
+      .then(responseData => res.send(responseData))
+      .catch(e => {
+        console.error(e);
+        res.status(400);
+        res.send({message: e.message});
+      })
+    } else {
+      teller.append(req.path, req.body)
+      .then(responseData => res.send(responseData))
+      .catch(e => {
+        console.error(e);
+        res.status(400);
+        res.send({message: e.message});
+      })
+    }
   });
 
   /* Example:

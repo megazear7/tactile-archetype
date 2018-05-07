@@ -1,7 +1,7 @@
 var neo4j = require('neo4j');
 var db = new neo4j.GraphDatabase(process.env['NEO4J_URL']);
 
-function sendQuery(query, resultIdentifier) {
+async function sendQuery(query, resultIdentifier) {
   return new Promise(function(resolve, reject) {
     db.cypher({
         query: query
@@ -118,6 +118,56 @@ async function addComponent(nodeId, component, path) {
   } else {
     return new Promise((resolve, reject) => reject(new Error("Path already exists")))
   }
+}
+
+/* nodeId: The id of the node that the new component will be added under
+ * component: Flat object with the component's properties.
+ * path: The path attribute of the relationship. This attribute helps define the url
+ *       that leads to this component.
+ */
+async function addNode(nodeId, data, path) {
+  const pathQuery = `
+  MATCH (n)-[r:has_child {path: "${path}"}]->(c:generic)
+  WHERE ID(n)=${nodeId}
+  RETURN c
+  `
+
+  const paths = await sendQuery(pathQuery)
+  const pathExists = paths.length > 0
+
+  if (! pathExists) {
+    var query =
+    `
+    MATCH (n1)
+    WHERE ID(n1)=${nodeId}
+    CREATE (n1)-[r:has_child {path: "${path}"}]->(n2:generic ${generatePropertyList(data)})
+    RETURN n2
+    `
+
+    return sendQuery(query, "n2");
+  } else {
+    return new Promise((resolve, reject) => reject(new Error("Path already exists")))
+  }
+}
+
+/*
+ * Finds the next index by counting the number of nodes under the specified node
+ * and then adding 1.
+ */
+async function findNextIndex(path) {
+  const query =
+  `
+  MATCH ()-${generatePathList(path, "has_child")}->()-[r:has_child]->()
+  RETURN r
+  `
+  console.log(query);
+
+  const result = await sendQuery(query);
+
+  console.log(result);
+  console.log(result.length);
+
+  return result.length + 1
 }
 
 /* parentId: The id of the parent page that the new page will be added under.
@@ -288,6 +338,24 @@ function findNode(path) {
   }
 }
 
+/* path: The absolute path to a node
+ */
+function hasNode(path) {
+  if (path === "/" || path === "") {
+    return true
+  } else {
+    var query =
+    `
+    MATCH (r:rootpage)-${generatePathList(path, "has_child")}->(n)
+    RETURN n
+    `
+
+    const node = sendQuery(query)
+
+    return node.length() > 0;
+  }
+}
+
 /* path: The absolute path to check
  */
 function nodeExists(path) {
@@ -333,6 +401,9 @@ module.exports = {
   findComponent: findComponent,
   findRelativeNode: findRelativeNode,
   findNode: findNode,
+  hasNode: hasNode,
+  addNode: addNode,
+  findNextIndex: findNextIndex,
   removeNode: removeNode,
   nodeExists: nodeExists
 };
