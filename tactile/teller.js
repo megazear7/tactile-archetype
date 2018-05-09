@@ -27,7 +27,6 @@ var append = function(path, data) {
       if (data.tacType === "page") {
         return officer.addPage(node._id, data, nextIndex)
       } else if (data.tacType === "comp") {
-        console.log([path, nextIndex].join("/"))
         return officer.addComponent(node._id, data, nextIndex)
       } else {
         return officer.addNode(node._id, data, nextIndex)

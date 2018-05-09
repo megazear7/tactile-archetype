@@ -4,4 +4,8 @@ module.exports = function(component) {
   component.isCurrentPage = component.page()
   .then(page => page.path())
   .then(path => path === component.properties.href)
+  .catch(e => {
+    console.log(e)
+    return false
+  })
 };
