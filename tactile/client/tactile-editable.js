@@ -234,8 +234,13 @@ export default class TactileEditable extends PolymerElement {
         e.stopPropagation();
         var path = this.path+"/"+e.target.dataset.path;
         var template = JSON.parse(e.target.dataset.template);
+        console.log("A");
+        console.log(template);
+        template.tacType = "comp";
+        console.log("B");
+        console.log(template);
         ajaxPut(path, template);
-        // TODO just reinitialize the component using the handlebars template.
+        // TODO just reinitialize the component if possible
         window.location.reload();
       });
     }

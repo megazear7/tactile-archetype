@@ -67,6 +67,15 @@ module.exports = function(dust) {
       .catch(e => console.error(e))
     }
 
+    page.child = function(path) {
+      return officer.sendQuery(`
+        MATCH (current:page)-[:has_child {path: "${path}"}]->(child:page)
+        WHERE ID(current)=${page._id}
+        RETURN child`)
+      .then(results => results.map(result => extendPage(result['child'])))
+      .catch(e => console.error(e))
+    }
+
     if (! page.labels.includes("rootpage")) {
       page.path = function() {
         return officer.sendQuery(`
@@ -100,7 +109,7 @@ module.exports = function(dust) {
     } else {
       component.page = function() {
         return officer.sendQuery(`
-          MATCH (p:page)-[:has_child*]->(c:component)
+          MATCH (p:page)-[:has_child*]->(c)
           WHERE ID(c)=${component._id}
           RETURN p`,
           'p')
@@ -118,7 +127,7 @@ module.exports = function(dust) {
     } else {
       component.children = function() {
         return officer.sendQuery(`
-          MATCH (current:component)-[r:has_child]->(child:component)
+          MATCH (current)-[r:has_child]->(child)
           WHERE ID(current)=${component._id}
           RETURN child, r.path
           ORDER BY r.path`)
@@ -127,6 +136,24 @@ module.exports = function(dust) {
           component.path = result["r.path"]
           return component
         }))
+        .catch(e => console.error(e))
+      }
+    }
+
+    if (typeof component._id === "undefined") {
+      component.child = function(path) {
+        return new Promise(function(resolve, reject) {
+          resolve(undefined)
+        })
+      }
+    } else {
+      component.child = function(path) {
+        return officer.findRelativeNode(component._id, path)
+        .then(node => {
+          var component = extendComponent(node)
+          component.path = path
+          return component
+        })
         .catch(e => console.error(e))
       }
     }
@@ -143,7 +170,7 @@ module.exports = function(dust) {
     } else {
       component.path = function() {
         return officer.sendQuery(`
-          MATCH path = (:rootpage)-[:has_child*]->(current:component)
+          MATCH path = (:rootpage)-[:has_child*]->(current)
           WHERE ID(current)=${component._id}
           RETURN RELATIONSHIPS(path)`,
           'RELATIONSHIPS(path)')

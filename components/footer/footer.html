@@ -1,19 +1,7 @@
-<h3 data-tacid="{_id}">{properties.compType}</h3>
-
-{!
-
-{{#if page.home.isAuthor}}
-<tactile-editable path="{{path}}" comp-type="{{compType}}">
-{{/if}}
+<h3>{properties.compType}</h3>
 
 <ul>
-  {{#each links}}
-    <li>{{render false compType}}</li>
-  {{/each}}
+  {#links}
+    <li>{@render path=path compType=compType /}</li>
+  {/links}
 </ul>
-
-{{#if page.home.isAuthor}}
-</tactile-editable>
-{{/if}}
-
-!}
