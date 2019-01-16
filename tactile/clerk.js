@@ -5,6 +5,7 @@ const broker = require('./broker');
 const officer = require('./officer.js')
 const teller = require('./teller');
 const components = require('../components/components.js')(dust)
+const actuary = require('./actuary.js')(dust)
 
 var run = function(port) {
   const app = express();
@@ -33,7 +34,8 @@ var run = function(port) {
     broker.model(path)
     .then(model => {
       if (process.env.isAuthor) {
-        res.send(components.authorModels[model.properties.compType](model))
+        authorModel = components.authorModels[model.properties.compType]
+        res.send(authorModel ? authorModel(model) : {})
       } else {
         throw new Error("Prohibited")
       }
@@ -52,7 +54,14 @@ var run = function(port) {
     console.log("Request [GET JSON]: " + req.path);
     var path = req.path.slice(1).split(".")[0];
     broker.model(path)
-    .then(responseBody => res.send(responseBody))
+    .then(model => {
+      // TODO: Extend component
+      //componentModel = components.models[model.properties.compType]
+      //actuary.extendComponent(model, page, path)
+      //res.send(componentModel ? componentModel(model) : {})
+
+      res.send(model)
+    })
     .catch(e => {
       console.error(e);
       res.status(400);
