@@ -2,55 +2,36 @@
 
 ## Current Status
 
-version 0.1.1
+Currently this project is in an early stage and is mostly just a proof of concept. I work on it as I find the time to.
 
-1. Remove references to Mustache and the npm dependency.
-1. Update the API to be graphQL instead of a custom API.
-1. Update the actuary to not provide methods that return promises but instead
-   return a single promise that provides all the needed information (path, id,
-   and properties). Then update the header to actually determine if the link is
-   the current page without the craziness of tons of promises.
-1. Move the tactile-edit element out of the page markup and into the broker.
-1. Dust, async await + mustache instead of dust, or SSR web components?
-1. Refactor the ajax
-1. Fix each component
-1. Update the broker to return promises.
-1. Update the HTTP PUT to append to a "node array". This would be a concept
-   built on top of Neo4J.
-1. Update the HTTP POST method to set values on a node path.
-1. Provide a way for elements to "hook" into neo4j in a reactive way.
-1. Use gulp/webpack to build a production bundle using "npm run deploy"
-1. Use gulp/webpack to build a deployment hot reload using "npm run serve"
-1. Create examples using the server side rendered components for SEO static content.
-1. Create examples of using elements for SPA interactive features.
-1. Add inheritence between components.
-1. Add inheritence between pages.
-1. JS and CSS Linting.
-1. Make this server side renderable on heroku.
-1. Use gulp/webpack to build a static production bundle with fully rendered pages using "npm run static".
-1. Make the static version able to be hosted on firebase.
-1. Make the NEO4J interactive API accesssible on heroku accessed from firebase
-1. Integrate service worker caching for offline mode. This could be auto generated
-   during the build, or have manual pieces as well. Maybe some custom config file?
-1. Abstract out all non application code into a single npm dependency
+Version 0.1.1
 
-## Local Environment
+## About Tactile
 
-Run a local environment with "npm run dev"
-Install neo4j and have it run on the default port of 7474
+Tactile is a content management system (CMS) built upon the Neo4j graph database. It's goals are as follows:
 
-### Getting Started
+1. Build a CMS on the back of Neo4j.
+    * This provides the power of both contextual CMS and headless CMS. The idea here is that your content is in nodes in the graph and different types of edges in that graph connect that content in different ways. A website might use a specific type of edge for organizing a hierarchy of web pages and content. An API might connect the nodes with a different edge type in order to provide the data in the style of a headless CMS. A phone app might use yet another edge type for organizing the same data for use in a native mobile app.
+2. Abstract itself away. The goal is that tactile is abstracted out of the project code in two ways:
+    1. It should exist as a command line tool for initializing, serving, and deploying projects.
+    2. It should exist as a NPM package that acts as a server. This will build HTTP responses based upon project code and Neo4j data.
+3. Easy to setup. It should be easy to initialize a new project and get started on project code right away.
+4. Use the latest features of the web platform. It should be built with PWA, Service Worker, Web Components, and HTTP/2 in mind.
+5. It should have various deployment options including a live server and a static site generator.
+
+## Getting Started
 
 1. Clone this repo
 2. Run `npm install`
 4. Install neo4j and have it run on the default port of 7474
 3. Install seed data: `npm run seed`
 3. Run `npm run author` or `npm run start`
+    * Author provides content editing capabilities. The start command runs in a non editable mode.
 5. Visit http://localhost:3000
 
-## About Tactile
+## Development
 
-### Sub Folders
+### Project Organization and Concepts
 
 * elements
     * Interactive web components.
@@ -60,3 +41,16 @@ Install neo4j and have it run on the default port of 7474
     * Static server side rendered pages where components and elements can be included. Corresponds to tactype="page" objects in the json content.
 * global
     * Global css and js to apply on every page.
+* tactile
+    * This is the tactile code which renders web pages and accesses the database. The goal is eventually to move this into a separate NPM package.
+
+## Production
+
+### Deployment
+
+Push a git commit to the master branch. This will force a new deployment.
+
+### Production Neo4j Access
+
+https://hobby-likjgfonlgkmgbkekaflkkal.dbs.graphenedb.com:24780/browser/
+Requires an authenticated Heroku account.
