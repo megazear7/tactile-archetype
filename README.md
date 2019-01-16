@@ -2,6 +2,8 @@
 
 ## Current Status
 
+version 0.1.1
+
 1. Remove references to Mustache and the npm dependency.
 1. Update the API to be graphQL instead of a custom API.
 1. Update the actuary to not provide methods that return promises but instead
