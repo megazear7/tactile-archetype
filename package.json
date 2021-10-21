@@ -38,7 +38,7 @@
     "gulp-webpack": "^1.5.0",
     "lit-html": "^0.7.1",
     "merge-stream": "^1.0.1",
-    "neo4j": "^2.0.0-RC2",
+    "neo4j-driver": "^4.3.4",
     "raw-loader": "^0.5.1",
     "spdy": "^3.4.7",
     "tactile-broker": "^1.0.4",

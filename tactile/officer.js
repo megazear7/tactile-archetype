@@ -1,26 +1,31 @@
-var neo4j = require('neo4j');
-var db = new neo4j.GraphDatabase(process.env['NEO4J_URL']);
+var neo4j = require('neo4j-driver')
+var driver = neo4j.driver(
+  'bolt://localhost:7687',
+  neo4j.auth.basic('neo4j', 'test')
+)
 
 async function sendQuery(query, resultIdentifier) {
-  return new Promise(function(resolve, reject) {
-    db.cypher({
-        query: query
-    }, function (err, results) {
-        if (err) {
-          reject(err);
-        } else {
-          if (typeof resultIdentifier != 'undefined') {
-            if (typeof results[0] != 'undefined' && typeof results[0][resultIdentifier] != 'undefined') {
-              resolve(results[0][resultIdentifier])
-            } else {
-              reject({})
-            }
-          } else {
-            resolve(results)
-          }
-        }
-    })
+
+  var session = driver.session({
+    database: 'neo4j',
+    defaultAccessMode: neo4j.session.WRITE
+  });
+
+  console.log('D');
+  return session.run(query)
+  .then(result => {
+    console.log('E', result);
+    if (result.records && result.records.length > 0 && resultIdentifier) {
+      return result.records[0].get(resultIdentifier);
+    } else {
+      return result;
+    }
   })
+  .catch(e => console.error(e));
+}
+
+async function close() {
+  return driver.close();
 }
 
 /* Turns a path string into a neo4j compatible relationship list
@@ -96,14 +101,17 @@ function generateRemoveList(identifier, properties) {
  *       that leads to this component.
  */
 async function addComponent(nodeId, component, path) {
+
   const pathQuery = `
   MATCH (n)-[r:has_child {path: "${path}"}]->(c:component)
   WHERE ID(n)=${nodeId}
   RETURN c
   `
 
+  console.log('C')
   const paths = await sendQuery(pathQuery)
-  const pathExists = paths.length > 0
+  console.log('F');
+  const pathExists = paths.records.length > 0
 
   if (! pathExists) {
     var query =
@@ -391,6 +399,7 @@ function removeNode(nodeId) {
 
 module.exports = {
   sendQuery: sendQuery,
+  close: close,
   addComponent: addComponent,
   addPage: addPage,
   setProperties: setProperties,

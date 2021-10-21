@@ -13,13 +13,18 @@ MATCH (n)
 DETACH DELETE n
 `)
 
-officer.sendQuery(`
-CREATE (p:page:rootpage:homepage {pageType: "homepage", title: "Home Page"})
-RETURN p
-`, 'p').then(function(homepage) {
-  addHomePageContent(homepage)
-  addSubPages(homepage)
-})
+async function createStuff() {
+  let homepage = await officer.sendQuery(`
+  CREATE (p:page:rootpage:homepage {pageType: "homepage", title: "Home Page"})
+  RETURN p
+  `, 'p');
+  console.log('A');
+  await addHomePageContent(homepage)
+  //await addSubPages(homepage);
+  //await officer.close();
+}
+
+createStuff();
 
 function addSubPages(homePage) {
   officer.addPage(homePage._id, {
@@ -57,10 +62,12 @@ function addSubPages(homePage) {
 }
 
 function addHomePageContent(homePage) {
-  officer.addComponent(homePage._id, {
+  console.log('B', homePage.identity.toString());
+  officer.addComponent(homePage.identity.toString(), {
     compType: "header"
   }, "header")
 
+  /*
   officer.addComponent(homePage._id, {
     compType: "compList"
   }, "primary").then(function(component) {
@@ -89,6 +96,7 @@ function addHomePageContent(homePage) {
   officer.addComponent(homePage._id, {
     compType: "footer"
   }, "footer")
+  */
 }
 
 function addOneColumnPageContent(oneColumnPage, contentComponentsCallback) {
