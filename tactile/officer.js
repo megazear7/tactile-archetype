@@ -11,10 +11,8 @@ async function sendQuery(query, resultIdentifier) {
     defaultAccessMode: neo4j.session.WRITE
   });
 
-  console.log('D');
   return session.run(query)
   .then(result => {
-    console.log('E', result);
     if (result.records && result.records.length > 0 && resultIdentifier) {
       return result.records[0].get(resultIdentifier);
     } else {
@@ -108,9 +106,7 @@ async function addComponent(nodeId, component, path) {
   RETURN c
   `
 
-  console.log('C')
   const paths = await sendQuery(pathQuery)
-  console.log('F');
   const pathExists = paths.records.length > 0
 
   if (! pathExists) {
@@ -168,12 +164,8 @@ async function findNextIndex(path) {
   MATCH ()-${generatePathList(path, "has_child")}->()-[r:has_child]->()
   RETURN r
   `
-  console.log(query);
 
   const result = await sendQuery(query);
-
-  console.log(result);
-  console.log(result.length);
 
   return result.length + 1
 }
@@ -390,9 +382,6 @@ function removeNode(nodeId) {
   DETACH DELETE n
   RETURN n
   `
-
-  console.log("A")
-  console.log(query)
 
   return sendQuery(query, "n");
 }

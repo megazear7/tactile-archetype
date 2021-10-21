@@ -18,16 +18,15 @@ async function createStuff() {
   CREATE (p:page:rootpage:homepage {pageType: "homepage", title: "Home Page"})
   RETURN p
   `, 'p');
-  console.log('A');
   await addHomePageContent(homepage)
-  //await addSubPages(homepage);
+  await addSubPages(homepage);
   //await officer.close();
 }
 
 createStuff();
 
 function addSubPages(homePage) {
-  officer.addPage(homePage._id, {
+  officer.addPage(homePage.identity.toString(), {
     title:    "What it is",
     tacType:  "page",
     pageType: "onecolumnpage"
@@ -36,7 +35,7 @@ function addSubPages(homePage) {
     addOneColumnPageContent(aboutPage, addAboutPageContent)
   })
 
-  officer.addPage(homePage._id, {
+  officer.addPage(homePage.identity.toString(), {
     title:    "How it works",
     tacType:  "page",
     pageType: "onecolumnpage"
@@ -44,7 +43,7 @@ function addSubPages(homePage) {
     addOneColumnPageContent(howPage, addHowPageContent)
   })
 
-  officer.addPage(homePage._id, {
+  officer.addPage(homePage.identity.toString(), {
     title:    "Modules",
     tacType:  "page",
     pageType: "onecolumnpage"
@@ -52,7 +51,7 @@ function addSubPages(homePage) {
     addOneColumnPageContent(modulesPage, addModulesPageContent)
   })
 
-  officer.addPage(homePage._id, {
+  officer.addPage(homePage.identity.toString(), {
     title:    "Resources",
     tacType:  "page",
     pageType: "onecolumnpage"
@@ -62,16 +61,14 @@ function addSubPages(homePage) {
 }
 
 function addHomePageContent(homePage) {
-  console.log('B', homePage.identity.toString());
   officer.addComponent(homePage.identity.toString(), {
     compType: "header"
   }, "header")
 
-  /*
-  officer.addComponent(homePage._id, {
+  officer.addComponent(homePage.identity.toString(), {
     compType: "compList"
   }, "primary").then(function(component) {
-    officer.addComponent(component._id, {
+    officer.addComponent(component.identity.toString(), {
       compType: "heading",
       size:     "h1",
       heading:  "Tactile",
@@ -79,36 +76,35 @@ function addHomePageContent(homePage) {
       subText:  "Some subtext"
     }, "1")
 
-    officer.addComponent(component._id, {
+    officer.addComponent(component.identity.toString(), {
       compType: "text",
       text: "Tactile is a web content management platform composed of interoperable modules."
     }, "2")
   })
 
-  officer.addComponent(homePage._id, {
+  officer.addComponent(homePage.identity.toString(), {
     compType: "compList"
   }, "secondary").then(function(component) {
-    officer.addComponent(component._id, {
+    officer.addComponent(component.identity.toString(), {
       compType: "image"
     }, "1")
   })
 
-  officer.addComponent(homePage._id, {
+  officer.addComponent(homePage.identity.toString(), {
     compType: "footer"
   }, "footer")
-  */
 }
 
 function addOneColumnPageContent(oneColumnPage, contentComponentsCallback) {
-  officer.addComponent(oneColumnPage._id, {
+  officer.addComponent(oneColumnPage.identity.toString(), {
     compType: "header"
   }, "header")
 
-  officer.addComponent(oneColumnPage._id, {
+  officer.addComponent(oneColumnPage.identity.toString(), {
     compType: "breadcrumbs"
   }, "breadcrumbs")
 
-  officer.addComponent(oneColumnPage._id, {
+  officer.addComponent(oneColumnPage.identity.toString(), {
     compType: "compList"
   }, "content").then(function(component) {
     if (typeof contentComponentsCallback != "undefined") {
@@ -116,13 +112,13 @@ function addOneColumnPageContent(oneColumnPage, contentComponentsCallback) {
     }
   })
 
-  officer.addComponent(oneColumnPage._id, {
+  officer.addComponent(oneColumnPage.identity.toString(), {
     compType: "footer"
   }, "footer")
 }
 
 function addAboutPageContent(contentComponent) {
-  officer.addComponent(contentComponent._id, {
+  officer.addComponent(contentComponent.identity.toString(), {
     compType: "heading",
     size:     "h1",
     heading:  "About Tactile",
@@ -130,14 +126,14 @@ function addAboutPageContent(contentComponent) {
     subText:  "Some subtext"
   }, "1")
 
-  officer.addComponent(contentComponent._id, {
+  officer.addComponent(contentComponent.identity.toString(), {
     compType: "text",
     text: "Tactile is a web content management platform composed of interoperable modules."
   }, "2")
 }
 
 function addHowPageContent(contentComponent) {
-  officer.addComponent(contentComponent._id, {
+  officer.addComponent(contentComponent.identity.toString(), {
     compType: "heading",
     size:     "h1",
     heading:  "How does Tactile Work?",
@@ -145,14 +141,14 @@ function addHowPageContent(contentComponent) {
     subText:  "Some subtext"
   }, "1")
 
-  officer.addComponent(contentComponent._id, {
+  officer.addComponent(contentComponent.identity.toString(), {
     compType: "text",
     text: "Built on Node.js and NEO4J. Tactile is composed of different modules which can each be used, or not used, providing great flexibility."
   }, "2")
 }
 
 function addModulesPageContent(contentComponent) {
-  officer.addComponent(contentComponent._id, {
+  officer.addComponent(contentComponent.identity.toString(), {
     compType: "heading",
     size:     "h1",
     heading:  "Tactile Modules",
@@ -160,14 +156,14 @@ function addModulesPageContent(contentComponent) {
     subText:  "Some subtext"
   }, "1")
 
-  officer.addComponent(contentComponent._id, {
+  officer.addComponent(contentComponent.identity.toString(), {
     compType: "text",
     text: "Broker, Clerk, Actuary, Officer, Teller"
   }, "2")
 }
 
 function addResourcesPageContent(contentComponent) {
-  officer.addComponent(contentComponent._id, {
+  officer.addComponent(contentComponent.identity.toString(), {
     compType: "heading",
     size:     "h1",
     heading:  "Tactile Resources",
@@ -175,19 +171,19 @@ function addResourcesPageContent(contentComponent) {
     subText:  "Some subtext"
   }, "1")
 
-  officer.addComponent(contentComponent._id, {
+  officer.addComponent(contentComponent.identity.toString(), {
     compType: "text",
     text: "Node.js, Mustache, NEO4J"
   }, "2")
 }
 
 function addAboutPageSubPages(aboutPage) {
-  officer.addPage(aboutPage._id, {
+  officer.addPage(aboutPage.identity.toString(), {
     title:    "Example Sub Page",
     tacType:  "page",
     pageType: "onecolumnpage"
   }, "example_sub_page").then(function(exampleSubPage) {
-    officer.addPage(exampleSubPage._id, {
+    officer.addPage(exampleSubPage.identity.toString(), {
       title:    "Even Lower Page",
       tacType:  "page",
       pageType: "onecolumnpage"
