@@ -8,7 +8,7 @@ module.exports = function(dust) {
       page.parent = function() {
         return officer.sendQuery(`
           MATCH (parent:page)-[:has_child]->(current:page)
-          WHERE ID(current)=${page._id}
+          WHERE ID(current)=${page.identity.toString()}
           RETURN parent`,
           'parent')
         .then(parent => extendPage(parent))
@@ -26,7 +26,7 @@ module.exports = function(dust) {
       page.home = function() {
         return officer.sendQuery(`
           MATCH (home:homepage)-[:has_child*]->(current:page)
-          WHERE ID(current)=${page._id}
+          WHERE ID(current)=${page.identity.toString()}
           RETURN home`,
           'home')
         .then(home => extendPage(home))
@@ -44,7 +44,7 @@ module.exports = function(dust) {
       page.root = function() {
         return officer.sendQuery(`
           MATCH (root:rootpage)-[:has_child*]->(current:page)
-          WHERE ID(current)=${page._id}
+          WHERE ID(current)=${page.identity.toString()}
           RETURN root`,
           'root')
         .then(root => extendPage(root))
@@ -61,18 +61,18 @@ module.exports = function(dust) {
     page.children = function() {
       return officer.sendQuery(`
         MATCH (current:page)-[:has_child]->(child:page)
-        WHERE ID(current)=${page._id}
+        WHERE ID(current)=${page.identity.toString()}
         RETURN child`)
-      .then(results => results.map(result => extendPage(result['child'])))
+      .then(results => results.records.map(record => extendPage(record.get('child'))))
       .catch(e => console.error(e))
     }
 
     page.child = function(path) {
       return officer.sendQuery(`
         MATCH (current:page)-[:has_child {path: "${path}"}]->(child:page)
-        WHERE ID(current)=${page._id}
+        WHERE ID(current)=${page.identity.toString()}
         RETURN child`)
-      .then(results => results.map(result => extendPage(result['child'])))
+      .then(results => results.records.map(record => extendPage(record.get('child'))))
       .catch(e => console.error(e))
     }
 
@@ -80,7 +80,7 @@ module.exports = function(dust) {
       page.path = function() {
         return officer.sendQuery(`
           MATCH path = (:rootpage)-[:has_child*]->(current:page)
-          WHERE ID(current)=${page._id}
+          WHERE ID(current)=${page.identity.toString()}
           RETURN RELATIONSHIPS(path)`,
           'RELATIONSHIPS(path)')
         .then(results => "/" + results.map(result => result.properties.path).join("/"))
@@ -100,7 +100,7 @@ module.exports = function(dust) {
   function extendComponent(component, page, compPath) {
     component.isAuthor = process.env.isAuthor
 
-    if (typeof component._id === "undefined") {
+    if (typeof component.identity === "undefined") {
       component.page = function() {
         return new Promise(function(resolve, reject) {
           resolve(page)
@@ -110,7 +110,7 @@ module.exports = function(dust) {
       component.page = function() {
         return officer.sendQuery(`
           MATCH (p:page)-[:has_child*]->(c)
-          WHERE ID(c)=${component._id}
+          WHERE ID(c)=${component.identity.toString()}
           RETURN p`,
           'p')
         .then(page => extendPage(page))
@@ -118,7 +118,7 @@ module.exports = function(dust) {
       }
     }
 
-    if (typeof component._id === "undefined") {
+    if (typeof component.identity === "undefined") {
       component.children = function() {
         return new Promise(function(resolve, reject) {
           resolve([])
@@ -128,7 +128,7 @@ module.exports = function(dust) {
       component.children = function() {
         return officer.sendQuery(`
           MATCH (current)-[r:has_child]->(child)
-          WHERE ID(current)=${component._id}
+          WHERE ID(current)=${component.identity.toString()}
           RETURN child, r.path
           ORDER BY r.path`)
         .then(results => results.map(result => {
@@ -140,7 +140,7 @@ module.exports = function(dust) {
       }
     }
 
-    if (typeof component._id === "undefined") {
+    if (typeof component.identity === "undefined") {
       component.child = function(path) {
         return new Promise(function(resolve, reject) {
           resolve(undefined)
@@ -148,7 +148,7 @@ module.exports = function(dust) {
       }
     } else {
       component.child = function(path) {
-        return officer.findRelativeNode(component._id, path)
+        return officer.findRelativeNode(component.identity.toString(), path)
         .then(node => {
           var component = extendComponent(node)
           component.path = path
@@ -158,7 +158,7 @@ module.exports = function(dust) {
       }
     }
 
-    if (typeof component._id === "undefined") {
+    if (typeof component.identity === "undefined") {
       // If this is a transient component, the parents path needs to have been provided.
       component.path = () => component.parentPath().then(path => {
         if (path === "/") {
@@ -171,7 +171,7 @@ module.exports = function(dust) {
       component.path = function() {
         return officer.sendQuery(`
           MATCH path = (:rootpage)-[:has_child*]->(current)
-          WHERE ID(current)=${component._id}
+          WHERE ID(current)=${component.identity.toString()}
           RETURN RELATIONSHIPS(path)`,
           'RELATIONSHIPS(path)')
         .then(results => "/" + results.map(result => result.properties.path).join("/"))
