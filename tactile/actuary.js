@@ -131,9 +131,9 @@ module.exports = function(dust) {
           WHERE ID(current)=${component.identity.toString()}
           RETURN child, r.path
           ORDER BY r.path`)
-        .then(results => results.map(result => {
-          var component = extendComponent(result["child"])
-          component.path = result["r.path"]
+        .then(results => results.records.map(result => {
+          var component = extendComponent(result.get("child"))
+          component.path = result.get("r.path")
           return component
         }))
         .catch(e => console.error(e))

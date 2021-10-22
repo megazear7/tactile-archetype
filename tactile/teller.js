@@ -2,18 +2,18 @@ const officer = require("./officer.js")
 
 var update = function(path, data) {
   return officer.findNode(path)
-  .then(node => officer.setProperties(node._id, data))
+  .then(node => officer.setProperties(node.identity.toString(), data))
 }
 
 var add = function(path, data) {
   return officer.findNode(path)
   .then(node => {
     if (data.node.tacType === "page") {
-      return officer.addPage(node._id, data.node, data.path)
+      return officer.addPage(node.identity.toString(), data.node, data.path)
     } else if (data.node.tacType === "comp") {
-      return officer.addComponent(node._id, data.node, data.path)
+      return officer.addComponent(node.identity.toString(), data.node, data.path)
     } else {
-      return officer.addNode(node._id, data.node, data.path)
+      return officer.addNode(node.identity.toString(), data.node, data.path)
     }
   })
 }
@@ -25,11 +25,11 @@ var append = function(path, data) {
     return officer.findNode(path)
     .then(node => {
       if (data.tacType === "page") {
-        return officer.addPage(node._id, data, nextIndex)
+        return officer.addPage(node.identity.toString(), data, nextIndex)
       } else if (data.tacType === "comp") {
-        return officer.addComponent(node._id, data, nextIndex)
+        return officer.addComponent(node.identity.toString(), data, nextIndex)
       } else {
-        return officer.addNode(node._id, data, nextIndex)
+        return officer.addNode(node.identity.toString(), data, nextIndex)
       }
     })
   })
@@ -38,7 +38,7 @@ var append = function(path, data) {
 var remove = function(path, callback) {
   return officer.findNode(path)
   .then(node => {
-    officer.removeNode(node._id)
+    officer.removeNode(node.identity.toString())
     return node
   })
 }

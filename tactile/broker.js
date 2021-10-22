@@ -16,7 +16,7 @@ const componentWrap = (markup, path, compType, transient) => `
 function componentRenderer(page) {
   return function(chunk, context, bodies, params) {
     return chunk.map(function(chunk) {
-      var currentNodeId = context.get("_id")
+      var currentNodeId = context.get("identity").toString()
       var compPath = params.path
 
       var renderComponent = function(chunk, component) {

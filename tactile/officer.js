@@ -13,6 +13,7 @@ async function sendQuery(query, resultIdentifier) {
 
   return session.run(query)
   .then(result => {
+    //console.log('Query', query, result.records);
     if (result.records && result.records.length > 0 && resultIdentifier) {
       return result.records[0].get(resultIdentifier);
     } else {
