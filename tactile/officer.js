@@ -183,7 +183,7 @@ async function addPage(parentId, page, path) {
   RETURN p2
   `
   const paths = await sendQuery(pathQuery)
-  const pathExists = paths.length > 0
+  const pathExists = paths.records.length > 0
 
   if (! pathExists) {
     var addQuery =
