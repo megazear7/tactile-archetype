@@ -118,7 +118,11 @@ function addOneColumnPageContent(oneColumnPage, contentComponentsCallback) {
 
   officer.addComponent(oneColumnPage.identity.toString(), {
     compType: "footer"
-  }, "footer")
+  }, "footer").then(function(component) {
+    officer.addComponent(component.identity.toString(), {
+      compType: "compList"
+    }, "links")
+  })
 }
 
 function addAboutPageContent(contentComponent) {
