@@ -168,7 +168,7 @@ async function findNextIndex(path) {
 
   const result = await sendQuery(query);
 
-  return result.length + 1
+  return result.records.length + 1
 }
 
 /* parentId: The id of the parent page that the new page will be added under.

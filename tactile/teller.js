@@ -19,14 +19,17 @@ var add = function(path, data) {
 }
 
 var append = function(path, data) {
+  console.log('A', path)
   return officer.findNextIndex(path)
   .then(nextIndex => {
+    console.log('B', nextIndex);
     // TODO Refactor this promise in a promise situation.
     return officer.findNode(path)
     .then(node => {
       if (data.tacType === "page") {
         return officer.addPage(node.identity.toString(), data, nextIndex)
       } else if (data.tacType === "comp") {
+        console.log('C', node);
         return officer.addComponent(node.identity.toString(), data, nextIndex)
       } else {
         return officer.addNode(node.identity.toString(), data, nextIndex)
